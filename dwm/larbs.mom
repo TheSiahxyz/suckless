@@ -76,7 +76,7 @@ I'm sure you can figure it out.
 You can also right click on the module to see what it does.
 .PP
 The program dwmblocks is what is run to generate the statusbar from those scripts.
-You can edit its config/source code in \f(CW~/.local/src/dwmblocks/\fP to tell it what scripts/commands you want it to display.
+You can edit its config/source code in \f(CW~/.local/src/suckless/dwmblocks/\fP to tell it what scripts/commands you want it to display.
 .HEADING 3 "HiDPI and 4K Displays"
 .PP
 If you have a screen with a very high dots-per-inch, the interface, particularly the status bar at the top may be very small. To change this, you can run \f(CWxrandr --dpi 96\fP, replacing 96 with a higher number, then you can refresh the window manager in the menu at \f(CWsuper+backspace\fP. To make this change persistent after reboot, edit \f(CW~/.xprofile\fP and you will see that same command which you can change to have the dots-per-inch value you want.
@@ -286,7 +286,7 @@ would expect.
 .PP
 Dotfiles/settings files are located in \f(CW~/.config/\fP.
 .PP
-Suckless programs, dwm (the window manager), st (the terminal) and dmenu among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/\fP (press \f(CWrr\fP to jump to that directory).
+Suckless programs, dwm (the window manager), st (the terminal) and dmenu among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/suckless/\fP (press \f(CWrr\fP to jump to that directory).
 There you can modify their \f(CWconfig.h\fP files or other source code, then \f(CWsudo make install\fP to reinstall.
 .PP
 vim is set to automatically recompile and install these programs whenever you save changes to any \f(CWconfig.h\fP file

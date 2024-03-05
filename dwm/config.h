@@ -350,7 +350,9 @@ static const Key keys[] = {
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
 
-    {0, XK_Print, spawn, SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png")},
+    {0, XK_Print, spawn,
+     SHCMD("maim | tee ~/Pictures/screenshot-$(date '+%y%m%d-%H%M-%S').png | "
+           "xclip -selection clipboard")},
     {ShiftMask, XK_Print, spawn, {.v = (const char *[]){"maimpick", NULL}}},
     {MODKEY, XK_Print, spawn, {.v = (const char *[]){"dmenurecord", NULL}}},
     {MODKEY | ShiftMask,
@@ -504,7 +506,7 @@ static const Button buttons[] = {
     {ClkStatusText, ShiftMask, Button1, sigdwmblocks, {.i = 6}},
 #endif
     {ClkStatusText, ShiftMask, Button3, spawn,
-     SHCMD(TERMINAL " -e nvim ~/.local/src/dwmblocks/config.h")},
+     SHCMD(TERMINAL " -e nvim ~/.local/src/suckless/dwmblocks/config.h")},
     {ClkClientWin, MODKEY, Button1, movemouse, {0}},
     {ClkClientWin, MODKEY, Button2, defaultgaps, {0}},
     {ClkClientWin, MODKEY, Button3, resizemouse, {0}},
