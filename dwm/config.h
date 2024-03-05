@@ -372,10 +372,7 @@ static const Key keys[] = {
      XK_equal,
      spawn,
      {.v = (const char *[]){"sudo", "brillo", "-A", "5", "-q", NULL}}},
-    {MODKEY | ControlMask,
-     XK_m,
-     spawn,
-     {.v = (const char *[]){"mpvplay", NULL}}},
+    {MODKEY | ShiftMask, XK_m, spawn, {.v = (const char *[]){"mpvplay", NULL}}},
 
     {0, XF86XK_AudioMute, spawn,
      SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -44 $(pidof "
