@@ -337,15 +337,20 @@ static const Key keys[] = {
     {MODKEY, XK_F7, spawn, {.v = (const char *[]){"td-toggle", NULL}}},
     {MODKEY, XK_F8, spawn, {.v = (const char *[]){"mailsync", NULL}}},
     {MODKEY, XK_F9, spawn, {.v = (const char *[]){"mounter", NULL}}},
-    {MODKEY | ControlMask,
+    {MODKEY | ShiftMask,
      XK_F9,
      spawn,
      {.v = (const char *[]){"kakaotalk", NULL}}},
     {MODKEY, XK_F10, spawn, {.v = (const char *[]){"unmounter", NULL}}},
+    {MODKEY | ShiftMask, XK_F10, spawn, {.v = (const char *[]){"yt", NULL}}},
     {MODKEY, XK_F11, spawn,
      SHCMD("mpv --untimed --no-cache --no-osc --no-input-default-bindings "
            "--profile=low-latency --input-conf=/dev/null --title=webcam $(ls "
            "/dev/video[0,2,4,6,8] | tail -n 1)")},
+    {MODKEY | ShiftMask,
+     XK_F11,
+     spawn,
+     {.v = (const char *[]){"mpvplay", NULL}}},
     {MODKEY, XK_F12, spawn, SHCMD("remaps")},
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
@@ -372,7 +377,6 @@ static const Key keys[] = {
      XK_equal,
      spawn,
      {.v = (const char *[]){"sudo", "brillo", "-A", "5", "-q", NULL}}},
-    {MODKEY | ShiftMask, XK_m, spawn, {.v = (const char *[]){"mpvplay", NULL}}},
 
     {0, XF86XK_AudioMute, spawn,
      SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -44 $(pidof "

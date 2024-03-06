@@ -2,6 +2,7 @@
 // recompile using the make command.
 static const Block blocks[] = {
     /*Icon*/ /*Command*/ /*Update Interval*/ /*Update Signal*/
+    {"", "cat /tmp/download_status 2>/dev/null", 1, 20},
     /* {"⌨", "sb-kbselect", 0, 30}, */
     {"", "cat /tmp/recordingicon 2>/dev/null", 0, 9},
     {"", "sb-tasks", 10, 26},
@@ -26,6 +27,7 @@ static const Block blocks[] = {
     {"", "sb-internet", 5, 4},
     /* {"",	"sb-iplocate", 0,	27}, */
     {"", "sb-help-icon", 0, 15},
+
 };
 
 // Sets delimiter between status commands. NULL character ('\0') means no
