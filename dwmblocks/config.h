@@ -2,7 +2,7 @@
 // recompile using the make command.
 static const Block blocks[] = {
     /*Icon*/ /*Command*/ /*Update Interval*/ /*Update Signal*/
-    {"", "cat /tmp/download_status 2>/dev/null", 1, 20},
+    {"", "cat /tmp/downloadicon 2>/dev/null", 1, 20},
     /* {"⌨", "sb-kbselect", 0, 30}, */
     {"", "cat /tmp/recordingicon 2>/dev/null", 0, 9},
     {"", "sb-tasks", 10, 26},
@@ -23,6 +23,7 @@ static const Block blocks[] = {
     {"", "sb-nettraf", 1, 16},
     {"", "sb-volume", 0, 10},
     {"", "sb-battery", 5, 3},
+    {"", "sb-inputs", 1, 29},
     {"", "sb-clock", 60, 1},
     {"", "sb-internet", 5, 4},
     /* {"",	"sb-iplocate", 0,	27}, */
