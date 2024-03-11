@@ -96,12 +96,15 @@ static const Layout layouts[] = {
     {NULL, NULL},
 };
 
+static void tagandview(const Arg *arg);
+
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
   {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
       {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
       {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
+      {MODKEY | Mod1Mask, KEY, tagandview, {.ui = 1 << TAG}},                  \
       {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 #define STACKKEYS(MOD, ACTION)                                                 \
   {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
@@ -190,6 +193,9 @@ static const Key keys[] = {
      XK_w,
      spawn,
      {.v = (const char *[]){TERMINAL, "-e", "sudo", "nmtui", NULL}}},
+    {MODKEY | ControlMask, XK_w, spawn,
+     SHCMD(TERMINAL
+           " -e less -Sf ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport")},
     {MODKEY, XK_e, spawn,
      SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook "
                     "2>/dev/null")},
@@ -247,6 +253,10 @@ static const Key keys[] = {
     {MODKEY, XK_s, togglesticky, {0}},
     /* { MODKEY|ShiftMask,		XK_s,		spawn,
        SHCMD("") }, */
+    {MODKEY | ShiftMask, XK_s, spawn,
+     SHCMD("mpc load Entire; mpc random; mpc play; pkill -RTMIN+11 dwmblocks")},
+    {MODKEY | ControlMask, XK_s, spawn,
+     SHCMD("mpc stop; pkill -RTMIN+11 dwmblocks")},
     {MODKEY, XK_d, spawn, {.v = (const char *[]){"dmenu_run", NULL}}},
     {MODKEY | ShiftMask,
      XK_d,
@@ -323,7 +333,8 @@ static const Key keys[] = {
            "-i -l 50 | cut -d' ' -f1)")},
 
     {MODKEY, XK_F1, spawn,
-     SHCMD("groff -mom /usr/local/share/dwm/larbs.mom -Tpdf | zathura -")},
+     SHCMD("groff -mom ~/.local/share/dwm/larbs.mom -Tpdf | zathura -")},
+    {MODKEY | ShiftMask, XK_F1, spawn, SHCMD("nsxiv ~/Pictures/resources")},
     {MODKEY, XK_F2, spawn, {.v = (const char *[]){"tutorialvids", NULL}}},
     {MODKEY, XK_F3, spawn, {.v = (const char *[]){"displayselect", NULL}}},
     {MODKEY, XK_F4, spawn,
@@ -340,15 +351,29 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,
      XK_F9,
      spawn,
-     {.v = (const char *[]){"kakaotalk", NULL}}},
+     {.v = (const char *[]){"mpvplay", NULL}}},
     {MODKEY, XK_F10, spawn, {.v = (const char *[]){"unmounter", NULL}}},
-    {MODKEY | ShiftMask, XK_F10, spawn, {.v = (const char *[]){"yt", NULL}}},
+    {MODKEY | ShiftMask,
+     XK_F10,
+     spawn,
+     {.v = (const char *[]){"qndl", "-v", NULL}}},
+    {MODKEY | ControlMask,
+     XK_F10,
+     spawn,
+     {.v = (const char *[]){"qndl", "-m", NULL}}},
     {MODKEY, XK_F11, spawn,
      SHCMD("mpv --untimed --no-cache --no-osc --no-input-default-bindings "
            "--profile=low-latency --input-conf=/dev/null --title=webcam $(ls "
            "/dev/video[0,2,4,6,8] | tail -n 1)")},
-    {MODKEY | ShiftMask, XK_F11, spawn, {.v = (const char *[]){"mpv", NULL}}},
+    {MODKEY | ShiftMask,
+     XK_F11,
+     spawn,
+     {.v = (const char *[]){"kakaotalk", NULL}}},
     {MODKEY, XK_F12, spawn, SHCMD("remaps")},
+    {MODKEY | ShiftMask,
+     XK_F12,
+     spawn,
+     {.v = (const char *[]){"fcitx5-configtool", NULL}}},
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
 
@@ -369,11 +394,11 @@ static const Key keys[] = {
     {MODKEY | ControlMask,
      XK_minus,
      spawn,
-     {.v = (const char *[]){"sudo", "brillo", "-U", "5", "-q", NULL}}},
+     {.v = (const char *[]){"brillo", "-U", "5", "-q", NULL}}},
     {MODKEY | ControlMask,
      XK_equal,
      spawn,
-     {.v = (const char *[]){"sudo", "brillo", "-A", "5", "-q", NULL}}},
+     {.v = (const char *[]){"brillo", "-A", "5", "-q", NULL}}},
 
     {0, XF86XK_AudioMute, spawn,
      SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -44 $(pidof "
