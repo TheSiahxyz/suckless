@@ -429,14 +429,6 @@ static Command commands[] = {
 	{ { 0, 0, 0, 0 },                   { XK_f, XK_comma, 0, 0 },   explace,                { .ui = EX_S } },
 	{ { 0, 0, 0, 0 },                   { XK_f, XK_period, 0, 0 },  explace,                { .ui = EX_SE } },
 
-    /* FLOATING SIZE */
-	{ { ControlMask, 0, 0, 0 },         { XK_j, 0, 0, 0 },          exresize,               { .v = (int []){   0,  25 } } },
-	{ { ControlMask, 0, 0, 0 },         { XK_k, 0, 0, 0 },          exresize,               { .v = (int []){   0, -25 } } },
-	{ { ControlMask, 0, 0, 0 },         { XK_l, 0, 0, 0 },          exresize,               { .v = (int []){  25,   0 } } },
-	{ { ControlMask, 0, 0, 0 },         { XK_h, 0, 0, 0 },          exresize,               { .v = (int []){ -25,   0 } } },
-	{ { ControlMask, 0, 0, 0 },         { XK_comma, 0, 0, 0 },      exresize,               { .v = (int []){ -25, -25 } } },
-	{ { ControlMask, 0, 0, 0 },         { XK_period, 0, 0, 0 },     exresize,               { .v = (int []){  25,  25 } } },
-
 	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_h, 0 },    togglehorizontalexpand, { .i = +1 } },
 	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_h, 0 },    togglehorizontalexpand, { .i =  0 } },
 	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_h, 0 },    togglehorizontalexpand, { .i = -1 } },

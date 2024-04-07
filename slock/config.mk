@@ -20,7 +20,7 @@ FREETYPEINC = /usr/include/freetype2
 
 # includes and libs
 INCS = -I. -I/usr/include -I${X11INC} -I${FREETYPEINC}
-LIBS = -L/usr/lib -lc -lcrypt -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS} -lXext -lXrandr -lImlib2
+LIBS = -L/usr/lib -lc -lcrypt -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS} -lXext -lXrandr -lImlib2 -lpam -lcairo
 
 # flags
 CPPFLAGS = -DVERSION=\"${VERSION}\" -D_DEFAULT_SOURCE -DHAVE_SHADOW_H ${XINERAMAFLAGS}
@@ -35,3 +35,6 @@ COMPATSRC = explicit_bzero.c
 #CPPFLAGS = -DVERSION=\"${VERSION}\" -D_BSD_SOURCE -D_NETBSD_SOURCE
 # On OpenBSD set COMPATSRC to empty
 #COMPATSRC =
+
+# compiler and linker
+CC = cc
