@@ -43,8 +43,8 @@ static const unsigned int alphas[][3] = {
 };
 
 typedef struct {
-  const char *name;
-  const void *cmd;
+    const char *name;
+    const void *cmd;
 } Sp;
 
 /* scratchpads */
@@ -90,7 +90,7 @@ static const Layout layouts[] = {
     /* symbol   arrange function */
     { "[]=",    tile },                     /* 0: Default: Master on left, slaves on right */
     { "[M]",    monocle },                  /* 1: All windows on top of eachother */
-	{ "|||",    col },                      /* 2: Column */
+    { "|||",    col },                      /* 2: Column */
     { "[@]",    spiral },                   /* 3: Fibonacci spiral */
     { "[\\]",    dwindle },                 /* 4: Decreasing in size right and leftward */
     { "H[]",    deck },                     /* 5: Master on left, slaves in monocle-like mode on right */
@@ -124,10 +124,10 @@ static const Layout layouts[] = {
     { MODKEY2 | ShiftMask,                  KEY, tagandview,     { .ui = 1 << TAG } },
 
 #define CTAGKEYS(KEY, TAG)                                                                      \
-	{ {0,0,0,0},                            {KEY,0,0,0}, view,          { .ui = 1 << TAG} },    \
-	{ {ControlMask,0,0,0},                  {KEY,0,0,0}, toggleview,    { .ui = 1 << TAG} },    \
-	{ {ShiftMask,0,0,0},                    {KEY,0,0,0}, tag,           { .ui = 1 << TAG} },    \
-	{ {ControlMask|ShiftMask,0,0,0},        {KEY,0,0,0}, toggletag,     { .ui = 1 << TAG} },
+    { {0,0,0,0},                            {KEY,0,0,0}, view,          { .ui = 1 << TAG} },    \
+    { {ControlMask,0,0,0},                  {KEY,0,0,0}, toggleview,    { .ui = 1 << TAG} },    \
+    { {ShiftMask,0,0,0},                    {KEY,0,0,0}, tag,           { .ui = 1 << TAG} },    \
+    { {ControlMask|ShiftMask,0,0,0},        {KEY,0,0,0}, toggletag,     { .ui = 1 << TAG} },
 
 #define STACKKEYS(MOD, ACTION)                              \
     { MOD,  XK_j,   ACTION##stack,  { .i = INC(+1) } },     \
@@ -245,12 +245,12 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_t,               defaultgaps,        {0} },
  
     /* FLOATING SIZE */
-	{ MODKEY2 | ControlMask,                XK_h,               exresize,           { .v = (int []){ -25,   0 } } },
-	{ MODKEY2 | ControlMask,                XK_l,               exresize,           { .v = (int []){  25,   0 } } },
-	{ MODKEY2 | ControlMask,                XK_j,               exresize,           { .v = (int []){   0,  25 } } },
-	{ MODKEY2 | ControlMask,                XK_k,               exresize,           { .v = (int []){   0, -25 } } },
-	{ MODKEY2 | ControlMask,                XK_comma,           exresize,           { .v = (int []){ -25, -25 } } },
-	{ MODKEY2 | ControlMask,                XK_period,          exresize,           { .v = (int []){  25,  25 } } },
+    { MODKEY2 | ControlMask,                XK_h,               exresize,           { .v = (int []){ -25,   0 } } },
+    { MODKEY2 | ControlMask,                XK_l,               exresize,           { .v = (int []){  25,   0 } } },
+    { MODKEY2 | ControlMask,                XK_j,               exresize,           { .v = (int []){   0,  25 } } },
+    { MODKEY2 | ControlMask,                XK_k,               exresize,           { .v = (int []){   0, -25 } } },
+    { MODKEY2 | ControlMask,                XK_comma,           exresize,           { .v = (int []){ -25, -25 } } },
+    { MODKEY2 | ControlMask,                XK_period,          exresize,           { .v = (int []){  25,  25 } } },
 
     /* MEDIA CONTROL */
     { 0, XF86XK_Battery,                    spawn, SHCMD("pkill -RTMIN+3 dwmblocks") },
@@ -372,10 +372,10 @@ static const Key keys[] = {
 };
 
 static Key cmdkeys[] = {
-	/* modifier                         keys                function        argument */
-	{ 0,                                XK_Escape,          clearcmd,       {0} },
-	{ ControlMask,                      XK_c,               clearcmd,       {0} },
-	{ ControlMask,                      XK_x,               setkeymode,     { .ui = ModeInsert } },
+    /* modifier                         keys                function        argument */
+    { 0,                                XK_Escape,          clearcmd,       {0} },
+    { ControlMask,                      XK_c,               clearcmd,       {0} },
+    { ControlMask,                      XK_x,               setkeymode,     { .ui = ModeInsert } },
 };
 
 static Command commands[] = {
@@ -384,15 +384,15 @@ static Command commands[] = {
     CSTACKKEYS(MODKEY | ShiftMask,   push)
 
     /* TAGKEYS */
-	CTAGKEYS(XK_1, 0)
-	CTAGKEYS(XK_2, 1)
-	CTAGKEYS(XK_3, 2)
-	CTAGKEYS(XK_4, 3)
-	CTAGKEYS(XK_5, 4)
-	CTAGKEYS(XK_6, 5)
-	CTAGKEYS(XK_7, 6)
-	CTAGKEYS(XK_8, 7)
-	CTAGKEYS(XK_9, 8)
+    CTAGKEYS(XK_1, 0)
+    CTAGKEYS(XK_2, 1)
+    CTAGKEYS(XK_3, 2)
+    CTAGKEYS(XK_4, 3)
+    CTAGKEYS(XK_5, 4)
+    CTAGKEYS(XK_6, 5)
+    CTAGKEYS(XK_7, 6)
+    CTAGKEYS(XK_8, 7)
+    CTAGKEYS(XK_9, 8)
 
     /* Modifier (4 keys)                keysyms (4 keys)            function                argument */
     /* APPEARANCE */
@@ -437,15 +437,15 @@ static Command commands[] = {
     { { ControlMask, 0, 0, 0 },         { XK_comma, 0, 0, 0 },      exresize,               { .v = (int []){ -25, -25 } } },
     { { ControlMask, 0, 0, 0 },         { XK_period, 0, 0, 0 },     exresize,               { .v = (int []){  25,  25 } } },
 
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_h, 0 },    togglehorizontalexpand, { .i = +1 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_h, 0 },    togglehorizontalexpand, { .i =  0 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_h, 0 },    togglehorizontalexpand, { .i = -1 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_v, 0 },    toggleverticalexpand,   { .i = +1 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_v, 0 },    toggleverticalexpand,   { .i =  0 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_v, 0 },    toggleverticalexpand,   { .i = -1 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_m, 0 },    togglemaximize,         { .i = +1 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_m, 0 },    togglemaximize,         { .i =  0 } },
-	{ { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_m, 0 },    togglemaximize,         { .i = -1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_h, 0 },    togglehorizontalexpand, { .i = +1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_h, 0 },    togglehorizontalexpand, { .i =  0 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_h, 0 },    togglehorizontalexpand, { .i = -1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_v, 0 },    toggleverticalexpand,   { .i = +1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_v, 0 },    toggleverticalexpand,   { .i =  0 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_v, 0 },    toggleverticalexpand,   { .i = -1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_m, 0 },    togglemaximize,         { .i = +1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_m, 0 },    togglemaximize,         { .i =  0 } },
+    { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_m, 0 },    togglemaximize,         { .i = -1 } },
 
     /* PROGRAM */
     { { 0, 0, 0, 0 },                   { XK_a, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e abook -C ~/.abook/abookrc --datafile ~/.abook/addressbook") },
