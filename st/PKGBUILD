@@ -1,19 +1,19 @@
 # Maintainer:
 
-pkgname=st-soomin-git
+pkgname=st-thesiah-git
 _pkgname=st
 pkgver=0.8.2.r1062.2087ab9
 pkgrel=1
 epoch=1
 pkgdesc="Soomin's simple (suckless) terminal with vim-bindings, transparency, xresources, etc. "
-url='https://github.com/SoominImxyz/st'
+url='https://github.com/TheSiahxyz/suckless/tree/main/st'
 arch=('i686' 'x86_64')
 license=('MIT')
 options=('zipman')
 depends=('libxft')
 makedepends=('ncurses' 'libxext' 'git')
 optdepends=('dmenu: feed urls to dmenu')
-source=(git+https://github.com/SoominImxyz/st)
+source=(git+https://github.com/TheSiahxyz/suckless/tree/main/st)
 sha1sums=('SKIP')
 
 provides=("${_pkgname}")
