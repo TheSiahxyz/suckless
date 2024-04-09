@@ -3,13 +3,13 @@ static const char *group = "wheel";
 static int personalblur = 0;
 
 static const char *colorname[NUMCOLS] = {
-	[INIT] =   "#3c3836",         /* after initialization */
-	[INPUT] =  "#005577",       /* during input */
-	[INPUT_ALT] = "#227799",    /* during input, second color */
-	[FAILED] = "#CC3333",       /* wrong password */
-	[CAPS] = "#FF0000",             /* CapsLock on */
+    [INIT] =   "#3c3836",         /* after initialization */
+    [INPUT] =  "#005577",       /* during input */
+    [INPUT_ALT] = "#227799",    /* during input, second color */
+    [FAILED] = "#CC3333",       /* wrong password */
+    [CAPS] = "#FF0000",             /* CapsLock on */
     [CAPS_ALT] = "#FFA666",     /* hypothetical alternate color for CapsLock on */
-	[PAM] =    "#9400D3",       /* waiting for PAM */
+    [PAM] =    "#9400D3",       /* waiting for PAM */
 };
 
 /* treat a cleared input like a wrong password (color) */
@@ -40,16 +40,16 @@ static const int logow = 12;
 static const int logoh = 6;
 
 static XRectangle rectangles[9] = {
-	/* x    y       w       h */
-	{ 0,    3,      1,      3 },
-	{ 1,    3,      2,      1 },
-	{ 0,    5,      8,      1 },
-	{ 3,    0,      1,      5 },
-	{ 5,    3,      1,      2 },
-	{ 7,    3,      1,      2 },
-	{ 8,    3,      4,      1 },
-	{ 9,    4,      1,      2 },
-	{ 11,   4,      1,      2 },
+    /* x    y       w       h */
+    { 0,    3,      1,      3 },
+    { 1,    3,      2,      1 },
+    { 0,    5,      8,      1 },
+    { 3,    0,      1,      5 },
+    { 5,    3,      1,      2 },
+    { 7,    3,      1,      2 },
+    { 8,    3,      4,      1 },
+    { 9,    4,      1,      2 },
+    { 11,   4,      1,      2 },
 };
 
 /*Enable blur*/
@@ -65,13 +65,13 @@ static const int pixelSize=0;
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-		{ "color0",    STRING,  &colorname[INIT] },
-		{ "color4",     STRING,  &colorname[INPUT] },
-		{ "color12",    STRING,  &colorname[INPUT_ALT] },
-		{ "color1",     STRING,  &colorname[FAILED] },
-		{ "color3",     STRING,  &colorname[CAPS] },
-		{ "color11",    STRING,  &colorname[CAPS_ALT] },
-		{ "color13",    STRING,  &colorname[PAM] },
-		{ "color0",     STRING,  &text_color },
+    { "color0",    STRING,  &colorname[INIT] },
+    { "color4",     STRING,  &colorname[INPUT] },
+    { "color12",    STRING,  &colorname[INPUT_ALT] },
+    { "color1",     STRING,  &colorname[FAILED] },
+    { "color3",     STRING,  &colorname[CAPS] },
+    { "color11",    STRING,  &colorname[CAPS_ALT] },
+    { "color13",    STRING,  &colorname[PAM] },
+    { "color0",     STRING,  &text_color },
 };
 
