@@ -16,7 +16,7 @@ static const char *colorname[NUMCOLS] = {
 static const int failonclear = 1;
 
 /* Background image path, should be available to the user above */
-static const char* background_image = "/home/si/Pictures/wallpaper/yejin-wall.png";
+static const char* background_image = "/home/si/Pictures/wallpaper/personal-yejin-wall.png";
 
 /* default message */
 static const char *message = "THESIAH";
