@@ -212,8 +212,8 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_bracketright,    spawn,              { .v = (const char *[]){ "mpc", "seek", "+60", NULL } } },
     { MODKEY | ShiftMask | ControlMask,     XK_bracketleft,     spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
     { MODKEY | ShiftMask | ControlMask,     XK_bracketright,    spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
-    { MODKEY ,                              XK_backslash,       spawn,              { .v = (const char *[]){ "mpc", "single", NULL } } },
-    { MODKEY | ShiftMask,                   XK_backslash,       spawn,              { .v = (const char *[]){ "mpc", "random", NULL } } },
+    { MODKEY ,                              XK_backslash,       spawn,              SHCMD("mpc single on; mpc random off; mpc repeat on") },
+    { MODKEY | ShiftMask,                   XK_backslash,       spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on") },
     { MODKEY | ControlMask,                 XK_backslash,       spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off; pkill -RTMIN+11 dwmblocks") },
 
     /* LAYOUT SIZE */

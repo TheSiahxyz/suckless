@@ -132,9 +132,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Shift+Ctrl+bracketright\fP \(en spawn {.v=(constchar*[]){"mpc","repeat",NULL}}
 .ITEM
-\f(CWMOD+backslash\fP \(en spawn {.v=(constchar*[]){"mpc","single",NULL}}
+\f(CWMOD+backslash\fP \(en spawn SHCMD("mpcsingleon;mpcrandomoff;mpcrepeaton")
 .ITEM
-\f(CWMOD+Shift+backslash\fP \(en spawn {.v=(constchar*[]){"mpc","random",NULL}}
+\f(CWMOD+Shift+backslash\fP \(en spawn SHCMD("mpcsingleoff;mpcrandomon;mpcrepeaton")
 .ITEM
 \f(CWMOD+Ctrl+backslash\fP \(en spawn SHCMD("mpcrepeatoff;mpcrandomoff;mpcsingleoff;pkill-RTMIN+11dwmblocks")
 .ITEM
