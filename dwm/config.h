@@ -1,36 +1,36 @@
 /* See LICENSE file for copyright and license details. */
 
 /* constants */
-#define TERMINAL "st"
-#define TERMCLASS "St"
-#define BROWSER "firefox"
-#define BROWSERCLASS "Firefox"
-#define GAP 6
+#define TERMINAL                        "st"
+#define TERMCLASS                       "St"
+#define BROWSER                         "firefox"
+#define BROWSERCLASS                    "Firefox"
+#define GAP                             8
 
 /* appearance */
-static unsigned int borderpx = 3;               /* border pixel of windows */
-static unsigned int snap = 32;                  /* snap pixel */
-static unsigned int gappih = GAP;               /* horiz inner gap between windows */
-static unsigned int gappiv = GAP;               /* vert inner gap between windows */
-static unsigned int gappoh = GAP;               /* horiz outer gap between windows and screen edge */
-static unsigned int gappov = GAP;               /* vert outer gap between windows and screen edge */
-static int swallowfloating = 0;                 /* 1 means swallow floating windows by default */
-static int smartgaps = 0;                       /* 1 means no outer gap when there is only one window */
-static int showbar = 1;                         /* 0 means no bar */
-static int topbar = 1;                          /* 0 means bottom bar */
-static const int vertpad = GAP;                 /* vertical padding of bar */
-static const int sidepad = GAP;                 /* horizontal padding of bar */
+static unsigned int borderpx            = 3;    /* border pixel of windows */
+static unsigned int snap                = 32;   /* snap pixel */
+static unsigned int gappih              = GAP;  /* horiz inner gap between windows */
+static unsigned int gappiv              = GAP;  /* vert inner gap between windows */
+static unsigned int gappoh              = GAP;  /* horiz outer gap between windows and screen edge */
+static unsigned int gappov              = GAP;  /* vert outer gap between windows and screen edge */
+static int swallowfloating              = 0;    /* 1 means swallow floating windows by default */
+static int smartgaps                    = 0;    /* 1 means no outer gap when there is only one window */
+static int showbar                      = 1;    /* 0 means no bar */
+static int topbar                       = 1;    /* 0 means bottom bar */
+static const int vertpad                = GAP;  /* vertical padding of bar */
+static const int sidepad                = GAP;  /* horizontal padding of bar */
 static char *fonts[] = {
     "monospace:size=10",
     "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
-static char normbgcolor[] = "#222222";
-static char normbordercolor[] = "#555555";
-static char normfgcolor[] = "#bbbbbb";
-static char selfgcolor[] = "#eeeeee";
-static char selbordercolor[] = "#4CBB17";
-static char selbgcolor[] = "#005577";
-static const unsigned int baralpha = 0xd0;
-static const unsigned int borderalpha = OPAQUE;
+static char normbgcolor[]               = "#222222";
+static char normbordercolor[]           = "#444444";
+static char normfgcolor[]               = "#bbbbbb";
+static char selfgcolor[]                = "#eeeeee";
+static char selbordercolor[]            = "#770000";
+static char selbgcolor[]                = "#005577";
+static const unsigned int baralpha      = 0xd0;
+static const unsigned int borderalpha   = OPAQUE;
 static char *colors[][3] = {
     /*                      fg              bg              border  */
     [SchemeNorm]    = { normfgcolor,     normbgcolor,    normbordercolor },
@@ -180,11 +180,11 @@ ResourcePref resources[] = {
 };
 
 static const Key keys[] = {
-    /* STACKKEYS */
+    // STACKKEYS
     STACKKEYS(MODKEY,               focus)
     STACKKEYS(MODKEY | ShiftMask,   push)
 
-    /* TAGKEYS */
+    // TAGKEYS
     TAGKEYS(XK_1, 0)
     TAGKEYS(XK_2, 1)
     TAGKEYS(XK_3, 2)
@@ -196,27 +196,27 @@ static const Key keys[] = {
     TAGKEYS(XK_9, 8)
 
     /* modifier                             key                 function            argument */
-    /* AUDIO CONTROL */
+    // AUDIO CONTROLS
     { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ShiftMask,                   XK_m,               spawn,              SHCMD("mpdmenu; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ShiftMask | ControlMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
-    { MODKEY,                               XK_p,               spawn,              { .v = (const char *[]){ "mpc", "toggle", NULL } } },
+    { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ShiftMask,                   XK_p,               spawn,              SHCMD("mpc pause; pauseallmpv") },
     { MODKEY | ControlMask,                 XK_p,               spawn,              SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -44 $(pidof dwmblocks)") },
-    { MODKEY,                               XK_bracketleft,     spawn,              { .v = (const char *[]){ "mpc", "prev", NULL } } },
-    { MODKEY,                               XK_bracketright,    spawn,              { .v = (const char *[]){ "mpc", "next", NULL } } },
-    { MODKEY | ShiftMask,                   XK_bracketleft,     spawn,              { .v = (const char *[]){ "mpc", "seek", "-10", NULL } } },
-    { MODKEY | ShiftMask,                   XK_bracketright,    spawn,              { .v = (const char *[]){ "mpc", "seek", "+10", NULL } } },
-    { MODKEY | ControlMask,                 XK_bracketleft,     spawn,              { .v = (const char *[]){ "mpc", "seek", "-60", NULL } } },
-    { MODKEY | ControlMask,                 XK_bracketright,    spawn,              { .v = (const char *[]){ "mpc", "seek", "+60", NULL } } },
-    { MODKEY | ShiftMask | ControlMask,     XK_bracketleft,     spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
-    { MODKEY | ShiftMask | ControlMask,     XK_bracketright,    spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
-    { MODKEY ,                              XK_backslash,       spawn,              SHCMD("mpc single on; mpc random off; mpc repeat on") },
-    { MODKEY | ShiftMask,                   XK_backslash,       spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on") },
-    { MODKEY | ControlMask,                 XK_backslash,       spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off; pkill -RTMIN+11 dwmblocks") },
+    { MODKEY,                               XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "prev", NULL } } },
+    { MODKEY,                               XK_period,          spawn,              { .v = (const char *[]){ "mpc", "next", NULL } } },
+    { MODKEY | ShiftMask,                   XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "-10", NULL } } },
+    { MODKEY | ShiftMask,                   XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "+10", NULL } } },
+    { MODKEY | ControlMask,                 XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "-60", NULL } } },
+    { MODKEY | ControlMask,                 XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "+60", NULL } } },
+    { MODKEY | ShiftMask | ControlMask,     XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
+    { MODKEY | ShiftMask | ControlMask,     XK_period,          spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
+    { MODKEY ,                              XK_slash,           spawn,              SHCMD("mpc single on; mpc random off; mpc repeat on") },
+    { MODKEY | ShiftMask,                   XK_slash,           spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on") },
+    { MODKEY | ControlMask,                 XK_slash,           spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off; pkill -RTMIN+11 dwmblocks") },
 
-    /* LAYOUT SIZE */
+    // LAYOUT SIZES
     { MODKEY | ShiftMask,                   XK_n,               incnmaster,         { .i = -1 } },
     { MODKEY | ControlMask,                 XK_n,               incnmaster,         { .i = +1 } },
     { MODKEY,                               XK_f,               togglefullscr,      {0} },
@@ -244,7 +244,7 @@ static const Key keys[] = {
     { MODKEY | ShiftMask,                   XK_t,               togglegaps,         {0} },
     { MODKEY | ControlMask,                 XK_t,               defaultgaps,        {0} },
  
-    /* FLOATING SIZE */
+    // FLOATING SIZES
     { MODKEY2 | ControlMask,                XK_h,               exresize,           { .v = (int []){ -25,   0 } } },
     { MODKEY2 | ControlMask,                XK_l,               exresize,           { .v = (int []){  25,   0 } } },
     { MODKEY2 | ControlMask,                XK_j,               exresize,           { .v = (int []){   0,  25 } } },
@@ -252,7 +252,7 @@ static const Key keys[] = {
     { MODKEY2 | ControlMask,                XK_comma,           exresize,           { .v = (int []){ -25, -25 } } },
     { MODKEY2 | ControlMask,                XK_period,          exresize,           { .v = (int []){  25,  25 } } },
 
-    /* MEDIA CONTROL */
+    // MEDIA CONTROLS
     { 0, XF86XK_Battery,                    spawn, SHCMD("pkill -RTMIN+3 dwmblocks") },
     { 0, XF86XK_WWW,                        spawn, { .v = (const char *[]){ BROWSER, NULL } } },
     { 0, XF86XK_DOS,                        spawn, { .v = termcmd } },
@@ -282,10 +282,10 @@ static const Key keys[] = {
     { 0, XF86XK_MonBrightnessUp,            spawn, { .v = (const char *[]){ "brillo", "-U", "5", "-q", NULL } } },
     { 0, XF86XK_MonBrightnessDown,          spawn, { .v = (const char *[]){ "brillo", "-A", "5", "-q", NULL } } },
 
-    /* MODE */
+    // MODE
     { MODKEY,                               XK_Escape,          setkeymode,         { .ui = ModeCommand } },
 
-    /* PROGRAM */
+    // PROGRAMS
     { MODKEY,                               XK_d,               spawn,              { .v = (const char *[]){ "dmenu_run", NULL } } },
     { MODKEY,                               XK_e,               spawn,              SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
     { MODKEY,                               XK_n,               spawn,              SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
@@ -298,7 +298,7 @@ static const Key keys[] = {
     { MODKEY | ShiftMask,                   XK_Return,          spawn,              { .v = (const char *[]){ "sd", NULL } } },
     { MODKEY | ControlMask,                 XK_Return,          togglescratch,      { .ui = 0 } }, /* terminal */
 
-    /* SCRIPT */
+    // SCRIPTS
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
     { MODKEY | ShiftMask,                   XK_f,               spawn,              { .v = (const char *[]){ "fecrypt", NULL } } },
@@ -316,12 +316,13 @@ static const Key keys[] = {
     { MODKEY,                               XK_F3,              spawn,              { .v = (const char *[]){ "displayselect", NULL } } },
     { MODKEY,                               XK_F4,              spawn,              SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)") },
     { MODKEY,                               XK_F5,              xrdb,               { .v = NULL } },
-    { MODKEY | ShiftMask,                   XK_F5,              spawn,              SHCMD("stw ~/.dotfiles/arch -d") },
-    { MODKEY | ControlMask,                 XK_F5,              spawn,              { .v = (const char *[]){ "pacupgrade", NULL } } },
+    { MODKEY | ShiftMask,                   XK_F5,              spawn,              { .v = (const char *[]){ "stw", NULL } } },
+    { MODKEY | ControlMask,                 XK_F5,              spawn,              { .v = (const char *[]){ "rbackup", NULL } } },
+    { MODKEY | ShiftMask | ControlMask,     XK_F5,              spawn,              { .v = (const char *[]){ "pacupgrade", NULL } } },
     { MODKEY,                               XK_F6,              spawn,              { .v = (const char *[]){ "qndl", "-v", NULL } } },
     { MODKEY | ShiftMask,                   XK_F6,              spawn,              { .v = (const char *[]){ "qndl", "-m", NULL } } },
-    { MODKEY,                               XK_F7,              spawn,              { .v = (const char *[]){ "td-toggle", NULL } } },
-    { MODKEY | ShiftMask,                   XK_F7,              spawn,              { .v = (const char *[]){ "transadd", NULL } } },
+    { MODKEY,                               XK_F7,              spawn,              { .v = (const char *[]){ "transadd", "-l", NULL } } },
+    { MODKEY | ControlMask,                 XK_F7,              spawn,              { .v = (const char *[]){ "td-toggle", NULL } } },
     { MODKEY,                               XK_F8,              spawn,              { .v = (const char *[]){ "mailsync", NULL } } },
     { MODKEY,                               XK_F9,              spawn,              { .v = (const char *[]){ "mounter", NULL } } },
     { MODKEY,                               XK_F10,             spawn,              { .v = (const char *[]){ "unmounter", NULL } } },
@@ -329,7 +330,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_F12,             spawn,              SHCMD("remaps") },
     { MODKEY | ShiftMask,                   XK_F12,             spawn,              { .v = (const char *[]){ "fcitx5-configtool", NULL } } },
 
-    /* SYSTEM */
+    // SYSTEMS
     { MODKEY | ControlMask,                 XK_f,               spawn,              SHCMD("pkill -f firefox") },
     { MODKEY | ControlMask,                 XK_k,               spawn,              SHCMD("pkill -f kakaotalk") },
     { MODKEY,                               XK_q,               killclient,         {0} },
@@ -347,20 +348,21 @@ static const Key keys[] = {
     { ControlMask,                          XK_F5,              quit,               {1} },
     { ShiftMask | ControlMask,              XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },
 
-    /* TRAVERSAL */
+    // TRAVERSALS
+    { MODKEY,                               XK_0,               view,               { .ui = ~0 } },
     { MODKEY | ShiftMask,                   XK_0,               tag,                { .ui = ~0 } },
-    { MODKEY2,                              XK_comma,           shiftview,          { .i = -1 } },
-    { MODKEY2,                              XK_period,          shiftview,          { .i = 1 } },
-    { MODKEY2 | ShiftMask,                  XK_comma,           shifttag,           { .i = -1 } },
-    { MODKEY2 | ShiftMask,                  XK_period,          shifttag,           { .i = 1 } },
-    { MODKEY,                               XK_comma,           shiftviewclients,   { .i = -1 } },
-    { MODKEY,                               XK_period,          shiftviewclients,   { .i = +1 } },
-    { MODKEY | ShiftMask,                   XK_comma,           shifttagclients,    { .i = -1 } },
-    { MODKEY | ShiftMask,                   XK_period,          shifttagclients,    { .i = +1 } },
-    { MODKEY | ControlMask,                 XK_comma,           shiftboth,          { .i = -1 } },
-    { MODKEY | ControlMask,                 XK_period,          shiftboth,          { .i = +1 } },
-    { MODKEY | ShiftMask | ControlMask,     XK_comma,           shiftswaptags,      { .i = -1 }	},
-    { MODKEY | ShiftMask | ControlMask,     XK_period,          shiftswaptags,      { .i = +1 }	},
+    { MODKEY2,                              XK_bracketleft,     shiftview,          { .i = -1 } },
+    { MODKEY2,                              XK_bracketright,    shiftview,          { .i = 1 } },
+    { MODKEY2 | ShiftMask,                  XK_bracketleft,     shifttag,           { .i = -1 } },
+    { MODKEY2 | ShiftMask,                  XK_bracketright,    shifttag,           { .i = 1 } },
+    { MODKEY,                               XK_bracketleft,     shiftviewclients,   { .i = -1 } },
+    { MODKEY,                               XK_bracketright,    shiftviewclients,   { .i = +1 } },
+    { MODKEY | ShiftMask,                   XK_bracketleft,     shifttagclients,    { .i = -1 } },
+    { MODKEY | ShiftMask,                   XK_bracketright,    shifttagclients,    { .i = +1 } },
+    { MODKEY | ControlMask,                 XK_bracketleft,     shiftboth,          { .i = -1 } },
+    { MODKEY | ControlMask,                 XK_bracketright,    shiftboth,          { .i = +1 } },
+    { MODKEY | ShiftMask | ControlMask,     XK_bracketleft,     shiftswaptags,      { .i = -1 }	},
+    { MODKEY | ShiftMask | ControlMask,     XK_bracketright,    shiftswaptags,      { .i = +1 }	},
     { MODKEY,                               XK_Left,            focusmon,           { .i = -1 } },
     { MODKEY,                               XK_Right,           focusmon,           { .i = +1 } },
     { MODKEY | ShiftMask,                   XK_Left,            tagmon,             { .i = -1 } },
@@ -373,17 +375,18 @@ static const Key keys[] = {
 
 static Key cmdkeys[] = {
     /* modifier                         keys                function        argument */
+    // COMMANDS
     { 0,                                XK_Escape,          clearcmd,       {0} },
     { ControlMask,                      XK_c,               clearcmd,       {0} },
     { ControlMask,                      XK_x,               setkeymode,     { .ui = ModeInsert } },
 };
 
 static Command commands[] = {
-    /* STACKKEYS */
+    // STACKKEYS
     CSTACKKEYS(MODKEY,               focus)
     CSTACKKEYS(MODKEY | ShiftMask,   push)
 
-    /* TAGKEYS */
+    // TAGKEYS
     CTAGKEYS(XK_1, 0)
     CTAGKEYS(XK_2, 1)
     CTAGKEYS(XK_3, 2)
@@ -395,7 +398,7 @@ static Command commands[] = {
     CTAGKEYS(XK_9, 8)
 
     /* Modifier (4 keys)                keysyms (4 keys)            function                argument */
-    /* APPEARANCE */
+    // APPEARANCES
     { { ShiftMask, 0, 0, 0 },           { XK_b, 0, 0, 0 },          togglebar,              {0} },
     { { ControlMask, 0, 0, 0 },         { XK_b, 0, 0, 0 },          togglebar,              { .i = 1 } },
     { { ShiftMask, 0, 0, 0 },           { XK_o, 0, 0, 0 },          toggleborder,           {0} },
@@ -403,7 +406,7 @@ static Command commands[] = {
     { { ShiftMask, 0, 0, 0 },           { XK_g, 0, 0, 0 },          togglegaps,             {0} },
     { { ControlMask, 0, 0, 0 },         { XK_g, 0, 0, 0 },          defaultgaps,            {0} },
 
-    /* LAYOUT */
+    // LAYOUTS
     { { 0, 0, 0, 0 },                   { XK_l, XK_t, 0, 0 },       setlayout,              { .v = &layouts[0] } },
     { { 0, 0, 0, 0 },                   { XK_l, XK_m, 0, 0 },       setlayout,              { .v = &layouts[1] } },
     { { 0, 0, 0, 0 },                   { XK_l, XK_c, XK_l, 0 },    setlayout,              { .v = &layouts[2] } },
@@ -429,14 +432,13 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_f, XK_comma, 0, 0 },   explace,                { .ui = EX_S } },
     { { 0, 0, 0, 0 },                   { XK_f, XK_period, 0, 0 },  explace,                { .ui = EX_SE } },
 
-    /* FLOATING SIZE */
+    // FLOATING SIZES
     { { ControlMask, 0, 0, 0 },         { XK_j, 0, 0, 0 },          exresize,               { .v = (int []){   0,  25 } } },
     { { ControlMask, 0, 0, 0 },         { XK_k, 0, 0, 0 },          exresize,               { .v = (int []){   0, -25 } } },
     { { ControlMask, 0, 0, 0 },         { XK_l, 0, 0, 0 },          exresize,               { .v = (int []){  25,   0 } } },
     { { ControlMask, 0, 0, 0 },         { XK_h, 0, 0, 0 },          exresize,               { .v = (int []){ -25,   0 } } },
     { { ControlMask, 0, 0, 0 },         { XK_comma, 0, 0, 0 },      exresize,               { .v = (int []){ -25, -25 } } },
     { { ControlMask, 0, 0, 0 },         { XK_period, 0, 0, 0 },     exresize,               { .v = (int []){  25,  25 } } },
-
     { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_h, 0 },    togglehorizontalexpand, { .i = +1 } },
     { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_h, 0 },    togglehorizontalexpand, { .i =  0 } },
     { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_h, 0 },    togglehorizontalexpand, { .i = -1 } },
@@ -447,8 +449,8 @@ static Command commands[] = {
     { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_m, 0 },    togglemaximize,         { .i =  0 } },
     { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_m, 0 },    togglemaximize,         { .i = -1 } },
 
-    /* PROGRAM */
-    { { 0, 0, 0, 0 },                   { XK_a, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e abook -C ~/.abook/abookrc --datafile ~/.abook/addressbook") },
+    // PROGRAMS
+    { { 0, 0, 0, 0 },                   { XK_a, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") },
     { { 0, 0, 0, 0 },                   { XK_e, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
     { { 0, 0, 0, 0 },                   { XK_g, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "gimp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_h, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
@@ -469,7 +471,8 @@ static Command commands[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
  * ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-/*      click           event mask      button      function        argument */
+    /* click            event mask      button      function        argument */
+    // MOUSE BUTTONS
 #ifndef __OpenBSD__
     { ClkWinTitle,      0,              Button2,    zoom, {0} },
     { ClkStatusText,    0,              Button1,    sigdwmblocks,   { .i = 1 } },
@@ -492,4 +495,5 @@ static const Button buttons[] = {
     { ClkTagBar,        0,              Button4,    shiftview,      { .i = -1 } },
     { ClkTagBar,        0,              Button5,    shiftview,      { .i = 1 } },
     { ClkRootWin,       0,              Button2,    togglebar,      {0} },
+    { ClkRootWin,       MODKEY,         Button2,    togglebar,      { .i = 1 } },
 };

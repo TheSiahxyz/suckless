@@ -248,7 +248,7 @@ static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NUL
 
 static Shortcut shortcuts[] = {
     /* mask                 keysym          function        argument */
-    /* APPEAREANCE */
+    // APPEAREANCES
     { MODKEY,               XK_a,           changealpha,    { .f = +0.05 } },
     { MODKEY,               XK_s,           changealpha,    { .f = -0.05 } },
     { TERMMOD,              XK_Down,        zoom,           { .f = -1 } },
@@ -261,25 +261,25 @@ static Shortcut shortcuts[] = {
     { TERMMOD,              XK_U,           zoom,           { .f = +2 } },
     { TERMMOD,              XK_parenright,  zoomreset,      { .f = 0 } },
 
-    /* COPY */
+    // COPIES
     { MODKEY,               XK_y,           clipcopy,       { .i = 0 } },
     { TERMMOD,              XK_Y,           clipcopy,       { .i = 0 } },
     { MODKEY,               XK_c,           externalpipe,   { .v = copyurlcmd } },
     { MODKEY,               XK_o,           externalpipe,   { .v = copyoutput } },
 
-    /* PASTE */
+    // PASTES
     { MODKEY,               XK_p,           clippaste,      { .i = 0 } },
     { TERMMOD,              XK_P,           clippaste,      { .i = 0 } },
     { ShiftMask,            XK_Insert,      clippaste,      { .i = 0 } },
     { ShiftMask,            XK_Insert,      selpaste,       { .i = 0 } },
     { MODKEY,               XK_v,           externalpipe,   { .v = openurlcmd } },
 
-    /* PRINTER */
+    // PRINTERS
     { ShiftMask,            XK_Print,       printscreen,    { .i = 0 } },
     { XK_ANY_MOD,           XK_Print,       printsel,       { .i = 0 } },
     { ControlMask,          XK_Print,       toggleprinter,  { .i = 0 } },
 
-    /* TRAVERSAL */
+    // TRAVERSALS
     { MODKEY,               XK_k,           kscrollup,      { .i = 1 } },
     { MODKEY,               XK_j,           kscrolldown,    { .i = 1 } },
     { MODKEY,               XK_u,           kscrollup,      { .i = -1 } },
@@ -291,7 +291,7 @@ static Shortcut shortcuts[] = {
     { ShiftMask,            XK_Page_Up,     kscrollup,      { .i = -1 } },
     { ShiftMask,            XK_Page_Down,   kscrolldown,    { .i = -1 } },
 
-    /* EXTRA */
+    // EXTRAS/
     { TERMMOD,              XK_Num_Lock,    numlock,        { .i = 0 } },
     { XK_ANY_MOD,           XK_Break,       sendbreak,      { .i = 0 } },
 
@@ -562,6 +562,7 @@ static uint selmasks[] = {
  * Printable characters in ASCII, used to estimate the advance width
  * of single wide characters.
  */
-static char ascii_printable[] = " !\"#$%&'()*+,-./0123456789:;<=>?"
-                                "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
-                                "`abcdefghijklmnopqrstuvwxyz{|}~";
+static char ascii_printable[] = 
+    " !\"#$%&'()*+,-./0123456789:;<=>?"
+    "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
+    "`abcdefghijklmnopqrstuvwxyz{|}~";
