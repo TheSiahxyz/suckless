@@ -307,6 +307,8 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+v\fP \(en spawn {.v=(constchar*[]){"mpvplay",NULL}}
 .ITEM
+\f(CWMOD+Insert\fP \(en spawn SHCMD("xdotooltype$(grep-v'^#'~/.local/share/thesiah/snippets+dmenu-i-l50+cut-d''-f1)")
+.ITEM
 \f(CWPrint\fP \(en spawn SHCMD("maim+tee~/Pictures/screenshot-$(date'+%y%m%d-%H%M-%S').png+xclip-selectionclipboard")
 .ITEM
 \f(CWShift+Print\fP \(en spawn {.v=(constchar*[]){"maimpick",NULL}}
