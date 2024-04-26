@@ -290,7 +290,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+w\fP \(en spawn {.v=(constchar*[]){BROWSER+NULL}}
 .ITEM
-\f(CWMOD+u\fP \(en spawn {.v=(constchar*[]){"dmenuunicode",NULL}}
+\f(CWMOD+Shift+backslash\fP \(en spawn {.v=(constchar*[]){"dmenuunicode",NULL}}
 .ITEM
 \f(CWMOD+Return\fP \(en spawn {.v=termcmd}
 .ITEM
