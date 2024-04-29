@@ -434,8 +434,6 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 \f(CWMOD+Shift+Right\fP \(en tagmon {.i=+1}
 .ITEM
 \f(CWMOD+Shift+Tab\fP \(en view {0}
-.ITEM
-\f(CWstaticKeycmdkeys[]={+\fP \(en  staticKeycmdkeys[]={
 .LIST OFF
 .HEADING 9 "Commands"
 .LI

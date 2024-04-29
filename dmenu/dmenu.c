@@ -55,10 +55,6 @@ typedef struct {
 static char text[BUFSIZ] = "";
 static char *embed;
 static int bh, mw, mh;
-static int dmx = 6; /* put dmenu at this x offset */
-static int dmy = 6; /* put dmenu at this y offset (measured from the bottom if
-                       topbar is 0) */
-static unsigned int dmw = 0; /* make dmenu this wide */
 static int inputw = 0, promptw, passwd = 0;
 static int lrpad; /* sum of left and right padding */
 static int reject_no_match = 0;
