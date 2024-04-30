@@ -302,7 +302,7 @@ static const Key keys[] = {
     // SCRIPTS
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
-    { MODKEY | ShiftMask,                   XK_f,               spawn,              { .v = (const char *[]){ "fecrypt", NULL } } },
+    { MODKEY | ControlMask,                 XK_e,               spawn,              { .v = (const char *[]){ "fecrypt", NULL } } },
     { MODKEY,                               XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
     { MODKEY,                               XK_Insert,          spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
     { 0,                                    XK_Print,           spawn,              SHCMD("maim | tee ~/Pictures/screenshot-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard") },
@@ -332,8 +332,8 @@ static const Key keys[] = {
     { MODKEY | ShiftMask,                   XK_F12,             spawn,              { .v = (const char *[]){ "fcitx5-configtool", NULL } } },
 
     // SYSTEMS
-    { MODKEY | ControlMask,                 XK_f,               spawn,              SHCMD("pkill -f firefox") },
-    { MODKEY | ControlMask,                 XK_k,               spawn,              SHCMD("pkill -f kakaotalk") },
+    { MODKEY | ControlMask,                 XK_f,               spawn,              { .v = (const char *[]){ "pkill", "-f", BROWSER, NULL } } },
+    { MODKEY | ControlMask,                 XK_k,               spawn,              { .v = (const char *[]){ "pkill", "-f", "kakaotalk", NULL } } },
     { MODKEY,                               XK_q,               killclient,         {0} },
     { MODKEY | ShiftMask,                   XK_q,               killclient,         { .ui = 1 } },
     { MODKEY | ControlMask,                 XK_q,               killclient,         { .ui = 2 } },
@@ -455,17 +455,16 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_e, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
     { { 0, 0, 0, 0 },                   { XK_g, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "gimp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_h, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
+    { { 0, 0, 0, 0 },                   { XK_i, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_k, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "kakaotalk", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_m, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_n, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
     { { 0, 0, 0, 0 },                   { XK_p, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_r, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_s, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e sc-im /home/si/.dotfiles/THESIAH/progs.csv") },
-    { { 0, 0, 0, 0 },                   { XK_t, XK_h, 0, 0 },       spawn,                  { .v = (const char *[]){ "thunderbird", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_t, XK_w, 0, 0 },       spawn,                  { .v = (const char *[]){ "torwrap", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_v, 0,    0, 0 },       spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_w, XK_e, 0, 0 },       spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport") },
-    { { 0, 0, 0, 0 },                   { XK_w, XK_f, 0, 0 },       spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } } },
+    { { 0, 0, 0, 0 },                   { XK_t, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "torwrap", NULL } } },
+    { { 0, 0, 0, 0 },                   { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } },
+    { { 0, 0, 0, 0 },                   { XK_w, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport") },
+    { { 0, 0, 0, 0 },                   { XK_Return, 0, 0, 0 },     spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
 };
 
 /* button definitions */

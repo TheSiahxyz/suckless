@@ -303,7 +303,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Ctrl+d\fP \(en spawn {.v=(constchar*[]){"passmenu2",NULL}}
 .ITEM
-\f(CWMOD+Shift+f\fP \(en spawn {.v=(constchar*[]){"fecrypt",NULL}}
+\f(CWMOD+Ctrl+e\fP \(en spawn {.v=(constchar*[]){"fecrypt",NULL}}
 .ITEM
 \f(CWMOD+v\fP \(en spawn {.v=(constchar*[]){"mpvplay",NULL}}
 .ITEM
@@ -362,9 +362,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .HEADING 9 "Systems"
 .LI
 .ITEM
-\f(CWMOD+Ctrl+f\fP \(en spawn SHCMD("pkill-ffirefox")
+\f(CWMOD+Ctrl+f\fP \(en spawn {.v=(constchar*[]){"pkill","-f",BROWSER,NULL}}
 .ITEM
-\f(CWMOD+Ctrl+k\fP \(en spawn SHCMD("pkill-fkakaotalk")
+\f(CWMOD+Ctrl+k\fP \(en spawn {.v=(constchar*[]){"pkill","-f","kakaotalk",NULL}}
 .ITEM
 \f(CWMOD+q\fP \(en killclient {0}
 .ITEM
@@ -555,6 +555,8 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWh\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","htop",NULL}}
 .ITEM
+\f(CWi\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","sudo","nmtui",NULL}}
+.ITEM
 \f(CWk\fP \(en spawn {.v=(constchar*[]){"kakaotalk",NULL}}
 .ITEM
 \f(CWm\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","ncmpcpp",NULL}}
@@ -563,19 +565,15 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWp\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","profanity",NULL}}
 .ITEM
-\f(CWr\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","lfub",NULL}}
-.ITEM
 \f(CWs\fP \(en spawn SHCMD(TERMINAL"-esc-im/home/si/.dotfiles/THESIAH/progs.csv")
 .ITEM
-\f(CWth\fP \(en spawn {.v=(constchar*[]){"thunderbird",NULL}}
-.ITEM
-\f(CWtw\fP \(en spawn {.v=(constchar*[]){"torwrap",NULL}}
+\f(CWt\fP \(en spawn {.v=(constchar*[]){"torwrap",NULL}}
 .ITEM
 \f(CWv\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","nvim","-c","VimwikiIndex","1",NULL}}
 .ITEM
-\f(CWwe\fP \(en spawn SHCMD(TERMINAL"-eless-Sf${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport")
+\f(CWw\fP \(en spawn SHCMD(TERMINAL"-eless-Sf${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport")
 .ITEM
-\f(CWwf\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","sudo","nmtui",NULL}}
+\f(CWReturn\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","lfub",NULL}}
 .LIST OFF
 .HEADING 8 "INSERT MODE"
 .LI
