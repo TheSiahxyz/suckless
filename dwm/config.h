@@ -280,8 +280,8 @@ static const Key keys[] = {
     { 0, XF86XK_TouchpadToggle,             spawn, SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
     { 0, XF86XK_TouchpadOff,                spawn, { .v = (const char *[]){ "synclient", "TouchpadOff=1", NULL } } },
     { 0, XF86XK_TouchpadOn,                 spawn, { .v = (const char *[]){ "synclient", "TouchpadOff=0", NULL } } },
-    { 0, XF86XK_MonBrightnessUp,            spawn, { .v = (const char *[]){ "brillo", "-U", "5", "-q", NULL } } },
-    { 0, XF86XK_MonBrightnessDown,          spawn, { .v = (const char *[]){ "brillo", "-A", "5", "-q", NULL } } },
+    { 0, XF86XK_MonBrightnessUp,            spawn, { .v = (const char *[]){ "sudo", "brillo", "-U", "5", "-q", NULL } } },
+    { 0, XF86XK_MonBrightnessDown,          spawn, { .v = (const char *[]){ "sudo", "brillo", "-A", "5", "-q", NULL } } },
 
     // MODE
     { MODKEY,                               XK_Escape,          setkeymode,         { .ui = ModeCommand } },
@@ -293,8 +293,8 @@ static const Key keys[] = {
     { MODKEY,                               XK_r,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
     { MODKEY | ShiftMask,                   XK_r,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
     { MODKEY,                               XK_w,               spawn,              { .v = (const char *[]){ BROWSER, NULL } } },
-    { MODKEY,                               XK_backslash,       togglescratch,      { .ui = 1 } }, /* calculator */
-    { MODKEY | ShiftMask,                   XK_backslash,       spawn,              { .v = (const char *[]){ "dmenuunicode", NULL } } },
+    { MODKEY,                               XK_grave,           togglescratch,      { .ui = 1 } }, /* calculator */
+    { MODKEY | ShiftMask,                   XK_grave,           spawn,              { .v = (const char *[]){ "dmenuunicode", NULL } } },
     { MODKEY,                               XK_Return,          spawn,              { .v = termcmd } },
     { MODKEY | ShiftMask,                   XK_Return,          spawn,              { .v = (const char *[]){ "sd", NULL } } },
     { MODKEY | ControlMask,                 XK_Return,          togglescratch,      { .ui = 0 } }, /* terminal */
@@ -343,8 +343,8 @@ static const Key keys[] = {
     { MODKEY,                               XK_equal,           spawn,              SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; kill -44 $(pidof dwmblocks)") },
     { MODKEY | ShiftMask,                   XK_minus,           spawn,              SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 15%-; kill -44 $(pidof dwmblocks)") },
     { MODKEY | ShiftMask,                   XK_equal,           spawn,              SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 15%+; kill -44 $(pidof dwmblocks)") },
-    { MODKEY | ControlMask,                 XK_minus,           spawn,              { .v = (const char *[]){ "brillo", "-U", "5", "-q", NULL } } },
-    { MODKEY | ControlMask,                 XK_equal,           spawn,              { .v = (const char *[]){ "brillo", "-A", "5", "-q", NULL } } },
+    { MODKEY | ControlMask,                 XK_minus,           spawn,              { .v = (const char *[]){ "sudo", "brillo", "-U", "5", "-q", NULL } } },
+    { MODKEY | ControlMask,                 XK_equal,           spawn,              { .v = (const char *[]){ "sudo", "brillo", "-A", "5", "-q", NULL } } },
     { 0,                                    XK_Alt_R,           spawn,              SHCMD("fcitx5-remote -t; pkill -RTMIN+29 dwmblocks") },
     { ControlMask,                          XK_F5,              quit,               {1} },
     { ShiftMask | ControlMask,              XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },

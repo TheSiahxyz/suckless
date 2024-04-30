@@ -266,9 +266,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWXF86TouchpadOn\fP \(en spawn {.v=(constchar*[]){"synclient","TouchpadOff=0",NULL}}
 .ITEM
-\f(CWXF86MonBrightnessUp\fP \(en spawn {.v=(constchar*[]){"brillo","-U","5","-q",NULL}}
+\f(CWXF86MonBrightnessUp\fP \(en spawn {.v=(constchar*[]){"sudo","brillo","-U","5","-q",NULL}}
 .ITEM
-\f(CWXF86MonBrightnessDown\fP \(en spawn {.v=(constchar*[]){"brillo","-A","5","-q",NULL}}
+\f(CWXF86MonBrightnessDown\fP \(en spawn {.v=(constchar*[]){"sudo","brillo","-A","5","-q",NULL}}
 .LIST OFF
 .HEADING 9 "Mode"
 .LI
@@ -290,7 +290,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+w\fP \(en spawn {.v=(constchar*[]){BROWSER+NULL}}
 .ITEM
-\f(CWMOD+Shift+backslash\fP \(en spawn {.v=(constchar*[]){"dmenuunicode",NULL}}
+\f(CWMOD+Shift+grave\fP \(en spawn {.v=(constchar*[]){"dmenuunicode",NULL}}
 .ITEM
 \f(CWMOD+Return\fP \(en spawn {.v=termcmd}
 .ITEM
@@ -384,9 +384,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Shift+equal\fP \(en spawn SHCMD("wpctlset-volume@DEFAULT_AUDIO_SINK@15%+;kill-44$(pidofdwmblocks)")
 .ITEM
-\f(CWMOD+Ctrl+minus\fP \(en spawn {.v=(constchar*[]){"brillo","-U","5","-q",NULL}}
+\f(CWMOD+Ctrl+minus\fP \(en spawn {.v=(constchar*[]){"sudo","brillo","-U","5","-q",NULL}}
 .ITEM
-\f(CWMOD+Ctrl+equal\fP \(en spawn {.v=(constchar*[]){"brillo","-A","5","-q",NULL}}
+\f(CWMOD+Ctrl+equal\fP \(en spawn {.v=(constchar*[]){"sudo","brillo","-A","5","-q",NULL}}
 .ITEM
 \f(CWAlt_R\fP \(en spawn SHCMD("fcitx5-remote-t;pkill-RTMIN+29dwmblocks")
 .ITEM
