@@ -280,8 +280,8 @@ static const Key keys[] = {
     { 0, XF86XK_TouchpadToggle,             spawn, SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
     { 0, XF86XK_TouchpadOff,                spawn, { .v = (const char *[]){ "synclient", "TouchpadOff=1", NULL } } },
     { 0, XF86XK_TouchpadOn,                 spawn, { .v = (const char *[]){ "synclient", "TouchpadOff=0", NULL } } },
-    { 0, XF86XK_MonBrightnessUp,            spawn, { .v = (const char *[]){ "sudo", "brillo", "-U", "5", "-q", NULL } } },
-    { 0, XF86XK_MonBrightnessDown,          spawn, { .v = (const char *[]){ "sudo", "brillo", "-A", "5", "-q", NULL } } },
+    { 0, XF86XK_MonBrightnessUp,            spawn, SHCMD("sudo brillo -U 5 -q; pkill -RTMIN+22 dwmblocks") },
+    { 0, XF86XK_MonBrightnessDown,          spawn, SHCMD("sudo brillo -A 5 -q; pkill -RTMIN+22 dwmblocks") },
 
     // MODE
     { MODKEY,                               XK_Escape,          setkeymode,         { .ui = ModeCommand } },
@@ -343,8 +343,8 @@ static const Key keys[] = {
     { MODKEY,                               XK_equal,           spawn,              SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; kill -44 $(pidof dwmblocks)") },
     { MODKEY | ShiftMask,                   XK_minus,           spawn,              SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 15%-; kill -44 $(pidof dwmblocks)") },
     { MODKEY | ShiftMask,                   XK_equal,           spawn,              SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 15%+; kill -44 $(pidof dwmblocks)") },
-    { MODKEY | ControlMask,                 XK_minus,           spawn,              { .v = (const char *[]){ "sudo", "brillo", "-U", "5", "-q", NULL } } },
-    { MODKEY | ControlMask,                 XK_equal,           spawn,              { .v = (const char *[]){ "sudo", "brillo", "-A", "5", "-q", NULL } } },
+    { MODKEY | ControlMask,                 XK_minus,           spawn,              SHCMD("sudo brillo -U 5 -q; pkill -RTMIN+22 dwmblocks") },
+    { MODKEY | ControlMask,                 XK_equal,           spawn,              SHCMD("sudo brillo -A 5 -q; pkill -RTMIN+22 dwmblocks") },
     { 0,                                    XK_Alt_R,           spawn,              SHCMD("fcitx5-remote -t; pkill -RTMIN+29 dwmblocks") },
     { ControlMask,                          XK_F5,              quit,               {1} },
     { ShiftMask | ControlMask,              XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },
