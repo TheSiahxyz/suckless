@@ -288,6 +288,8 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Shift+r\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","htop",NULL}}
 .ITEM
+\f(CWMOD+t\fP \(en spawn {.v=(constchar*[]){"torwrap",NULL}}
+.ITEM
 \f(CWMOD+w\fP \(en spawn {.v=(constchar*[]){BROWSER+NULL}}
 .ITEM
 \f(CWMOD+Shift+grave\fP \(en spawn {.v=(constchar*[]){"dmenuunicode",NULL}}
@@ -298,6 +300,8 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .LIST OFF
 .HEADING 9 "Scripts"
 .LI
+.ITEM
+\f(CWMOD+b\fP \(en spawn SHCMD("xdotooltype$(grep-v'^#'~/.local/share/thesiah/snippets+dmenu-i-l50+cut-d''-f1)")
 .ITEM
 \f(CWMOD+Shift+d\fP \(en spawn {.v=(constchar*[]){"passmenu",NULL}}
 .ITEM

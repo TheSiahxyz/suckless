@@ -292,6 +292,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_n,               spawn,              SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
     { MODKEY,                               XK_r,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
     { MODKEY | ShiftMask,                   XK_r,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
+    { MODKEY,                               XK_t,               spawn,              { .v = (const char *[]){ "torwrap", NULL } } },
     { MODKEY,                               XK_w,               spawn,              { .v = (const char *[]){ BROWSER, NULL } } },
     { MODKEY,                               XK_grave,           togglescratch,      { .ui = 1 } }, /* calculator */
     { MODKEY | ShiftMask,                   XK_grave,           spawn,              { .v = (const char *[]){ "dmenuunicode", NULL } } },
@@ -300,6 +301,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_Return,          togglescratch,      { .ui = 0 } }, /* terminal */
 
     // SCRIPTS
+    { MODKEY,                               XK_b,               spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
     { MODKEY | ControlMask,                 XK_e,               spawn,              { .v = (const char *[]){ "fecrypt", NULL } } },
