@@ -408,9 +408,9 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 				for (screen = 0; screen < nscreens; screen++) {
                     time_t rawtime;
                     time(&rawtime);
+	                refresh(dpy, locks[screen]->win,locks[screen]->screen, *localtime(&rawtime),crs[screen],surfaces[screen]);
 					drawlogo(dpy, locks[screen], color);
 					writemessage(dpy, locks[screen]->win, screen);
-	                refresh(dpy, locks[screen]->win,locks[screen]->screen, *localtime(&rawtime),crs[screen],surfaces[screen]);
 				}
 				pthread_mutex_unlock(&mutex);
 				oldc = color;

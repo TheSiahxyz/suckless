@@ -111,7 +111,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Ctrl+m\fP \(en spawn SHCMD("mpcstop;pkill-RTMIN+11dwmblocks")
 .ITEM
-\f(CWMOD+Shift+Ctrl+m\fP \(en spawn {.v=(constchar*[]){"delmusic",NULL}}
+\f(CWMOD+Ctrl+Shift+m\fP \(en spawn {.v=(constchar*[]){"delmusic",NULL}}
 .ITEM
 \f(CWMOD+p\fP \(en spawn SHCMD("mpctoggle;pkill-RTMIN+11dwmblocks")
 .ITEM
@@ -131,9 +131,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Ctrl+period\fP \(en spawn {.v=(constchar*[]){"mpc","seek","+60",NULL}}
 .ITEM
-\f(CWMOD+Shift+Ctrl+comma\fP \(en spawn {.v=(constchar*[]){"mpc","seek","0%",NULL}}
+\f(CWMOD+Ctrl+Shift+comma\fP \(en spawn {.v=(constchar*[]){"mpc","seek","0%",NULL}}
 .ITEM
-\f(CWMOD+Shift+Ctrl+period\fP \(en spawn {.v=(constchar*[]){"mpc","repeat",NULL}}
+\f(CWMOD+Ctrl+Shift+period\fP \(en spawn {.v=(constchar*[]){"mpc","repeat",NULL}}
 .ITEM
 \f(CWMOD+slash\fP \(en spawn SHCMD("mpcsingleon;mpcrandomoff;mpcrepeaton")
 .ITEM
@@ -325,7 +325,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+F1\fP \(en spawn SHCMD("groff-mom/usr/local/share/dwm/thesiah.mom-Tpdf+zathura-")
 .ITEM
-\f(CWMOD+Shift+F1\fP \(en spawn SHCMD("nsxiv~/Pictures/resources")
+\f(CWMOD+Shift+F1\fP \(en spawn SHCMD("nsxiv${XDG_PICTURES_DIR:-$HOME/Pictures}/resources")
 .ITEM
 \f(CWMOD+Ctrl+F1\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","dman",NULL}}
 .ITEM
@@ -341,7 +341,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Ctrl+F5\fP \(en spawn {.v=(constchar*[]){"rbackup",NULL}}
 .ITEM
-\f(CWMOD+Shift+Ctrl+F5\fP \(en spawn {.v=(constchar*[]){"pacupgrade",NULL}}
+\f(CWMOD+Ctrl+Shift+F5\fP \(en spawn {.v=(constchar*[]){"pacupgrade",NULL}}
 .ITEM
 \f(CWMOD+F6\fP \(en spawn {.v=(constchar*[]){"qndl","-v",NULL}}
 .ITEM
@@ -396,7 +396,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWCtrl+F5\fP \(en quit {1}
 .ITEM
-\f(CWShift+Ctrl+F5\fP \(en spawn SHCMD("killall-qdwmblocks;setsid-fdwmblocks")
+\f(CWCtrl+Shift+F5\fP \(en spawn SHCMD("killall-qdwmblocks;setsid-fdwmblocks")
 .LIST OFF
 .HEADING 9 "Traversals"
 .LI
@@ -425,9 +425,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Ctrl+bracketright\fP \(en shiftboth {.i=+1}
 .ITEM
-\f(CWMOD+Shift+Ctrl+bracketleft\fP \(en shiftswaptags {.i=-1}
+\f(CWMOD+Ctrl+Shift+bracketleft\fP \(en shiftswaptags {.i=-1}
 .ITEM
-\f(CWMOD+Shift+Ctrl+bracketright\fP \(en shiftswaptags {.i=+1}
+\f(CWMOD+Ctrl+Shift+bracketright\fP \(en shiftswaptags {.i=+1}
 .ITEM
 \f(CWMOD+Left\fP \(en focusmon {.i=-1}
 .ITEM
@@ -437,7 +437,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWMOD+Shift+Right\fP \(en tagmon {.i=+1}
 .ITEM
-\f(CWMOD+Shift+Tab\fP \(en view {0}
+\f(CWMOD2+Tab\fP \(en view {0}
 .LIST OFF
 .HEADING 9 "Commands"
 .LI
@@ -454,17 +454,17 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .HEADING 9 "Appearances"
 .LI
 .ITEM
-\f(CWShift+b\fP \(en togglebar {0}
+\f(CWCtrl+b\fP \(en togglebar {0}
 .ITEM
-\f(CWCtrl+b\fP \(en togglebar {.i=1}
+\f(CWShift+b\fP \(en togglebar {.i=1}
 .ITEM
-\f(CWShift+o\fP \(en toggleborder {0}
+\f(CWCtrl+o\fP \(en toggleborder {0}
 .ITEM
-\f(CWShift+f\fP \(en togglefloating {0}
+\f(CWCtrl+f\fP \(en togglefloating {0}
 .ITEM
-\f(CWShift+g\fP \(en togglegaps {0}
+\f(CWCtrl+g\fP \(en togglegaps {0}
 .ITEM
-\f(CWCtrl+g\fP \(en defaultgaps {0}
+\f(CWShift+g\fP \(en defaultgaps {0}
 .LIST OFF
 .HEADING 9 "Layouts"
 .LI
@@ -518,40 +518,42 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .HEADING 9 "Floating Sizes"
 .LI
 .ITEM
-\f(CWCtrl+j\fP \(en exresize {.v=(int[]){25}}
+\f(CWsj\fP \(en exresize {.v=(int[]){25}}
 .ITEM
-\f(CWCtrl+k\fP \(en exresize {.v=(int[]){-25}}
+\f(CWsk\fP \(en exresize {.v=(int[]){-25}}
 .ITEM
-\f(CWCtrl+l\fP \(en exresize {.v=(int[]){25}}
+\f(CWsl\fP \(en exresize {.v=(int[]){25}}
 .ITEM
-\f(CWCtrl+h\fP \(en exresize {.v=(int[]){-25}}
+\f(CWsh\fP \(en exresize {.v=(int[]){-25}}
 .ITEM
-\f(CWCtrl+comma\fP \(en exresize {.v=(int[]){-25,-25}}
+\f(CWscomma\fP \(en exresize {.v=(int[]){-25,-25}}
 .ITEM
-\f(CWCtrl+period\fP \(en exresize {.v=(int[]){25+25}}
+\f(CWsperiod\fP \(en exresize {.v=(int[]){25+25}}
 .ITEM
-\f(CWCtrl+fih\fP \(en togglehorizontalexpand {.i=+1}
+\f(CWfsih\fP \(en togglehorizontalexpand {.i=+1}
 .ITEM
-\f(CWCtrl+frh\fP \(en togglehorizontalexpand {.i=0}
+\f(CWfsrh\fP \(en togglehorizontalexpand {.i=0}
 .ITEM
-\f(CWCtrl+fdh\fP \(en togglehorizontalexpand {.i=-1}
+\f(CWfsdh\fP \(en togglehorizontalexpand {.i=-1}
 .ITEM
-\f(CWCtrl+fiv\fP \(en toggleverticalexpand {.i=+1}
+\f(CWfsiv\fP \(en toggleverticalexpand {.i=+1}
 .ITEM
-\f(CWCtrl+frv\fP \(en toggleverticalexpand {.i=0}
+\f(CWfsrv\fP \(en toggleverticalexpand {.i=0}
 .ITEM
-\f(CWCtrl+fdv\fP \(en toggleverticalexpand {.i=-1}
+\f(CWfsdv\fP \(en toggleverticalexpand {.i=-1}
 .ITEM
-\f(CWCtrl+fim\fP \(en togglemaximize {.i=+1}
+\f(CWfsim\fP \(en togglemaximize {.i=+1}
 .ITEM
-\f(CWCtrl+frm\fP \(en togglemaximize {.i=0}
+\f(CWfsrm\fP \(en togglemaximize {.i=0}
 .ITEM
-\f(CWCtrl+fdm\fP \(en togglemaximize {.i=-1}
+\f(CWfsdm\fP \(en togglemaximize {.i=-1}
 .LIST OFF
 .HEADING 9 "Programs"
 .LI
 .ITEM
-\f(CWa\fP \(en spawn SHCMD(TERMINAL"-eabook-C~/.config/abook/abookrc--datafile~/.config/abook/addressbook")
+\f(CWa\fP \(en spawn SHCMD(TERMINAL"-eabook-C${XDG_CONFIG_HOME:-$HOME/.config}/abook/abookrc--datafile${XDG_CONFIG_HOME:-$HOME/.config}/abook/addressbook")
+.ITEM
+\f(CWc\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","profanity",NULL}}
 .ITEM
 \f(CWe\fP \(en spawn SHCMD(TERMINAL"-eneomutt;pkill-RTMIN+12dwmblocks;rmdir~/.abook2>/dev/null")
 .ITEM
@@ -567,13 +569,13 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWn\fP \(en spawn SHCMD(TERMINAL"-enewsboat;pkill-RTMIN+6dwmblocks")
 .ITEM
-\f(CWp\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","profanity",NULL}}
-.ITEM
-\f(CWs\fP \(en spawn SHCMD(TERMINAL"-esc-im/home/si/.dotfiles/THESIAH/progs.csv")
+\f(CWp\fP \(en spawn SHCMD(TERMINAL"-esc-im${WEBDIR:-$HOME/THESIAH}/static/progs.csv")
 .ITEM
 \f(CWt\fP \(en spawn {.v=(constchar*[]){"torwrap",NULL}}
 .ITEM
-\f(CWv\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","nvim","-c","VimwikiIndex","1",NULL}}
+\f(CWv\fP \(en spawn {.v=(constchar*[]){"vpn",NULL}}
+.ITEM
+\f(CWShift+v\fP \(en spawn {.v=(constchar*[]){TERMINAL,"-e","nvim","-c","VimwikiIndex","1",NULL}}
 .ITEM
 \f(CWw\fP \(en spawn SHCMD(TERMINAL"-eless-Sf${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport")
 .ITEM
@@ -599,7 +601,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .ITEM
 \f(CWClkStatusText+Shift\fP \(en Button1 sigdwmblocks,{.i=6}
 .ITEM
-\f(CWClkStatusText+Shift\fP \(en Button3 spawn,SHCMD(TERMINAL"-envim~/.local/src/suckless/dwmblocks/config.h")
+\f(CWClkStatusText+Shift\fP \(en Button3 spawn,SHCMD(TERMINAL"-envim${XDG_SOURCES_HOME:-$HOME/.local/src}/suckless/dwmblocks/config.h")
 .ITEM
 \f(CWClkClientWin+MOD\fP \(en Button1 movemouse,{0}
 .ITEM

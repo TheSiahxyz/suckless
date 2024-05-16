@@ -31,7 +31,7 @@ static const char *font_name = "monospace:size=18:bold";
 static const int monitortime = 600;
 
 /* PAM service that's used for authentication */
-static const char* pam_service = "login";
+static const char* pam_service = "system-login";
 
 /* insert grid pattern with scale 1:1, the size can be changed with logosize */
 static const int logosize = 75;

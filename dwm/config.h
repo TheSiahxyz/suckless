@@ -69,6 +69,7 @@ static const Rule rules[] = {
     /* class        instance        title           tags mask       isfloating isterminal  noswallow  monitor */
     { "Gimp",       NULL,           NULL,           1 << 8,         0,  0,  0, -1 },
     { "kakaotalk",  NULL,           NULL,           1 << 8,         0,  0, -1, -1 },
+    { "afreecatvstreamer",  NULL,   NULL,           1 << 7,         0,  0,  0, -1 },
     { TERMCLASS,    NULL,           NULL,           0,              0,  1,  0, -1 },
     { BROWSERCLASS, NULL,           NULL,           0,              0,  0, -1, -1 },
     { TERMCLASS,    "floatterm",    NULL,           0,              1,  1,  0, -1 },
@@ -201,7 +202,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ShiftMask,                   XK_m,               spawn,              SHCMD("mpdmenu; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; pkill -RTMIN+11 dwmblocks") },
-    { MODKEY | ShiftMask | ControlMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
+    { MODKEY | ControlMask | ShiftMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
     { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle; pkill -RTMIN+11 dwmblocks") },
     { MODKEY | ShiftMask,                   XK_p,               spawn,              SHCMD("mpc pause; pauseallmpv") },
     { MODKEY | ControlMask,                 XK_p,               spawn,              SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -44 $(pidof dwmblocks)") },
@@ -211,8 +212,8 @@ static const Key keys[] = {
     { MODKEY | ShiftMask,                   XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "+10", NULL } } },
     { MODKEY | ControlMask,                 XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "-60", NULL } } },
     { MODKEY | ControlMask,                 XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "+60", NULL } } },
-    { MODKEY | ShiftMask | ControlMask,     XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
-    { MODKEY | ShiftMask | ControlMask,     XK_period,          spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
+    { MODKEY | ControlMask | ShiftMask,     XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
+    { MODKEY | ControlMask | ShiftMask,     XK_period,          spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
     { MODKEY ,                              XK_slash,           spawn,              SHCMD("mpc single on; mpc random off; mpc repeat on") },
     { MODKEY | ShiftMask,                   XK_slash,           spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on") },
     { MODKEY | ControlMask,                 XK_slash,           spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off; pkill -RTMIN+11 dwmblocks") },
@@ -313,7 +314,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_Delete,          spawn,              { .v = (const char *[]){ "dmenurecord", "kill", NULL } } },
     { MODKEY,                               XK_Scroll_Lock,     spawn,              SHCMD("killall screenkey || screenkey -t 3 -p fixed -s small -g 20%x5%+40%-5% --key-mode keysyms --bak-mode normal --mods-mode normal -f ttf-font-awesome --opacity 0.5 &") },
     { MODKEY,                               XK_F1,              spawn,              SHCMD("groff -mom /usr/local/share/dwm/thesiah.mom -Tpdf | zathura -") },
-    { MODKEY | ShiftMask,                   XK_F1,              spawn,              SHCMD("nsxiv ~/Pictures/resources") },
+    { MODKEY | ShiftMask,                   XK_F1,              spawn,              SHCMD("nsxiv ${XDG_PICTURES_DIR:-$HOME/Pictures}/resources") },
     { MODKEY | ControlMask,                 XK_F1,              spawn,              { .v = (const char *[]){ TERMINAL, "-e", "dman", NULL } } },
     { MODKEY,                               XK_F2,              spawn,              { .v = (const char *[]){ "tutorialvids", NULL } } },
     { MODKEY,                               XK_F3,              spawn,              { .v = (const char *[]){ "displayselect", NULL } } },
@@ -321,7 +322,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_F5,              xrdb,               { .v = NULL } },
     { MODKEY | ShiftMask,                   XK_F5,              spawn,              { .v = (const char *[]){ "stw", NULL } } },
     { MODKEY | ControlMask,                 XK_F5,              spawn,              { .v = (const char *[]){ "rbackup", NULL } } },
-    { MODKEY | ShiftMask | ControlMask,     XK_F5,              spawn,              { .v = (const char *[]){ "pacupgrade", NULL } } },
+    { MODKEY | ControlMask | ShiftMask,     XK_F5,              spawn,              { .v = (const char *[]){ "pacupgrade", NULL } } },
     { MODKEY,                               XK_F6,              spawn,              { .v = (const char *[]){ "qndl", "-v", NULL } } },
     { MODKEY | ShiftMask,                   XK_F6,              spawn,              { .v = (const char *[]){ "qndl", "-m", NULL } } },
     { MODKEY,                               XK_F7,              spawn,              { .v = (const char *[]){ "transadd", "-l", NULL } } },
@@ -349,7 +350,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_equal,           spawn,              SHCMD("sudo brillo -A 5 -q; pkill -RTMIN+22 dwmblocks") },
     { 0,                                    XK_Alt_R,           spawn,              SHCMD("fcitx5-remote -t; pkill -RTMIN+29 dwmblocks") },
     { ControlMask,                          XK_F5,              quit,               {1} },
-    { ShiftMask | ControlMask,              XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },
+    { ControlMask | ShiftMask,              XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },
 
     // TRAVERSALS
     { MODKEY,                               XK_0,               view,               { .ui = ~0 } },
@@ -364,16 +365,15 @@ static const Key keys[] = {
     { MODKEY | ShiftMask,                   XK_bracketright,    shifttagclients,    { .i = +1 } },
     { MODKEY | ControlMask,                 XK_bracketleft,     shiftboth,          { .i = -1 } },
     { MODKEY | ControlMask,                 XK_bracketright,    shiftboth,          { .i = +1 } },
-    { MODKEY | ShiftMask | ControlMask,     XK_bracketleft,     shiftswaptags,      { .i = -1 }	},
-    { MODKEY | ShiftMask | ControlMask,     XK_bracketright,    shiftswaptags,      { .i = +1 }	},
+    { MODKEY | ControlMask | ShiftMask,     XK_bracketleft,     shiftswaptags,      { .i = -1 }	},
+    { MODKEY | ControlMask | ShiftMask,     XK_bracketright,    shiftswaptags,      { .i = +1 }	},
     { MODKEY,                               XK_Left,            focusmon,           { .i = -1 } },
     { MODKEY,                               XK_Right,           focusmon,           { .i = +1 } },
     { MODKEY | ShiftMask,                   XK_Left,            tagmon,             { .i = -1 } },
     { MODKEY | ShiftMask,                   XK_Right,           tagmon,             { .i = +1 } },
-    { MODKEY | ShiftMask,                   XK_Tab,             view,               {0} },
+    { MODKEY2,                              XK_Tab,             view,               {0} },
 
     /* { MODKEY | ShiftMask,                   XK_apostrophe,      togglesmartgaps,    {0} }, */
-  
 };
 
 static Key cmdkeys[] = {
@@ -402,12 +402,12 @@ static Command commands[] = {
 
     /* Modifier (4 keys)                keysyms (4 keys)            function                argument */
     // APPEARANCES
-    { { ShiftMask, 0, 0, 0 },           { XK_b, 0, 0, 0 },          togglebar,              {0} },
-    { { ControlMask, 0, 0, 0 },         { XK_b, 0, 0, 0 },          togglebar,              { .i = 1 } },
-    { { ShiftMask, 0, 0, 0 },           { XK_o, 0, 0, 0 },          toggleborder,           {0} },
-    { { ShiftMask, 0, 0, 0 },           { XK_f, 0, 0, 0 },          togglefloating,         {0} },
-    { { ShiftMask, 0, 0, 0 },           { XK_g, 0, 0, 0 },          togglegaps,             {0} },
-    { { ControlMask, 0, 0, 0 },         { XK_g, 0, 0, 0 },          defaultgaps,            {0} },
+    { { ControlMask, 0, 0, 0 },         { XK_b, 0, 0, 0 },          togglebar,              {0} },
+    { { ShiftMask, 0, 0, 0 },           { XK_b, 0, 0, 0 },          togglebar,              { .i = 1 } },
+    { { ControlMask, 0, 0, 0 },         { XK_o, 0, 0, 0 },          toggleborder,           {0} },
+    { { ControlMask, 0, 0, 0 },         { XK_f, 0, 0, 0 },          togglefloating,         {0} },
+    { { ControlMask, 0, 0, 0 },         { XK_g, 0, 0, 0 },          togglegaps,             {0} },
+    { { ShiftMask, 0, 0, 0 },           { XK_g, 0, 0, 0 },          defaultgaps,            {0} },
 
     // LAYOUTS
     { { 0, 0, 0, 0 },                   { XK_l, XK_t, 0, 0 },       setlayout,              { .v = &layouts[0] } },
@@ -436,24 +436,25 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_f, XK_period, 0, 0 },  explace,                { .ui = EX_SE } },
 
     // FLOATING SIZES
-    { { ControlMask, 0, 0, 0 },         { XK_j, 0, 0, 0 },          exresize,               { .v = (int []){   0,  25 } } },
-    { { ControlMask, 0, 0, 0 },         { XK_k, 0, 0, 0 },          exresize,               { .v = (int []){   0, -25 } } },
-    { { ControlMask, 0, 0, 0 },         { XK_l, 0, 0, 0 },          exresize,               { .v = (int []){  25,   0 } } },
-    { { ControlMask, 0, 0, 0 },         { XK_h, 0, 0, 0 },          exresize,               { .v = (int []){ -25,   0 } } },
-    { { ControlMask, 0, 0, 0 },         { XK_comma, 0, 0, 0 },      exresize,               { .v = (int []){ -25, -25 } } },
-    { { ControlMask, 0, 0, 0 },         { XK_period, 0, 0, 0 },     exresize,               { .v = (int []){  25,  25 } } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_h, 0 },    togglehorizontalexpand, { .i = +1 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_h, 0 },    togglehorizontalexpand, { .i =  0 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_h, 0 },    togglehorizontalexpand, { .i = -1 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_v, 0 },    toggleverticalexpand,   { .i = +1 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_v, 0 },    toggleverticalexpand,   { .i =  0 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_v, 0 },    toggleverticalexpand,   { .i = -1 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_i, XK_m, 0 },    togglemaximize,         { .i = +1 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_r, XK_m, 0 },    togglemaximize,         { .i =  0 } },
-    { { ControlMask, 0, 0, 0 },         { XK_f, XK_d, XK_m, 0 },    togglemaximize,         { .i = -1 } },
+    { { 0, 0, 0, 0 },                   { XK_s, XK_j, 0, 0 },       exresize,               { .v = (int []){   0,  25 } } },
+    { { 0, 0, 0, 0 },                   { XK_s, XK_k, 0, 0 },       exresize,               { .v = (int []){   0, -25 } } },
+    { { 0, 0, 0, 0 },                   { XK_s, XK_l, 0, 0 },       exresize,               { .v = (int []){  25,   0 } } },
+    { { 0, 0, 0, 0 },                   { XK_s, XK_h, 0, 0 },       exresize,               { .v = (int []){ -25,   0 } } },
+    { { 0, 0, 0, 0 },                   { XK_s, XK_comma, 0, 0 },   exresize,               { .v = (int []){ -25, -25 } } },
+    { { 0, 0, 0, 0 },                   { XK_s, XK_period, 0, 0 },  exresize,               { .v = (int []){  25,  25 } } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_i, XK_h }, togglehorizontalexpand, { .i = +1 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_r, XK_h }, togglehorizontalexpand, { .i =  0 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_d, XK_h }, togglehorizontalexpand, { .i = -1 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_i, XK_v }, toggleverticalexpand,   { .i = +1 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_r, XK_v }, toggleverticalexpand,   { .i =  0 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_d, XK_v }, toggleverticalexpand,   { .i = -1 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_i, XK_m }, togglemaximize,         { .i = +1 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_r, XK_m }, togglemaximize,         { .i =  0 } },
+    { { 0, 0, 0, 0 },                   { XK_f, XK_s, XK_d, XK_m }, togglemaximize,         { .i = -1 } },
 
     // PROGRAMS
-    { { 0, 0, 0, 0 },                   { XK_a, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") },
+    { { 0, 0, 0, 0 },                   { XK_a, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e abook -C ${XDG_CONFIG_HOME:-$HOME/.config}/abook/abookrc --datafile ${XDG_CONFIG_HOME:-$HOME/.config}/abook/addressbook") },
+    { { 0, 0, 0, 0 },                   { XK_c, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_e, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
     { { 0, 0, 0, 0 },                   { XK_g, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "gimp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_h, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
@@ -461,10 +462,10 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_k, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "kakaotalk", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_m, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_n, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
-    { { 0, 0, 0, 0 },                   { XK_p, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_s, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e sc-im /home/si/.dotfiles/THESIAH/progs.csv") },
+    { { 0, 0, 0, 0 },                   { XK_p, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e sc-im ${WEBDIR:-$HOME/THESIAH}/static/progs.csv") },
     { { 0, 0, 0, 0 },                   { XK_t, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "torwrap", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } },
+    { { 0, 0, 0, 0 },                   { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "vpn", NULL } } },
+    { { ShiftMask, 0, 0, 0 },           { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_w, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport") },
     { { 0, 0, 0, 0 },                   { XK_Return, 0, 0, 0 },     spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
 };
@@ -484,7 +485,7 @@ static const Button buttons[] = {
     { ClkStatusText,    0,              Button5,    sigdwmblocks,   { .i = 5 } },
     { ClkStatusText,    ShiftMask,      Button1,    sigdwmblocks,   { .i = 6 } },
 #endif
-    { ClkStatusText,    ShiftMask,      Button3,    spawn,          SHCMD(TERMINAL " -e nvim ~/.local/src/suckless/dwmblocks/config.h") },
+    { ClkStatusText,    ShiftMask,      Button3,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-$HOME/.local/src}/suckless/dwmblocks/config.h") },
     { ClkClientWin,     MODKEY,         Button1,    movemouse,      {0} },
     { ClkClientWin,     MODKEY,         Button2,    defaultgaps,    {0} },
     { ClkClientWin,     MODKEY,         Button3,    resizemouse,    {0} },
