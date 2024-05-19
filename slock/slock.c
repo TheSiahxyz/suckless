@@ -672,7 +672,23 @@ main(int argc, char **argv) {
 	config_init(dpy);
 
     /* Load picture */
-    Imlib_Image buffer = imlib_load_image(background_image);
+    char* home_path = getenv("HOME");
+    int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Personal '", home_path) + 1;
+    char* command = malloc(size_needed);
+    snprintf(command, size_needed, "mount | grep -q ' %s/Personal '", home_path);
+    int result = system(command);
+    free(command);
+    if (result != 0) {
+        background_image = "Pictures/wallpaper/personal-default.png";
+        personalblur = 0;
+    }
+    size_needed = strlen(home_path) + strlen(background_image) + 2;  // +2 for slash and null terminator
+    char* full_background_image = malloc(size_needed);
+    strcpy(full_background_image, home_path);
+    strcat(full_background_image, "/");
+    strcat(full_background_image, background_image);        
+    
+    Imlib_Image buffer = imlib_load_image(full_background_image);
     if (buffer) {
         blurRadius = personalblur;
 

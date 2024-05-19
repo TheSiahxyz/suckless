@@ -1,6 +1,6 @@
 /* user and group to drop privileges to */
 static const char *group = "wheel";
-static int personalblur = 0;
+static int personalblur = 100;
 
 static const char *colorname[NUMCOLS] = {
     [INIT] =   "#3c3836",         /* after initialization */
@@ -16,7 +16,7 @@ static const char *colorname[NUMCOLS] = {
 static const int failonclear = 1;
 
 /* Background image path, should be available to the user above */
-static const char* background_image = "/home/si/Pictures/wallpaper/personal-yejin-wall.png";
+static const char* background_image = "Personal/photo/DEE96C0C-1003-4749-856A-D369E7E328C5.png";
 
 /* default message */
 static const char *message = "THESIAH";
@@ -74,4 +74,3 @@ ResourcePref resources[] = {
     { "color13",    STRING,  &colorname[PAM] },
     { "color0",     STRING,  &text_color },
 };
-
