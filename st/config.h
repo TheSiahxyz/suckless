@@ -291,7 +291,7 @@ static Shortcut shortcuts[] = {
     { ShiftMask,            XK_Page_Up,     kscrollup,      { .i = -1 } },
     { ShiftMask,            XK_Page_Down,   kscrolldown,    { .i = -1 } },
 
-    // EXTRAS/
+    // EXTRAS
     { TERMMOD,              XK_Num_Lock,    numlock,        { .i = 0 } },
     { XK_ANY_MOD,           XK_Break,       sendbreak,      { .i = 0 } },
 

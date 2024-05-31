@@ -673,9 +673,9 @@ main(int argc, char **argv) {
 
     /* Load picture */
     char* home_path = getenv("HOME");
-    int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Personal '", home_path) + 1;
+    int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Private '", home_path) + 1;
     char* command = malloc(size_needed);
-    snprintf(command, size_needed, "mount | grep -q ' %s/Personal '", home_path);
+    snprintf(command, size_needed, "mount | grep -q ' %s/Private '", home_path);
     int result = system(command);
     free(command);
     if (result != 0) {

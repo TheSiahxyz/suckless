@@ -141,6 +141,13 @@ typedef union
 
 typedef struct
 {
+    char *gname;
+ 	void (*func)(const Arg *arg);
+ 	const Arg arg;
+} Gesture;
+
+typedef struct
+{
     unsigned int click;
     unsigned int mask;
     unsigned int button;
@@ -169,7 +176,7 @@ struct Client
     int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
     int bw, oldbw;
     unsigned int tags;
-    int wasfloating, isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, isterminal, noswallow, issticky;
+    int allowkill, wasfloating, isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, isterminal, noswallow, issticky;
     unsigned char expandmask;
     int expandx1, expandy1, expandx2, expandy2;
     pid_t pid;
@@ -230,6 +237,7 @@ typedef struct
     const char *instance;
     const char *title;
     unsigned int tags;
+    int allowkill;
     int isfloating;
     int isterminal;
     int noswallow;
@@ -298,6 +306,7 @@ static void mappingnotify(XEvent *e);
 static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
+static void gesture(const Arg *arg);
 static void movemouse(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *c);
@@ -321,6 +330,7 @@ static void setfullscreen(Client *c, int fullscreen);
 static void setinsertmode(void);
 static void setkeymode(const Arg *arg);
 static void setlayout(const Arg *arg);
+static void setmark(Client *c);
 static void setcfact(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
@@ -334,12 +344,17 @@ static void sigdwmblocks(const Arg *arg);
 static void sighup(int unused);
 static void sigterm(int unused);
 static void spawn(const Arg *arg);
+static void swapclient(const Arg *arg);
+static void swapfocus(const Arg *arg);
 static int stackpos(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
+static void spawntag(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void toggleborder(const Arg *arg);
 static void togglefloating(const Arg *arg);
+static void toggleallowkill(const Arg *arg);
+static void togglemark(const Arg *arg);
 static void togglescratch(const Arg *arg);
 static void togglesticky(const Arg *arg);
 static void togglefullscr(const Arg *arg);
@@ -417,6 +432,7 @@ static Drw *drw;
 static KeySym cmdkeysym[4];
 static Monitor *mons, *selmon;
 static Window root, wmcheckwin;
+static Client *mark;
 
 static int useargb = 0;
 static Visual *visual;
@@ -456,6 +472,7 @@ applyrules(Client *c)
     /* rule matching */
     c->isfloating = 0;
     c->tags = 0;
+    c->allowkill = allowkill;
     XGetClassHint(dpy, c->win, &ch);
     class = ch.res_class ? ch.res_class : broken;
     instance = ch.res_name ? ch.res_name : broken;
@@ -471,6 +488,7 @@ applyrules(Client *c)
             c->isfloating = r->isfloating;
             c->noswallow = r->noswallow;
             c->tags |= r->tags;
+            c->allowkill = r->allowkill;
             if ((r->tags & SPTAGMASK) && r->isfloating)
             {
                 c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);
@@ -1182,7 +1200,10 @@ focus(Client *c)
         detachstack(c);
         attachstack(c);
         grabbuttons(c, 1);
-        XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+        if (c == mark)
+			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColMark].pixel);
+		else
+			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
         setfocus(c);
     }
     else
@@ -1472,7 +1493,7 @@ killclient(const Arg *arg)
 {
     Client *c;
 
-    if (!selmon->sel)
+    if (!selmon->sel || !selmon->sel->allowkill)
         return;
 
     if (!arg->ui || arg->ui == 0)
@@ -1545,7 +1566,10 @@ manage(Window w, XWindowAttributes *wa)
 
     wc.border_width = c->bw;
     XConfigureWindow(dpy, w, CWBorderWidth, &wc);
-    XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
+    if (c == mark)
+		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColMark].pixel);
+	else
+		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
     configure(c); /* propagates border_width, if size doesn't change */
     updatewindowtype(c);
     updatesizehints(c);
@@ -1664,6 +1688,68 @@ motionnotify(XEvent *e)
         focus(NULL);
     }
     mon = m;
+}
+
+void
+gesture(const Arg *arg) {
+	int x, y, dx, dy, q;
+	int valid=0, listpos=0, gestpos=0, count=0;
+	char move, currGest[10];
+	XEvent ev;
+
+	if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
+		None, cursor[CurMove]->cursor, CurrentTime) != GrabSuccess)
+		return;
+	if(!getrootptr(&x, &y))
+		return;
+	do {
+		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
+		switch (ev.type) {
+			case ConfigureRequest:
+			case Expose:
+			case MapRequest:
+				handler[ev.type](&ev);
+				break;
+			case MotionNotify:
+				if(count++ < 10)
+					break;
+				count = 0;
+				dx = ev.xmotion.x - x;
+				dy = ev.xmotion.y - y;
+				x = ev.xmotion.x;
+				y = ev.xmotion.y;
+
+				if( abs(dx)/(abs(dy)+1) == 0 )
+					move = dy<0?'u':'d';
+				else
+					move = dx<0?'l':'r';
+
+				if(move!=currGest[gestpos-1])
+				{
+					if(gestpos>9)
+					{	ev.type++;
+						break;
+					}
+
+					currGest[gestpos] = move;
+					currGest[++gestpos] = '\0';
+
+					valid = 0;
+					for(q = 0; q<LENGTH(gestures); q++)
+					{	if(!strcmp(currGest, gestures[q].gname))
+						{	valid++;
+							listpos = q;
+						}
+					}
+				}
+
+		}
+	} while(ev.type != ButtonRelease);
+
+	if(valid)
+		gestures[listpos].func(&(gestures[listpos].arg));
+
+	XUngrabPointer(dpy, CurrentTime);
 }
 
 void
@@ -2210,6 +2296,24 @@ setcfact(const Arg *arg)
     arrange(selmon);
 }
 
+void
+setmark(Client *c)
+{
+	if (c == mark)
+		return;
+	if (mark) {
+		XSetWindowBorder(dpy, mark->win, scheme[mark == selmon->sel
+				? SchemeSel : SchemeNorm][ColBorder].pixel);
+		mark = 0;
+	}
+	if (c) {
+		XSetWindowBorder(dpy, c->win, scheme[c == selmon->sel
+				? SchemeSel : SchemeNorm][ColMark].pixel);
+		mark = c;
+	}
+}
+
+
 /* arg > 1.0 will set mfact absolutely */
 void
 setmfact(const Arg *arg)
@@ -2277,7 +2381,7 @@ setup(void)
     /* init appearance */
     scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
     for (i = 0; i < LENGTH(colors); i++)
-        scheme[i] = drw_scm_create(drw, colors[i], alphas[i], 3);
+        scheme[i] = drw_scm_create(drw, colors[i], alphas[i], 4);
     /* init bars */
     updatebars();
     updatestatus();
@@ -2414,6 +2518,74 @@ setclienttagprop(Client *c)
 }
 
 void
+swapclient(const Arg *arg)
+{
+	Client *s, *m, t;
+
+	if (!mark || !selmon->sel || mark == selmon->sel
+	    || !selmon->lt[selmon->sellt]->arrange)
+		return;
+	s = selmon->sel;
+	m = mark;
+	t = *s;
+	strcpy(s->name, m->name);
+	s->win = m->win;
+	s->x = m->x;
+	s->y = m->y;
+	s->w = m->w;
+	s->h = m->h;
+
+	m->win = t.win;
+	strcpy(m->name, t.name);
+	m->x = t.x;
+	m->y = t.y;
+	m->w = t.w;
+	m->h = t.h;
+
+	selmon->sel = m;
+	mark = s;
+	focus(s);
+	setmark(m);
+
+	arrange(s->mon);
+	if (s->mon != m->mon) {
+		arrange(m->mon);
+	}
+}
+
+void
+swapfocus(const Arg *arg)
+{
+	Client *t;
+
+	if (!selmon->sel || !mark || selmon->sel == mark)
+		return;
+	t = selmon->sel;
+	if (mark->mon != selmon) {
+		unfocus(selmon->sel, 0);
+		selmon = mark->mon;
+	}
+	if (ISVISIBLE(mark)) {
+		focus(mark);
+		restack(selmon);
+	} else {
+		selmon->seltags ^= 1;
+		selmon->tagset[selmon->seltags] = mark->tags;
+		focus(mark);
+		arrange(selmon);
+	}
+	setmark(t);
+}
+
+void
+togglemark(const Arg *arg)
+{
+	if (!selmon->sel)
+		return;
+	setmark(selmon->sel == mark ? 0 : selmon->sel);
+}
+
+void
 tag(const Arg *arg)
 {
     Client *c;
@@ -2425,6 +2597,19 @@ tag(const Arg *arg)
         focus(NULL);
         arrange(selmon);
     }
+}
+
+void
+spawntag(const Arg *arg)
+{
+	if (arg->ui & TAGMASK) {
+		for (int i = LENGTH(tags); i >= 0; i--) {
+			if (arg->ui & 1<<i) {
+				spawn(&tagexec[i]);
+				return;
+			}
+		}
+	}
 }
 
 void
@@ -2460,6 +2645,13 @@ toggleborder(const Arg *arg)
 {
     selmon->sel->bw = (selmon->sel->bw == borderpx ? 0 : borderpx);
     arrange(selmon);
+}
+
+void
+toggleallowkill(const Arg *arg)
+{
+    if (!selmon->sel) return;
+    selmon->sel->allowkill = !selmon->sel->allowkill;
 }
 
 void
@@ -2594,7 +2786,10 @@ unfocus(Client *c, int setfocus)
     if (!c)
         return;
     grabbuttons(c, 0);
-    XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
+    if (c == mark)
+		XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColMark].pixel);
+	else
+		XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
     if (setfocus)
     {
         XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -2623,6 +2818,9 @@ unmanage(Client *c, int destroyed)
         focus(NULL);
         return;
     }
+    
+	if (c == mark)
+		setmark(0);
 
     detach(c);
     detachstack(c);
