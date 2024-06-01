@@ -341,7 +341,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_b,               spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
-    { MODKEY | ControlMask,                 XK_e,               spawn,              { .v = (const char *[]){ "fecrypt", NULL } } },
+    { MODKEY | ControlMask,                 XK_e,               spawn,              { .v = (const char *[]){ "ecryptfs", NULL } } },
     { MODKEY,                               XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
     { MODKEY | ControlMask,                 XK_v,               spawn,              { .v = (const char *[]){ "ovpn", NULL } } },
     { MODKEY,                               XK_Insert,          spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
