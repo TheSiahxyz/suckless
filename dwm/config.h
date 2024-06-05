@@ -230,7 +230,7 @@ static const Key keys[] = {
     /* modifier                             key                 function            argument */
     // AUDIO CONTROLS
     { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 35") },
-    { MODKEY | ShiftMask,                   XK_m,               spawn,              SHCMD("mpdmenu") },
+    { MODKEY | ShiftMask,                   XK_m,               spawn,              { .v = (const char *[]){ "mpdmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc clear") },
     { MODKEY | ControlMask | ShiftMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
     { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle") },
