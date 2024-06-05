@@ -75,6 +75,8 @@ static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
 static void ttysend(const Arg *);
+static void cyclefonts(const Arg *);
+
 
 /* config.h for applying patches and the configuration. */
 #include "config.h"
@@ -353,16 +355,24 @@ zoomreset(const Arg *arg)
 {
 	Arg larg;
 
-	if (defaultfontsize > 0) {
-		larg.f = defaultfontsize;
-		zoomabs(&larg);
-	}
+	zoomabs(&larg);
 }
 
 void
 ttysend(const Arg *arg)
 {
 	ttywrite(arg->s, strlen(arg->s), 1);
+}
+
+void
+cyclefonts(const Arg *arg)
+{
+	currentfont++;
+	currentfont %= (sizeof fonts / sizeof fonts[0]);
+	usedfont = fonts[currentfont];
+	Arg larg;
+	larg.f = usedfontsize;
+	zoomabs(&larg);
 }
 
 int
@@ -1301,7 +1311,7 @@ xinit(int cols, int rows)
 	if (!FcInit())
 		die("could not init fontconfig.\n");
 
-	usedfont = (opt_font == NULL)? font : opt_font;
+    usedfont = (opt_font == NULL)? fonts[currentfont] : opt_font;
 	xloadfonts(usedfont, 0);
 
 	/* spare fonts */
@@ -1451,8 +1461,9 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
 		if (glyphidx) {
 			specs[numspecs].font = font->match;
 			specs[numspecs].glyph = glyphidx;
-			specs[numspecs].x = (short)xp;
-			specs[numspecs].y = (short)yp;
+            specs[numspecs].x = (short)xp + cxoffset;
+			specs[numspecs].y = (short)yp + cyoffset;
+
 			xp += runewidth;
 			numspecs++;
 			continue;

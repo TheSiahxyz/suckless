@@ -5,8 +5,14 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "mono:pixelsize=16:antialias=true:autohint=true";
+static char *fonts[] = {
+	"mono:pixelsize=16:antialias=true:autohint=true",
+	"FiraCode Nerd Font Mono:pixelsize=16:antialias=ture:autohint=true",
+	"Hack Nerd Font Mono:pixelsize=16:antialias=ture:autohint=true",
+};
+static size_t currentfont = 0;
 static char *font2[] = { "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
+
 static int borderpx = 2;
 
 /*
@@ -29,6 +35,10 @@ char *vtiden = "\033[?6c";
 /* Kerning / character bounding-box multipliers */
 static float cwscale = 1.0;
 static float chscale = 1.0;
+
+/* Character rendering offsets in pixels */
+static short cxoffset = 0;
+static short cyoffset = 0;
 
 /*
  * word delimiter string
@@ -187,7 +197,7 @@ static uint forcemousemod = ShiftMask;
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-    { "font",           STRING,         &font },
+    { "fonts",          STRING,        &fonts },
     { "fontalt0",       STRING,         &font2[0] },
     { "color0",         STRING,         &colorname[0] },
     { "color1",         STRING,         &colorname[1] },
@@ -259,7 +269,7 @@ static Shortcut shortcuts[] = {
     { TERMMOD,              XK_K,           zoom,           { .f = +1 } },
     { TERMMOD,              XK_D,           zoom,           { .f = -2 } },
     { TERMMOD,              XK_U,           zoom,           { .f = +2 } },
-    { TERMMOD,              XK_parenright,  zoomreset,      { .f = 0 } },
+    { TERMMOD,              XK_plus,        zoomreset,      { .f = 0 } },
 
     // COPIES
     { MODKEY,               XK_y,           clipcopy,       { .i = 0 } },
@@ -267,6 +277,9 @@ static Shortcut shortcuts[] = {
     { MODKEY,               XK_c,           externalpipe,   { .v = copyurlcmd } },
     { MODKEY,               XK_o,           externalpipe,   { .v = copyoutput } },
 
+    // FONTS
+    { TERMMOD,              XK_I,           cyclefonts,     {} },
+    
     // PASTES
     { MODKEY,               XK_p,           clippaste,      { .i = 0 } },
     { TERMMOD,              XK_P,           clippaste,      { .i = 0 } },
@@ -294,7 +307,6 @@ static Shortcut shortcuts[] = {
     // EXTRAS
     { TERMMOD,              XK_Num_Lock,    numlock,        { .i = 0 } },
     { XK_ANY_MOD,           XK_Break,       sendbreak,      { .i = 0 } },
-
 };
 
 /*
