@@ -390,7 +390,7 @@ static const Key keys[] = {
     { ControlMask | ShiftMask,              XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },
 
     // TRAVERSALS
-    { MODKEY,                               XK_semicolon,       togglemark,         {0} },
+    { MODKEY,                               XK_apostrophe,      togglemark,         {0} },
     { MODKEY,                               XK_Tab,             swapfocus,          {0} },
     { MODKEY | ShiftMask,                   XK_Tab,             swapclient,         {0} },
     { MODKEY2,                              XK_Tab,             view,               {0} },
