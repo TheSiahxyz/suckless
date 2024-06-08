@@ -229,10 +229,10 @@ static const Key keys[] = {
 
     /* modifier                             key                 function            argument */
     // AUDIO CONTROLS
-    { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 35") },
+    { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50") },
     { MODKEY | ShiftMask,                   XK_m,               spawn,              { .v = (const char *[]){ "mpdmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc clear") },
-    { MODKEY | ControlMask | ShiftMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
+    { MODKEY2,                              XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
     { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle") },
     { MODKEY | ShiftMask,                   XK_p,               spawn,              SHCMD("mpc pause; sleep 1 && pauseallmpv") },
     { MODKEY | ControlMask,                 XK_p,               spawn,              SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -44 $(pidof dwmblocks)") },

@@ -101,6 +101,8 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 I've mapped those extra buttons that some keyboards have (play and pause
 buttons, screen brightness, email, web browsing buttons, etc.) to what you
 would expect.
+.PP
+Check files under .config/shell, .config/zsh, and .local/share/thesiah. There are also files under .config.
 .HEADING 1 "Configuration"
 .PP
 Dotfiles/settings files are located in \f(CW~/.config/\fP.
