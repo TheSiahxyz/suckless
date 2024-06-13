@@ -498,7 +498,7 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_e, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
     { { 0, 0, 0, 0 },                   { XK_g, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "gimp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_h, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
-    { { 0, 0, 0, 0 },                   { XK_i, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } } },
+    { { 0, 0, 0, 0 },                   { XK_i, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nmtui", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_k, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "kakaotalk", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_m, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_n, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
