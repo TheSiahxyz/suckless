@@ -369,6 +369,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_F10,             spawn,              { .v = (const char *[]){ "unmounter", NULL } } },
     { MODKEY,                               XK_F11,             spawn,              SHCMD("mpv --untimed --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls " "/dev/video[0,2,4,6,8] | tail -n 1)") },
     { MODKEY,                               XK_F12,             spawn,              SHCMD("remaps") },
+    { MODKEY2,                              XK_F12,             spawn,              SHCMD("remaps") },
     { MODKEY | ShiftMask,                   XK_F12,             spawn,              { .v = (const char *[]){ "fcitx5-configtool", NULL } } },
 
     // SYSTEMS
