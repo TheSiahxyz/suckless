@@ -186,7 +186,7 @@ static void writemessage(Display *dpy, Window win, int screen) {
     XftTextExtentsUtf8(dpy, font, (FcChar8 *)message, strlen(message), &extents);
     // Center the text horizontally and vertically
     x = (attr.width - extents.xOff) / 2;
-    y = (attr.height - (font->ascent + font->descent)) / 1.32 + font->ascent;
+    y = (attr.height - (font->ascent + font->descent)) / 1.185 + font->ascent;
 
     // Draw the text
     XftDrawStringUtf8(draw, &color, font, x, y, (FcChar8 *)message, strlen(message));
@@ -285,7 +285,7 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
     // Measure the text to be rendered
     cairo_text_extents(cr, tm, &extents);
     xpos = (DisplayWidth(dpy, screen) - extents.width) / 2 - extents.x_bearing;
-    ypos = (DisplayHeight(dpy, screen) - extents.height) / 1.2 - extents.y_bearing;
+    ypos = (DisplayHeight(dpy, screen) - extents.height) / 1.1 - extents.y_bearing;
 
     cairo_move_to(cr, xpos, ypos);
     cairo_show_text(cr, tm);
