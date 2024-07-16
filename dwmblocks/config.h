@@ -9,10 +9,10 @@ static const Block blocks[] = {
     {"", "sb-packages", 0, 8},
     {"", "sb-news", 0, 6},
     {"", "sb-mailbox", 180, 12},
-    /* {"",	"sb-price xmr-btc \"Monero to Bitcoin\" 🔒 25",	9000,	25}, */
-    /* {"",	"sb-price xmr Monero 🔒 24",			9000,	24}, */
-    /* {"",	"sb-price eth Ethereum 🍸 23",			9000,	23}, */
-    /* {"",	"sb-price btc Bitcoin 💰 21",			9000,	21}, */
+    /* {"",	"sb-price xmr-btc \"Monero to Bitcoin\" 🔒 34",	9000,	34}, */
+    /* {"",	"sb-price xmr Monero 🔒 33",			9000,	33}, */
+    /* {"",	"sb-price eth Ethereum 🍸 32",			9000,	32}, */
+    /* {"",	"sb-price btc Bitcoin 💰 31",			9000,	31}, */
     {"", "sb-doppler", 0, 13},
     {"", "sb-forecast", 1800, 5},
     {"", "sb-cpu", 60, 18},
@@ -20,6 +20,7 @@ static const Block blocks[] = {
     /* {"", "sb-disk", 10800, 20}, */
     /* {"", "sb-nettraf", 1, 16}, */
     {"", "sb-volume", 0, 10},
+    {"", "sb-bghitness", 0, 23},
     {"", "sb-brightness", 0, 22},
     {"", "sb-battery", 5, 3},
     {"", "sb-inputs", 0, 29},
