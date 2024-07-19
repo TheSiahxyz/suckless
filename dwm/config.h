@@ -306,6 +306,8 @@ static const Key keys[] = {
     { 0, XF86XK_Sleep,                      spawn,  { .v = (const char *[]){ "sudo", "-A", "zzz", NULL } } },
     { 0, XF86XK_ScreenSaver,                spawn,  SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
     { 0, XF86XK_TaskPane,                   spawn,  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
+    { 0, XF86XK_RotateWindows,              spawn,  { .v = (const char *[]){ "tablet", NULL } } },
+    { 0, NoSymbol,                          spawn,  { .v = termcmd } },
     { 0, XF86XK_Mail,                       spawn,  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks") },
     { 0, XF86XK_MyComputer,                 spawn,  { .v = (const char *[]){ TERMINAL, "-e", "lfub", "/", NULL } } },
     { 0, XF86XK_Launch1,                    spawn,  { .v = (const char *[]){ "xset", "dpms", "force", "off", NULL } } },
