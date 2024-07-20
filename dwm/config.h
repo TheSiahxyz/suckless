@@ -97,7 +97,7 @@ static const Layout layouts[] = {
     { "[M]",    monocle },                  /* 1: All windows on top of eachother */
     { "|||",    col },                      /* 2: Column */
     { "[@]",    spiral },                   /* 3: Fibonacci spiral */
-    { "[\\]",    dwindle },                 /* 4: Decreasing in size right and leftward */
+    { "[\\]",   dwindle },                  /* 4: Decreasing in size right and leftward */
     { "H[]",    deck },                     /* 5: Master on left, slaves in monocle-like mode on right */
     { "TTT",    bstack },                   /* 6: Master on top, slaves on bottom horizontally */
     { "===",    bstackhoriz },              /* 7: Master on top, slaves on bottom vertically */
