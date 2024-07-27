@@ -1,6 +1,6 @@
 /* user and group to drop privileges to */
 static const char *group = "wheel";
-static int personalblur = 100;
+static int personalblur = 150;
 
 static const char *colorname[NUMCOLS] = {
     [INIT] =   "#3c3836",         /* after initialization */
@@ -16,7 +16,7 @@ static const char *colorname[NUMCOLS] = {
 static const int failonclear = 1;
 
 /* Background image path, should be available to the user above */
-static const char* background_image = "Private/photo/9CB06044-2DC1-4615-8347-721653FD2B1E.png";
+static const char* background_image = "Private/photo/F84CAD3A-7AE6-4971-8D15-2B79CAE5A5B9.png";
 
 /* default message */
 static const char *message = "THESIAH";
