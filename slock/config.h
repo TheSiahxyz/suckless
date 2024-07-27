@@ -1,6 +1,6 @@
 /* user and group to drop privileges to */
 static const char *group = "wheel";
-static int personalblur = 200;
+static int personalblur = 100;
 
 static const char *colorname[NUMCOLS] = {
     [INIT] =   "#3c3836",         /* after initialization */
