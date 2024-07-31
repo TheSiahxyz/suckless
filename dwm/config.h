@@ -70,7 +70,7 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
     /* class        instance        title           tags mask       allowkill isfloating isterminal noswallow monitor */
-    { "Gimp",       NULL,           NULL,           1 << 8,         1,  0,  0,  0, -1 },
+    { "Gimp",       NULL,           NULL,           1 << 6,         1,  0,  0,  0, -1 },
     { "kakaotalk",  NULL,           NULL,           1 << 8,         1,  0,  0, -1, -1 },
     { "afreecatvstreamer",  NULL,   NULL,           1 << 7,         1,  0,  0,  0, -1 },
     { TERMCLASS,    NULL,           NULL,           0,              1,  0,  1,  0, -1 },
