@@ -286,6 +286,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_g,               togglegaps,         {0} },
  
     // MEDIA CONTROLS
+    { 0, NoSymbol,                          spawn,  { .v = termcmd } },
     { 0, XF86XK_Battery,                    spawn,  SHCMD("pkill -RTMIN+3 dwmblocks") },
     { 0, XF86XK_WWW,                        spawn,  { .v = (const char *[]){ BROWSER, NULL } } },
     { 0, XF86XK_DOS,                        spawn,  { .v = termcmd } },
@@ -301,23 +302,22 @@ static const Key keys[] = {
     { 0, XF86XK_AudioForward,               spawn,  { .v = (const char *[]){ "mpc", "seek", "+10", NULL } } },
     { 0, XF86XK_AudioMedia,                 spawn,  { .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
     { 0, XF86XK_AudioMicMute,               spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
-    { 0, XF86XK_PowerOff,                   spawn,  { .v = (const char*[]){ "sysact", NULL } } },
     { 0, XF86XK_Calculator,                 spawn,  { .v = (const char *[]){ TERMINAL, "-e", "bc", "-l", NULL } } },
-    { 0, XF86XK_Sleep,                      spawn,  { .v = (const char *[]){ "sudo", "-A", "zzz", NULL } } },
-    { 0, XF86XK_ScreenSaver,                spawn,  SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
-    { 0, XF86XK_TaskPane,                   spawn,  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
-    { 0, XF86XK_RotateWindows,              spawn,  { .v = (const char *[]){ "tablet", NULL } } },
-    { 0, NoSymbol,                          spawn,  { .v = termcmd } },
-    { 0, XF86XK_Mail,                       spawn,  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks") },
-    { 0, XF86XK_MyComputer,                 spawn,  { .v = (const char *[]){ TERMINAL, "-e", "lfub", "/", NULL } } },
     { 0, XF86XK_Launch1,                    spawn,  { .v = (const char *[]){ "xset", "dpms", "force", "off", NULL } } },
-    { 0, XF86XK_TouchpadToggle,             spawn,  SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
-    { 0, XF86XK_TouchpadOff,                spawn,  { .v = (const char *[]){ "synclient", "TouchpadOff=1", NULL } } },
-    { 0, XF86XK_TouchpadOn,                 spawn,  { .v = (const char *[]){ "synclient", "TouchpadOff=0", NULL } } },
+    { 0, XF86XK_Mail,                       spawn,  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks") },
     { 0, XF86XK_MonBrightnessDown,          spawn,  SHCMD("pkexec brillo -U 5 -q; kill -57 $(pidof dwmblocks)") },
     /* { 0, XF86XK_MonBrightnessDown,	        spawn,	{.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } }, */
     { 0, XF86XK_MonBrightnessUp,            spawn,  SHCMD("pkexec brillo -A 5 -q; kill -57 $(pidof dwmblocks)") },
     /* { 0, XF86XK_MonBrightnessUp,	        spawn,  {.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }, */
+    { 0, XF86XK_MyComputer,                 spawn,  { .v = (const char *[]){ TERMINAL, "-e", "lfub", "/", NULL } } },
+    { 0, XF86XK_PowerOff,                   spawn,  { .v = (const char*[]){ "sysact", NULL } } },
+    { 0, XF86XK_RotateWindows,              spawn,  { .v = (const char *[]){ "tablet", NULL } } },
+    { 0, XF86XK_ScreenSaver,                spawn,  SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
+    { 0, XF86XK_Sleep,                      spawn,  { .v = (const char *[]){ "sudo", "-A", "zzz", NULL } } },
+    { 0, XF86XK_TaskPane,                   spawn,  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
+    { 0, XF86XK_TouchpadOff,                spawn,  { .v = (const char *[]){ "synclient", "TouchpadOff=1", NULL } } },
+    { 0, XF86XK_TouchpadOn,                 spawn,  { .v = (const char *[]){ "synclient", "TouchpadOff=0", NULL } } },
+    { 0, XF86XK_TouchpadToggle,             spawn,  SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
 
     // MODE
     { MODKEY,                               XK_Escape,          setkeymode,         { .ui = ModeCommand } },
@@ -497,7 +497,6 @@ static Command commands[] = {
 
     // PROGRAMS
     { { 0, 0, 0, 0 },                   { XK_a, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e abook -C ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/abookrc --datafile ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/addressbook") },
-    { { 0, 0, 0, 0 },                   { XK_c, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_e, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
     { { 0, 0, 0, 0 },                   { XK_g, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "gimp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_h, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
@@ -505,7 +504,7 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_k, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "kakaotalk", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_m, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_n, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
-    { { 0, 0, 0, 0 },                   { XK_p, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e sc-im ${WEBDIR:-${HOME}/THESIAH}/static/progs.csv") },
+    { { 0, 0, 0, 0 },                   { XK_p, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_t, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "torwrap", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ "ovpn", NULL } } },
     { { ShiftMask, 0, 0, 0 },           { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } },
@@ -513,6 +512,7 @@ static Command commands[] = {
     { { 0, 0, 0, 0 },                   { XK_Return, 0, 0, 0 },     spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
     
     // SUCKLESS CONFIGS
+    { { ShiftMask, 0, 0, 0 },           { XK_p, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") },
     { { ShiftMask, 0, 0, 0 },           { XK_s, XK_d, XK_b, 0 },    spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.h") },
     { { ShiftMask, 0, 0, 0 },           { XK_s, XK_d, XK_m, 0 },    spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.h") },
     { { ShiftMask, 0, 0, 0 },           { XK_s, XK_d, XK_w, 0 },    spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.h") },
