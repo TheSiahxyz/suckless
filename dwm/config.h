@@ -341,8 +341,8 @@ static const Key keys[] = {
 
     // SCRIPTS
     { MODKEY,                               XK_b,               spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
-    { MODKEY | ShiftMask,                   XK_b,               spawn,              SHCMD("firefox --new-window $(grep -v -e '^#' -e '^$' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
-    { MODKEY | ControlMask,                 XK_b,               spawn,              SHCMD("firefox --private-window $(grep -v -e '^#' -e '^$' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
+    { MODKEY | ShiftMask,                   XK_b,               spawn,              SHCMD(BROWSER " --new-window $(grep -v -e '^#' -e '^$' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
+    { MODKEY | ControlMask,                 XK_b,               spawn,              SHCMD(BROWSER " --private-window $(grep -v -e '^#' -e '^$' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
     { MODKEY | ControlMask,                 XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+19 ${STATUSBAR:-dwmblocks}") },
