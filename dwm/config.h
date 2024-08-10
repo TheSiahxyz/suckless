@@ -353,7 +353,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_Delete,          spawn,              { .v = (const char *[]){ "dmenurecord", "kill", NULL } } },
     { MODKEY,                               XK_Scroll_Lock,     spawn,              SHCMD("killall screenkey || screenkey -t 3 -p fixed -s small -g 20%x5%+40%-5% --key-mode keysyms --bak-mode normal --mods-mode normal -f ttf-font-awesome --opacity 0.5 &") },
     { MODKEY,                               XK_F1,              spawn,              SHCMD("groff -mom /usr/local/share/dwm/thesiah.mom -Tpdf | zathura -") },
-    { MODKEY | ShiftMask,                   XK_F1,              spawn,              SHCMD("nsxiv ${XDG_PICTURES_DIR:-${HOME}/Pictures}/resources") },
+    { MODKEY | ShiftMask,                   XK_F1,              spawn,              SHCMD("nsxiv -a ${XDG_PICTURES_DIR:-${HOME}/Pictures}/resources") },
     { MODKEY | ControlMask,                 XK_F1,              spawn,              { .v = (const char *[]){ "dmenuman", NULL } } },
     { MODKEY,                               XK_F2,              spawn,              { .v = (const char *[]){ "tutorialvids", NULL } } },
     { MODKEY,                               XK_F3,              spawn,              { .v = (const char *[]){ "displayselect", NULL } } },
