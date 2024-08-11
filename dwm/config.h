@@ -447,8 +447,8 @@ static Command commands[] = {
 
     /* Modifier (4 keys)                keysyms (4 keys)            function                argument */
     // APPEARANCES
-    { { ControlMask, 0, 0, 0 },         { XK_b, 0, 0, 0 },          togglebar,              {0} },
-    { { ShiftMask, 0, 0, 0 },           { XK_b, 0, 0, 0 },          togglebar,              { .i = 1 } },
+    { { ShiftMask, 0, 0, 0 },           { XK_b, 0, 0, 0 },          togglebar,              {0} },
+    { { ControlMask, 0, 0, 0 },         { XK_b, 0, 0, 0 },          togglebar,              { .i = 1 } },
     { { ControlMask, 0, 0, 0 },         { XK_o, 0, 0, 0 },          toggleborder,           {0} },
     { { ControlMask, 0, 0, 0 },         { XK_f, 0, 0, 0 },          togglefloating,         {0} },
     { { ControlMask, 0, 0, 0 },         { XK_g, 0, 0, 0 },          togglegaps,             {0} },
