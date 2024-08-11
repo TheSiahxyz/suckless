@@ -118,7 +118,7 @@ unsigned int tabspaces = 8;
 
 /* bg opacity */
 float alpha = 0.8;
-float alphaOffset = 0.02;
+float alphaOffset = 0.05;
 float alphaUnfocus;
 
 /* Terminal colors (16 first used in escape sequence) */
