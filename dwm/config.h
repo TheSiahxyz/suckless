@@ -340,8 +340,8 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_Return,          togglescratch,      { .ui = 0 } }, // terminal //
 
     // SCRIPTS
-    { MODKEY,                               XK_b,               spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
-    { MODKEY | ShiftMask,                   XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", NULL } } },
+    { MODKEY,                               XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-c", NULL } } },
+    { MODKEY | ShiftMask,                   XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-n", NULL } } },
     { MODKEY | ControlMask,                 XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-p", NULL } } },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
