@@ -11,7 +11,7 @@ static char *fonts[] = {
 	"Hack Nerd Font Mono:pixelsize=16:antialias=ture:autohint=true",
 };
 static size_t currentfont = 0;
-static char *font2[] = { "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
+static char *font2[] = { "NotoColorEmoji:pixelsize=8:antialias=true:autohint=true" };
 
 static int borderpx = 2;
 
