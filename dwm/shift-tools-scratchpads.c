@@ -85,6 +85,25 @@ shiftviewclients(const Arg *arg)
 		} while (tagmask && !(shifted.ui & tagmask));
 	view(&shifted);
 }
+/* Shift the active window to the next/prev tag and view it */
+void
+shifttagandview(const Arg *arg)
+{
+    Arg shifted;
+    shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
+
+    if (arg->i > 0) { /* Left circular shift */
+        shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i))) & ~SPTAGMASK;
+    } else { /* Right circular shift */
+        shifted.ui = ((shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i))) & ~SPTAGMASK;
+    }
+
+    /* Shift the window to the calculated tag */
+    tag(&shifted);
+
+    /* View the tag that we just shifted to */
+    view(&shifted);
+}
 /* move the current active window to the next/prev tag and view it. More like following the window */
 void
 shiftboth(const Arg *arg)
