@@ -140,9 +140,8 @@ static const Layout layouts[] = {
     { MOD,  XK_x,   ACTION##stack,  { .i = 0 } },           \
     { MOD,  XK_a,   ACTION##stack,  { .i = 1 } },           \
     { MOD,  XK_s,   ACTION##stack,  { .i = 2 } },           \
-    { MOD,  XK_z,   ACTION##stack,  { .i = -1 } },
-
-    /* { MOD,  XK_Tab, ACTION##stack,  { .i = PREVSEL } },     \ */
+    { MOD,  XK_z,   ACTION##stack,  { .i = -1 } },          \
+    { MOD,  XK_Tab, ACTION##stack,  { .i = PREVSEL } },     \
     
 #define CSTACKKEYS(MOD, ACTION)                                             \
     { {MOD,0,0,0},  {XK_j, 0,0,0},  ACTION##stack,  { .i = INC(+1) } },     \
@@ -332,6 +331,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_r,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } },
     { MODKEY,                               XK_t,               spawn,              { .v = (const char *[]){ "torwrap", NULL } } },
     { MODKEY,                               XK_w,               spawn,              { .v = (const char *[]){ BROWSER, NULL } } },
+    { MODKEY | ShiftMask,                   XK_w,               spawn,              { .v = (const char *[]){ BROWSER, "--private-window", NULL } } },
     { MODKEY | ControlMask,                 XK_w,               spawn,              { .v = (const char *[]){ "pkill", "-f", BROWSER, NULL } } },
     { MODKEY,                               XK_grave,           togglescratch,      { .ui = 1 } }, // calculator //
     { MODKEY | ShiftMask,                   XK_grave,           spawn,              { .v = (const char *[]){ "dmenuunicode", NULL } } },
@@ -398,8 +398,8 @@ static const Key keys[] = {
 
     // TRAVERSALS
     { MODKEY,                               XK_apostrophe,      togglemark,         {0} },
-    { MODKEY,                               XK_Tab,             swapfocus,          {0} },
-    { MODKEY | ShiftMask,                   XK_Tab,             swapclient,         {0} },
+    { MODKEY | ShiftMask,                   XK_Tab,             swapfocus,          {0} },
+    { MODKEY | ControlMask,                 XK_Tab,             swapclient,         {0} },
     { MODKEY2,                              XK_Tab,             view,               {0} },
     { MODKEY,                               XK_0,               view,               { .ui = ~0 } },
     { MODKEY | ShiftMask,                   XK_0,               tag,                { .ui = ~0 } },
