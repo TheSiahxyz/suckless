@@ -679,8 +679,11 @@ main(int argc, char **argv) {
     int result = system(command);
     free(command);
     if (result != 0) {
-        background_image = "Pictures/wallpaper/personal-default.png";
+        background_image = ".local/share/lock";
         personalblur = 0;
+    }
+    if (strcmp(background_image, "") == 0) {
+        background_image = ".local/share/lock";
     }
     size_needed = strlen(home_path) + strlen(background_image) + 2;  // +2 for slash and null terminator
     char* full_background_image = malloc(size_needed);
