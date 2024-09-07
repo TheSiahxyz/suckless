@@ -12,7 +12,6 @@ static char *fonts[] = {
 };
 static size_t currentfont = 0;
 static char *font2[] = { "NotoColorEmoji:pixelsize=8:antialias=true:autohint=true" };
-
 static int borderpx = 2;
 
 /*
