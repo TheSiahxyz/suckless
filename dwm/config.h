@@ -341,11 +341,13 @@ static const Key keys[] = {
 
     // SCRIPTS
     { MODKEY,                               XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-c", NULL } } },
-    { MODKEY | ShiftMask,                   XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-n", NULL } } },
-    { MODKEY | ControlMask,                 XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-p", NULL } } },
+    { MODKEY | ShiftMask,                   XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-o", NULL } } },
+    { MODKEY | ControlMask,                 XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-b", NULL } } },
+    { MODKEY | ShiftMask | ControlMask,     XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-p", NULL } } },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
     { MODKEY | ControlMask,                 XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+19 ${STATUSBAR:-dwmblocks}") },
+    { MODKEY | ControlMask,                 XK_h,               spawn,              { .v = (const char *[]){ "bookmarks", "-h", NULL } } },
     { MODKEY,                               XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
     { MODKEY | ControlMask,                 XK_v,               spawn,              SHCMD("ovpn; kill -38 $(pidof dwmblocks)") },
     { MODKEY,                               XK_Insert,          spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
