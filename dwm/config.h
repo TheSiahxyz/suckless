@@ -139,7 +139,6 @@ static const Layout layouts[] = {
     { MOD,  XK_k,   ACTION##stack,  { .i = INC(-1) } },     \
     { MOD,  XK_x,   ACTION##stack,  { .i = 0 } },           \
     { MOD,  XK_a,   ACTION##stack,  { .i = 1 } },           \
-    { MOD,  XK_s,   ACTION##stack,  { .i = 2 } },           \
     { MOD,  XK_z,   ACTION##stack,  { .i = -1 } },          \
     { MOD,  XK_Tab, ACTION##stack,  { .i = PREVSEL } },     \
     
@@ -149,7 +148,6 @@ static const Layout layouts[] = {
     { {MOD,0,0,0},  {XK_Tab,0,0,0}, ACTION##stack,  { .i = PREVSEL } },     \
     { {MOD,0,0,0},  {XK_x, 0,0,0},  ACTION##stack,  { .i = 0 } },           \
     { {MOD,0,0,0},  {XK_a, 0,0,0},  ACTION##stack,  { .i = 1 } },           \
-    { {MOD,0,0,0},  {XK_s, 0,0,0},  ACTION##stack,  { .i = 2 } },           \
     { {MOD,0,0,0},  {XK_z, 0,0,0},  ACTION##stack,  { .i = -1 } },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -262,7 +260,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_f,               togglefloating,     {0} },
     { MODKEY,                               XK_h,               setmfact,           { .f = -0.05 } },
     { MODKEY,                               XK_l,               setmfact,           { .f = +0.05 } },
-    { MODKEY,                               XK_s,               togglesticky,       {0} },
+    { MODKEY | ControlMask,                 XK_s,               togglesticky,       {0} },
     { MODKEY,                               XK_space,           zoom,               {0} },
     { MODKEY | ControlMask,                 XK_j,               setcfact,           { .f = -0.25 } },
     { MODKEY | ControlMask,                 XK_k,               setcfact,           { .f = +0.25 } },
@@ -348,6 +346,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
     { MODKEY | ControlMask,                 XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+19 ${STATUSBAR:-dwmblocks}") },
     { MODKEY | ControlMask,                 XK_h,               spawn,              { .v = (const char *[]){ "bookmarks", "-h", NULL } } },
+    { MODKEY,                               XK_s,               spawn,              { .v = (const char *[]){ "dmenubrowse", NULL } } },
     { MODKEY,                               XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
     { MODKEY | ControlMask,                 XK_v,               spawn,              SHCMD("ovpn; kill -38 $(pidof dwmblocks)") },
     { MODKEY,                               XK_Insert,          spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
