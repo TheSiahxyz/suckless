@@ -109,7 +109,7 @@ Check files under .config/shell, .config/zsh, and .local/share/thesiah. There ar
 .PP
 Dotfiles/settings files are located in \f(CW~/.config/\fP.
 .PP
-Suckless programs, dwm (the window manager), st (the terminal) and dmenu among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/suckless/\fP (press \f(CWrr\fP to jump to that directory).
+Suckless programs, dwm (the window manager), st (the terminal), dmenu (the dynamic menu), and slock (the screen locker) among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/suckless/\fP (press \f(CWrr\fP to jump to that directory).
 There you can modify their \f(CWconfig.h\fP files or other source code, then \f(CWsudo make install\fP to reinstall.
 .PP
 vim is set to automatically recompile and install these programs whenever you save changes to any \f(CWconfig.h\fP file
