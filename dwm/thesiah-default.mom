@@ -127,8 +127,9 @@ You may also need to set your preferred default output sink which you can do by 
 Copying and pasting is always program-specific on any system.
 In most graphical programs, copy and paste will be the same as they are on Windows: \f(CWctrl-c\fP and \f(CWctrl-v\fP.
 In the Linux terminal, those binds have other more important purposes, so you can run \f(CWman st\fP to see how to copy and paste in my terminal build.
+To paste the copied/saved content from the clipboard in dmenu, use \f(CWshift+ctrl-y\fP.
 .PP
-Additionally, I've set vim to use the clipboard as the default buffer, which means when you yank or delete something in vim, it will be in your system clipboard as well, so you can \f(CWctrl-v\fP it into your browser instance, etc. You can also paste material copied from other programs into vim with the typical vim bindings.
+Additionally, I've set vim to use the clipboard as the default buffer, which means when you yank or delete something in vim, it will be in your system clipboard as well, so you can \f(CWctrl-p\fP it into your browser instance, etc. You can also paste material copied from other programs into vim with the typical vim bindings.
 .HEADING 2 "How do I change the background/wallpaper?"
 .PP
 The system will always read the file \f(CW~/.local/share/bg\fP as the wallpaper.
