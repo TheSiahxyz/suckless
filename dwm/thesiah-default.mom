@@ -97,7 +97,9 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
  , Be sure you play around with these. Be flexible with the basic commands and the system will grow on you quick.
 .HEADING 2 "Suckless Programs"
 .PP
-When config.h in dwm and st is saved, key bindings will be extracted and updated below.
+The \f(CWMOD\fP key differs between DWM and ST. In DWM, if the \f(CWMOD\fP key is the \f(CWSuper\fP key, then in ST, the \f(CWMOD\fP key is the \f(CWAlt\fP key. Conversely, if the \f(CWMOD\fP key in DWM is the \f(CWAlt\fP key, then in ST, the \f(CWMOD\fP key is the \f(CWSuper\fP key.
+.PP
+When config.h in DWM and ST is saved, key bindings will be extracted and updated below.
 .HEADING 2 "Other buttons"
 .PP
 I've mapped those extra buttons that some keyboards have (play and pause
@@ -107,7 +109,7 @@ would expect.
 Check files under .config/shell, .config/zsh, and .local/share/thesiah. There are also files under .config.
 .HEADING 1 "Configuration"
 .PP
-Dotfiles/settings files are located in \f(CW~/.config/\fP.
+Dotfiles/settings files are located in \f(CW~/.dotfiles/\fP and \f(CW~/.config/\fP.
 .PP
 Suckless programs, dwm (the window manager), st (the terminal), dmenu (the dynamic menu), and slock (the screen locker) among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/suckless/\fP (press \f(CWrr\fP to jump to that directory).
 There you can modify their \f(CWconfig.h\fP files or other source code, then \f(CWsudo make install\fP to reinstall.
