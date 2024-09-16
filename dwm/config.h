@@ -333,6 +333,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_w,               spawn,              { .v = (const char *[]){ "pkill", "-f", BROWSER, NULL } } },
     { MODKEY,                               XK_grave,           togglescratch,      { .ui = 1 } }, // calculator //
     { MODKEY | ShiftMask,                   XK_grave,           spawn,              { .v = (const char *[]){ "dmenuunicode", NULL } } },
+    { MODKEY | ControlMask,                 XK_grave,           spawn,              { .v = (const char *[]){ "crontog", NULL } } },
     { MODKEY,                               XK_Return,          spawn,              { .v = termcmd } },
     { MODKEY | ShiftMask,                   XK_Return,          spawn,              { .v = (const char *[]){ "sd", NULL } } },
     { MODKEY | ControlMask,                 XK_Return,          togglescratch,      { .ui = 0 } }, // terminal //
