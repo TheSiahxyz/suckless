@@ -141,7 +141,7 @@ static const Layout layouts[] = {
     { MOD,  XK_a,   ACTION##stack,  { .i = 1 } },           \
     { MOD,  XK_z,   ACTION##stack,  { .i = -1 } },          \
     { MOD,  XK_Tab, ACTION##stack,  { .i = PREVSEL } },     \
-    
+
 #define CSTACKKEYS(MOD, ACTION)                                             \
     { {MOD,0,0,0},  {XK_j, 0,0,0},  ACTION##stack,  { .i = INC(+1) } },     \
     { {MOD,0,0,0},  {XK_k, 0,0,0},  ACTION##stack,  { .i = INC(-1) } },     \
@@ -281,7 +281,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_r,               incrovgaps,         { .i = +5 } },
     { MODKEY | ShiftMask,                   XK_g,               defaultgaps,        {0} },
     { MODKEY | ControlMask,                 XK_g,               togglegaps,         {0} },
- 
+
     // MEDIA CONTROLS
     { 0, NoSymbol,                          spawn,  { .v = termcmd } },
     { 0, XF86XK_Battery,                    spawn,  SHCMD("pkill -RTMIN+3 dwmblocks") },
@@ -518,7 +518,7 @@ static Command commands[] = {
     { { ShiftMask, 0, 0, 0 },           { XK_v, 0, 0, 0 },          spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } },
     { { 0, 0, 0, 0 },                   { XK_w, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") },
     { { 0, 0, 0, 0 },                   { XK_Return, 0, 0, 0 },     spawn,                  { .v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } },
-    
+
     // SUCKLESS CONFIGS
     { { ShiftMask, 0, 0, 0 },           { XK_p, 0, 0, 0 },          spawn,                  SHCMD(TERMINAL " -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") },
     { { ShiftMask, 0, 0, 0 },           { XK_s, XK_d, XK_b, 0 },    spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.h") },
@@ -566,3 +566,4 @@ static const Button buttons[] = {
     { ClkRootWin,       0,                      Button2,    togglebar,      {0} },
     { ClkRootWin,       MODKEY,                 Button2,    togglebar,      { .i = 1 } },
 };
+

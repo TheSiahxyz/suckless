@@ -74,3 +74,4 @@ ResourcePref resources[] = {
     { "color13",    STRING,  &colorname[PAM] },
     { "color0",     STRING,  &text_color },
 };
+

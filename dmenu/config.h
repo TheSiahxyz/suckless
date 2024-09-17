@@ -50,3 +50,4 @@ static Key quit_keys[] = {
     { XK_q,         0 },
     { XK_Escape,    0 }
 };
+

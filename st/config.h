@@ -278,7 +278,7 @@ static Shortcut shortcuts[] = {
 
     // FONTS
     { TERMMOD,              XK_I,           cyclefonts,     {} },
-    
+
     // PASTES
     { MODKEY,               XK_p,           clippaste,      { .i = 0 } },
     { TERMMOD,              XK_P,           clippaste,      { .i = 0 } },
@@ -573,7 +573,8 @@ static uint selmasks[] = {
  * Printable characters in ASCII, used to estimate the advance width
  * of single wide characters.
  */
-static char ascii_printable[] = 
+static char ascii_printable[] =
     " !\"#$%&'()*+,-./0123456789:;<=>?"
     "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
     "`abcdefghijklmnopqrstuvwxyz{|}~";
+
