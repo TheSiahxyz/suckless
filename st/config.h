@@ -281,7 +281,6 @@ static Shortcut shortcuts[] = {
 
     // PASTES
     { MODKEY,               XK_p,           clippaste,      { .i = 0 } },
-    { TERMMOD,              XK_P,           clippaste,      { .i = 0 } },
     { ShiftMask,            XK_Insert,      clippaste,      { .i = 0 } },
     { ShiftMask,            XK_Insert,      selpaste,       { .i = 0 } },
     { MODKEY,               XK_v,           externalpipe,   { .v = openurlcmd } },
