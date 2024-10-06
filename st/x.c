@@ -1056,7 +1056,7 @@ xloadfonts(const char *fontstr, double fontsize)
     XCloseDisplay(dpy);  // Close the display after getting resolution
     //
     // If the resolution is under 1024x768, set the fontsize to 12
-    if (width < 1024 && height < 768) {
+    if (width <= 1024 && height <= 768) {
         fontsize = 12;
     }
 
