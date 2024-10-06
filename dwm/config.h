@@ -340,12 +340,13 @@ static const Key keys[] = {
 
     // SCRIPTS
     { MODKEY,                               XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-t", NULL } } },
-    { MODKEY | ShiftMask,                   XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-c", NULL } } },
+    { MODKEY | ShiftMask,                   XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-o", NULL } } },
+    { MODKEY | ShiftMask | ControlMask,     XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-p", NULL } } },
     { MODKEY | ControlMask,                 XK_b,               togglebar,          {0} },
     { MODKEY | ShiftMask | ControlMask,     XK_b,               togglebar,          { .i = 1 } },
-    { MODKEY2,                              XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-o", NULL } } },
+    { MODKEY2 ,                             XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-c", NULL } } },
     { MODKEY2 | ShiftMask,                  XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-b", NULL } } },
-    { MODKEY2 | ControlMask,                XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-p", NULL } } },
+    { MODKEY2 | ShiftMask | ControlMask,    XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-v", NULL } } },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
     { MODKEY | ControlMask,                 XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+19 ${STATUSBAR:-dwmblocks}") },
