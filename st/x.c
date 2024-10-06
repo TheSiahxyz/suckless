@@ -1045,6 +1045,21 @@ xloadfonts(const char *fontstr, double fontsize)
 	FcPattern *pattern;
 	double fontval;
 
+    // Get screen resolution
+    Display *dpy = XOpenDisplay(NULL);
+    if (!dpy) {
+        die("can't open display\n");
+    }
+    int screen = DefaultScreen(dpy);
+    int width = XDisplayWidth(dpy, screen);
+    int height = XDisplayHeight(dpy, screen);
+    XCloseDisplay(dpy);  // Close the display after getting resolution
+    //
+    // If the resolution is under 1024x768, set the fontsize to 12
+    if (width < 1024 && height < 768) {
+        fontsize = 12;
+    }
+
 	if (fontstr[0] == '-')
 		pattern = XftXlfdParse(fontstr, False, False);
 	else
