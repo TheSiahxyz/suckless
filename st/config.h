@@ -6,9 +6,9 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *fonts[] = {
-	"mono:pixelsize=16:antialias=true:autohint=true",
-	"FiraCode Nerd Font Mono:pixelsize=16:antialias=ture:autohint=true",
-	"Hack Nerd Font Mono:pixelsize=16:antialias=ture:autohint=true",
+	"mono:pixelsize=18:antialias=true:autohint=true",
+	"FiraCode Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
+	"Hack Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
 };
 static size_t currentfont = 0;
 static char *font2[] = { "NotoColorEmoji:pixelsize=8:antialias=true:autohint=true" };
