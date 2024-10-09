@@ -6,7 +6,9 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *fonts[] = {
-	"mono:pixelsize=18:antialias=true:autohint=true",
+	"monospace:pixelsize=18:antialias=true:autohint=true",
+	"DejaVu Sans Mono:pixelsize=18:antialias=ture:autohint=true",
+	"Droid Sans Mono:pixelsize=18:antialias=ture:autohint=true",
 	"FiraCode Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
 	"Hack Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
 };
