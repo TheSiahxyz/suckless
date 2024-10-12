@@ -119,6 +119,7 @@ unsigned int tabspaces = 8;
 
 /* bg opacity */
 float alpha = 0.8;
+float alpha_def;
 float alphaOffset = 0.05;
 float alphaUnfocus;
 
@@ -269,6 +270,7 @@ static Shortcut shortcuts[] = {
     // APPEAREANCES
     { MODKEY,               XK_a,           changealpha,    { .f = +0.05 } },
     { MODKEY,               XK_s,           changealpha,    { .f = -0.05 } },
+    { MODKEY,               XK_equal,       changealpha,    { .f = 0 } },
     { TERMMOD,              XK_Down,        zoom,           { .f = -1 } },
     { TERMMOD,              XK_Up,          zoom,           { .f = +1 } },
     { TERMMOD,              XK_Next,        zoom,           { .f = -1 } },

@@ -323,7 +323,9 @@ void
 changealpha(const Arg *arg)
 {
     if((alpha > 0 && arg->f < 0) || (alpha < 1 && arg->f > 0))
-        alpha += arg->f;
+       alpha += arg->f;
+    else if (arg->f == 0.0f)
+       alpha = alpha_def;
     alpha = clamp(alpha, 0.0, 1.0);
     alphaUnfocus = clamp(alpha-alphaOffset, 0.0, 1.0);
 
@@ -1331,9 +1333,11 @@ xinit(int cols, int rows)
         xloadfonts(usedfont, 0);
     }
 
-
 	/* spare fonts */
 	xloadsparefonts();
+
+    /* Backup default alpha value */
+    alpha_def = alpha;
 
 	/* colors */
 	xw.cmap = XCreateColormap(xw.dpy, parent, xw.vis, None);
