@@ -302,8 +302,8 @@ static Shortcut shortcuts[] = {
     { ControlMask,          XK_Print,       toggleprinter,  { .i = 0 } },
 
     // TRAVERSALS
-    { MODKEY,               XK_k,           kscrollup,      { .i = 1 } },
-    { MODKEY,               XK_j,           kscrolldown,    { .i = 1 } },
+    { MODKEY,               XK_y,           kscrollup,      { .i = 1 } },
+    { MODKEY,               XK_e,           kscrolldown,    { .i = 1 } },
     { MODKEY,               XK_u,           kscrollup,      { .i = -1 } },
     { MODKEY,               XK_d,           kscrolldown,    { .i = -1 } },
     { MODKEY,               XK_Up,          kscrollup,      { .i = 1 } },
