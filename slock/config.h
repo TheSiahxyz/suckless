@@ -22,7 +22,7 @@ static const char* background_image = "";
 static const char *message = "THESIAH";
 
 /* text color */
-static const char *text_color = "#131313";
+static const char *text_color = "#C6D0F5";
 
 /* text size */
 static const char *font_name = "monospace:size=18:bold";
