@@ -282,19 +282,18 @@ static Shortcut shortcuts[] = {
     { TERMMOD,              XK_plus,        zoomreset,      { .f = 0 } },
 
     // COPIES
-    { MODKEY,               XK_y,           clipcopy,       { .i = 0 } },
-    { TERMMOD,              XK_Y,           clipcopy,       { .i = 0 } },
-    { MODKEY,               XK_c,           externalpipe,   { .v = copyurlcmd } },
+    { MODKEY,               XK_c,           clipcopy,       { .i = 0 } },
+    { TERMMOD,              XK_C,           externalpipe,   { .v = copyurlcmd } },
     { MODKEY,               XK_o,           externalpipe,   { .v = copyoutput } },
 
     // FONTS
     { TERMMOD,              XK_I,           cyclefonts,     {} },
 
     // PASTES
-    { MODKEY,               XK_p,           clippaste,      { .i = 0 } },
+    { MODKEY,               XK_v,           clippaste,      { .i = 0 } },
     { ShiftMask,            XK_Insert,      clippaste,      { .i = 0 } },
     { ShiftMask,            XK_Insert,      selpaste,       { .i = 0 } },
-    { MODKEY,               XK_v,           externalpipe,   { .v = openurlcmd } },
+    { TERMMOD,              XK_V,           externalpipe,   { .v = openurlcmd } },
 
     // PRINTERS
     { ShiftMask,            XK_Print,       printscreen,    { .i = 0 } },
