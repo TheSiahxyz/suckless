@@ -54,9 +54,9 @@ install: st
 	@echo Please see the README file regarding the terminfo entry of st.
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/st
-	rm -f $(DESTDIR)$(PREFIX)/bin/st-copyout
-	rm -f $(DESTDIR)$(PREFIX)/bin/st-urlhandler
-	rm -f $(DESTDIR)$(MANPREFIX)/man1/st.1
+	rm -f $(DESTDIR)$(PREFIX)/bin/st\
+		$(DESTDIR)$(PREFIX)/bin/st-copyout\
+		$(DESTDIR)$(PREFIX)/bin/st-urlhandler\
+		$(DESTDIR)$(MANPREFIX)/man1/st.1
 
 .PHONY: all options clean dist install uninstall
