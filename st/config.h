@@ -1141,7 +1141,7 @@ static Key key[] = {
 	{ XK_quotedbl,      Mod1Mask|ShiftMask,                 "\033[34;4u",    0,      0 },
 	{ XK_semicolon,     ControlMask,                        "\033[59;5u",    0,      0 },
 	{ XK_semicolon,     ControlMask|ShiftMask,              "\033[59;6u",    0,      0 },
-	{ XK_semicolon,     Mod1Mask,                           "\033[59;3u",    0,      0 },
+	/* { XK_semicolon,     Mod1Mask,                           "\033[59;3u",    0,      0 }, */
 	{ XK_semicolon,     Mod1Mask|ControlMask,               "\033[59;7u",    0,      0 },
 	{ XK_semicolon,     Mod1Mask|ControlMask|ShiftMask,     "\033[59;8u",    0,      0 },
 	{ XK_semicolon,     Mod1Mask|ShiftMask,                 "\033[59;4u",    0,      0 },
