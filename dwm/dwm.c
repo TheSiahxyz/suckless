@@ -2052,8 +2052,8 @@ run(void)
 
 void
 runAutostart(void)
-{ 
-  system("killall -q dwmblocks; dwmblocks &"); 
+{
+  system("killall -q dwmblocks; dwmblocks &");
 }
 
 void
@@ -2818,7 +2818,7 @@ unmanage(Client *c, int destroyed)
         focus(NULL);
         return;
     }
-    
+
 	if (c == mark)
 		setmark(0);
 
@@ -3489,3 +3489,4 @@ main(int argc, char *argv[])
     XCloseDisplay(dpy);
     return EXIT_SUCCESS;
 }
+
