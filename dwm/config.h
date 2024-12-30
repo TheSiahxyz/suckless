@@ -193,7 +193,10 @@ ResourcePref resources[] = {
  * ud means up and down
  */
 static Gesture gestures[] = {
-	{ "u",  spawn, {.v = termcmd } },
+	{ "u",  spawn, { .v = termcmd } },
+    { "d",  spawn, { .v = (const char *[]){ BROWSER, NULL } } },
+    { "l",  spawn, SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook 2>/dev/null") },
+    { "r",  spawn, SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+6 dwmblocks") },
 };
 
 static const Arg tagexec[] = {
