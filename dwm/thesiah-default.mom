@@ -104,7 +104,7 @@ When config.h in DWM and ST is saved, key bindings will be extracted and updated
 .PP
 I've mapped those extra buttons that some keyboards have (play and pause
 buttons, screen brightness, email, web browsing buttons, etc.) to what you
-would expect.
+would expect. Even there are gestures for simple mouse movements (up, down, left, and right). Each movement opens or runs a program.
 .PP
 Check files under .config/shell, .config/zsh, and .local/share/thesiah. There are also files under .config.
 .HEADING 1 "Configuration"
