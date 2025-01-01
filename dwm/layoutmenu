@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cat <<EOF | xmenu
+0 []= Tile
+1 [M] Monocle
+2 ||| Col
+3 [@] Spiral
+4 [\\] Dwindle
+5 H[] Deck
+6 TTT Bstack
+7 === Bstackhoriz
+8 HHH Grid
+9 ### Nrowgrid
+10 --- Horizgrid
+11 ::: Gaplessgrid
+12 |M| Centeredmaster
+13 >M> Centeredfloatingmaster
+14 ><> Float
+EOF
