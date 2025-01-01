@@ -2275,6 +2275,8 @@ setlayout(const Arg *arg)
         arrange(selmon);
     else
         drawbar(selmon);
+
+    setinsertmode();
 }
 
 void
