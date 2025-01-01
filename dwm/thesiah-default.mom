@@ -77,6 +77,7 @@ You can also right click on the module to see what it does.
 .PP
 The program dwmblocks is what is run to generate the statusbar from those scripts.
 You can edit its config/source code in \f(CW~/.local/src/suckless/dwmblocks/\fP to tell it what scripts/commands you want it to display.
+Alternatively, you can open the script by \f(CWShift+left click\fP on a program in the status bar. This is a default setting for all programs in status bar. Buttons are \f(CWleft click\fP, \f(CWmiddle click\fP, and \f(CWright click\fP. You can combine with a modifier, \f(CWShift\fP or \f(CWControl\fP.
 .HEADING 3 "HiDPI and 4K Displays"
 .PP
 If you have a screen with a very high dots-per-inch, the interface, particularly the status bar at the top may be very small. To change this, you can run \f(CWxrandr --dpi 96\fP, replacing 96 with a higher number, then you can refresh the window manager in the menu at \f(CWsuper+backspace\fP. To make this change persistent after reboot, edit \f(CW~/.xprofile\fP and you will see that same command which you can change to have the dots-per-inch value you want.
@@ -102,9 +103,7 @@ The \f(CWMOD\fP key differs between DWM and ST. In DWM, if the \f(CWMOD\fP key i
 When config.h in DWM and ST is saved, key bindings will be extracted and updated below.
 .HEADING 2 "Other buttons"
 .PP
-I've mapped those extra buttons that some keyboards have (play and pause
-buttons, screen brightness, email, web browsing buttons, etc.) to what you
-would expect. Even there are gestures for simple mouse movements (up, down, left, and right). Each movement opens or runs a program.
+I've mapped those extra buttons that some keyboards have (play and pause buttons, screen brightness, email, web browsing buttons, etc.) to what you would expect. Even there are gestures for simple mouse movements (up, down, left, and right). Each movement opens or runs a program.
 .PP
 Check files under .config/shell, .config/zsh, and .local/share/thesiah. There are also files under .config.
 .HEADING 1 "Configuration"
