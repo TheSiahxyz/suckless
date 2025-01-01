@@ -114,7 +114,6 @@ static const Layout layouts[] = {
     { "|M|",    centeredmaster },           /* 12: Master in middle, slaves on sides */
     { ">M>",    centeredfloatingmaster },   /* 13: Same but master floats */
     { "><>",    NULL },                     /* 14: no layout function means floating behavior */
-    { NULL,     NULL },
 };
 
 /* imports */
