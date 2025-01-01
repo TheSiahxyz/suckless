@@ -229,6 +229,7 @@ struct Monitor
     Window barwin;
     const Layout *lt[2];
     Pertag *pertag;
+   	int ltcur; /* current layout */
 };
 
 typedef struct
@@ -301,6 +302,8 @@ static void keypress(XEvent *e);
 static void keypresscmd(XEvent *e);
 static void killclient(const Arg *arg);
 static void killthis(Client *c);
+static void layoutmenu(const Arg *arg);
+static void layoutscroll(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
 static void maprequest(XEvent *e);
@@ -994,6 +997,7 @@ Monitor *createmon(void)
     m->gappiv = gappiv;
     m->gappoh = gappoh;
     m->gappov = gappov;
+    m->ltcur = 0;
     m->lt[0] = &layouts[0];
     m->lt[1] = &layouts[1 % LENGTH(layouts)];
     strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
@@ -1106,13 +1110,14 @@ drawbar(Monitor *m)
 				if (moveright)
 					x -= tw;
 				if (m->sel) {
-                 drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-					drw_text(drw, x, 0, moveright ? tw : m->ww, bh, lrpad / 2, m->sel->name, 0);
-					if (m->sel->isfloating)
-						drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-				} else {
-					drw_rect(drw, x, 0, tw, bh, 1, 1);
+                    drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+                    drw_text(drw, x, 0, moveright ? tw : m->ww, bh, lrpad / 2, m->sel->name, 0);
+                    if (m->sel->isfloating)
+                        drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+                } else {
+                    drw_rect(drw, x, 0, tw, bh, 1, 1);
 				}
+
 				if (!moveright)
 					x += tw;
 				break;
@@ -1142,13 +1147,19 @@ drawbar(Monitor *m)
 					x -= tw;
 				}
 				for (j = 0; j < LENGTH(tags); j++) {
-                 /* do not draw vacant tags */
-                 if (!(occ & 1 << j || m->tagset[m->seltags] & 1 << j))
-                     continue;
+                    /* do not draw vacant tags */
+                    if (!(occ & 1 << j || m->tagset[m->seltags] & 1 << j))
+                        continue;
 
 					w = TEXTW(tags[j]);
 					drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << j ? SchemeSel : SchemeNorm]);
 					drw_text(drw, x, 0, w, bh, lrpad / 2, tags[j], urg & 1 << j);
+                    if (keymode == ModeCommand && selmon->tagset[selmon->seltags] & (1 << j)) {
+                        drw_rect(drw, x + ulinepad, bh - ulinestroke - ulinevoffset, w - (ulinepad * 2), ulinestroke,
+                            m == selmon && selmon->sel && selmon->sel->tags & 1 << j,
+                            urg & 1 << j);
+                    }
+
 					x += w;
 				}
 				if (moveright)
@@ -1554,6 +1565,42 @@ killthis(Client *c)
         XSetErrorHandler(xerror);
         XUngrabServer(dpy);
     }
+}
+
+void
+layoutmenu(const Arg *arg) {
+	FILE *p;
+	char c[3], *s;
+	int i;
+
+	if (!(p = popen(layoutmenu_cmd, "r")))
+		 return;
+	s = fgets(c, sizeof(c), p);
+	pclose(p);
+
+	if (!s || *s == '\0' || c[0] == '\0')
+		 return;
+
+	i = atoi(c);
+	setlayout(&((Arg) { .v = &layouts[i] }));
+}
+
+void
+layoutscroll(const Arg *arg)
+{
+	if (!arg || !arg->i)
+		return;
+	int switchto = selmon->ltcur + arg->i;
+	int l = LENGTH(layouts);
+
+	if (switchto == l)
+		switchto = 0;
+	else if(switchto < 0)
+		switchto = l - 1;
+
+	selmon->ltcur = switchto;
+	Arg arg2 = {.v= &layouts[switchto] };
+	setlayout(&arg2);
 }
 
 void
@@ -2162,6 +2209,7 @@ setkeymode(const Arg *arg)
         return;
     keymode = arg->ui;
     clearcmd(NULL);
+    updatestatus();
     grabkeys();
 }
 

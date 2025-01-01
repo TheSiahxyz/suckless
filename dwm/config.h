@@ -23,6 +23,11 @@ static const int allowkill              = 1;        /* allow killing clients by 
 static const int vertpad                = PADDING;  /* vertical padding of bar */
 static const int sidepad                = PADDING;  /* horizontal padding of bar */
 static const char *barlayout            = "tln|s";  /* t: tag, l: layout, n: name, s: status */
+static const unsigned int ulinepad	    = 5;	    /* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 2;	    /* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	    /* how far above the bottom of the bar the line should appear */
+static const int ulineall 		        = 0;	    /* 1 to show underline on all tags, 0 for just the active ones */
+
 static char *fonts[] = {
     "monospace:size=10",
     "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
@@ -162,6 +167,7 @@ static const Layout layouts[] = {
 //                                  normbgcolor,    "-nf", normfgcolor, "-sb",
 //                                  selbordercolor, "-sf", selfgcolor,  NULL };
 static const char *termcmd[] = { TERMINAL, NULL };
+static const char *layoutmenu_cmd = "layoutmenu";
 
 /* Xresources preferences to load at startup */
 ResourcePref resources[] = {
@@ -258,6 +264,8 @@ static const Key keys[] = {
     { MODKEY2 | ControlMask,                XK_period,          exresize,           { .v = (int []){  25,  25 } } },
 
     // LAYOUT SIZES
+	{ MODKEY | ShiftMask,                   XK_h,               layoutscroll,       { .i = -1 } },
+	{ MODKEY | ShiftMask,                   XK_l,               layoutscroll,       { .i = +1 } },
     { MODKEY | ShiftMask,                   XK_n,               incnmaster,         { .i = -1 } },
     { MODKEY | ControlMask,                 XK_n,               incnmaster,         { .i = +1 } },
     { MODKEY,                               XK_f,               togglefullscr,      {0} },
@@ -565,6 +573,7 @@ static const Button buttons[] = {
     { ClkClientWin,     MODKEY | ShiftMask,     Button3,    gesture,        {0} },
     { ClkClientWin,     MODKEY,                 Button4,    incrgaps,       { .i = -1 } },
     { ClkClientWin,     MODKEY,                 Button5,    incrgaps,       { .i = +1 } },
+    { ClkLtSymbol,      0,                      Button3,    layoutmenu,     {0} },
     { ClkTagBar,        0,                      Button1,    view,           {0} },
     { ClkTagBar,        0,                      Button2,    spawntag,       {0} },
     { ClkTagBar,        0,                      Button3,    toggleview,     {0} },
