@@ -22,6 +22,7 @@ static int topbar                       = 1;        /* 0 means bottom bar */
 static const int allowkill              = 1;        /* allow killing clients by default? */
 static const int vertpad                = PADDING;  /* vertical padding of bar */
 static const int sidepad                = PADDING;  /* horizontal padding of bar */
+static const char *barlayout            = "tln|s";  /* t: tag, l: layout, n: name, s: status */
 static char *fonts[] = {
     "monospace:size=10",
     "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };

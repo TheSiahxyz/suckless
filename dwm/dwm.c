@@ -1076,60 +1076,91 @@ Monitor *dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-    int x, w, tw = 0;
+    int x = 0, w, tw = 0, moveright = 0;
     int boxs = drw->fonts->h / 9;
     int boxw = drw->fonts->h / 6 + 2;
-    unsigned int i, occ = 0, urg = 0;
+    unsigned int i, j, occ = 0, urg = 0;
     Client *c;
 
     if (!(m->tagset[m->seltags] & m->barmask))
-        return;
+      return;
+	if (barlayout[0] == '\0')
+      barlayout = "tln|s";
 
-    /* draw status first so it can be overdrawn by tags later */
-    if (m == selmon)
-    { /* status is only drawn on selected monitor */
-        drw_setscheme(drw, scheme[SchemeNorm]);
-        tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-        drw_text(drw, m->ww - tw - 2 * sp, 0, tw, bh, 0, stext, 0);
-    }
-
-    for (c = m->clients; c; c = c->next)
-    {
-        occ |= c->tags == 255 ? 0 : c->tags;
-        if (c->isurgent)
-            urg |= c->tags;
-    }
-    x = 0;
-    for (i = 0; i < LENGTH(tags); i++)
-    {
-        /* do not draw vacant tags */
-        if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
-            continue;
-
-        w = TEXTW(tags[i]);
-        drw_setscheme(
-            drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-        drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-        x += w;
-    }
-    w = TEXTW(m->ltsymbol);
     drw_setscheme(drw, scheme[SchemeNorm]);
-    x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+	drw_text(drw, 0, 0, m->ww, bh, 0, "", 0); /* draw background */
 
-    if ((w = m->ww - tw - x) > bh)
-    {
-        drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-        if (m->sel)
-        {
-            drw_text(drw, x, 0, w - 2 * sp, bh, lrpad / 2, m->sel->name, 0);
-            if (m->sel->isfloating)
-                drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-        }
-        else
-        {
-            drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
-        }
-    }
+	for (i = 0; i < strlen(barlayout); i++) {
+		switch (barlayout[i]) {
+			case 'l':
+				w = TEXTW(m->ltsymbol);
+				drw_setscheme(drw, scheme[SchemeNorm]);
+				if (moveright) {
+					x -= w;
+					drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+				} else
+					x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+				break;
+			case 'n':
+				tw = TEXTW(m->sel->name);
+				if (moveright)
+					x -= tw;
+				if (m->sel) {
+                 drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+					drw_text(drw, x, 0, moveright ? tw : m->ww, bh, lrpad / 2, m->sel->name, 0);
+					if (m->sel->isfloating)
+						drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+				} else {
+					drw_rect(drw, x, 0, tw, bh, 1, 1);
+				}
+				if (!moveright)
+					x += tw;
+				break;
+			case 's':
+				if (m == selmon) { /* status is only drawn on selected monitor */
+					drw_setscheme(drw, scheme[SchemeNorm]);
+					tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
+					if (moveright) {
+						x -= tw;
+						drw_text(drw, x, 0, tw, bh, 0, stext, 0);
+					} else
+						x = drw_text(drw, x, 0, tw, bh, 0, stext, 0);
+				}
+				break;
+			case 't':
+				for (c = m->clients; c; c = c->next) {
+                    occ |= c->tags == 255 ? 0 : c->tags;
+					if (c->isurgent)
+						urg |= c->tags;
+				}
+				/* tags */
+				if (moveright) {
+					tw = 0;
+					for (j = 0; j < LENGTH(tags); j++) {
+						tw += TEXTW(tags[j]);
+					}
+					x -= tw;
+				}
+				for (j = 0; j < LENGTH(tags); j++) {
+                 /* do not draw vacant tags */
+                 if (!(occ & 1 << j || m->tagset[m->seltags] & 1 << j))
+                     continue;
+
+					w = TEXTW(tags[j]);
+					drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << j ? SchemeSel : SchemeNorm]);
+					drw_text(drw, x, 0, w, bh, lrpad / 2, tags[j], urg & 1 << j);
+					x += w;
+				}
+				if (moveright)
+					x -= tw;
+				break;
+			case '|':
+				moveright = 1;
+				x = m->ww;
+				break;
+    		}
+    	}
+
     drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
 
