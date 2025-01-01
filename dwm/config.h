@@ -551,7 +551,7 @@ static const Button buttons[] = {
     /* click            event mask              button      function        argument */
     // MOUSE BUTTONS
 #ifndef __OpenBSD__
-    { ClkWinTitle,      0,                      Button2,    zoom, {0} },
+    { ClkWinTitle,      0,                      Button2,    zoom,           {0} },
     { ClkStatusText,    0,                      Button1,    sigdwmblocks,   { .i = 1 } },
     { ClkStatusText,    0,                      Button2,    sigdwmblocks,   { .i = 2 } },
     { ClkStatusText,    0,                      Button3,    sigdwmblocks,   { .i = 3 } },
