@@ -1032,7 +1032,7 @@ static Key key[] = {
 	{ XK_bracketleft,   Mod1Mask|ControlMask,               "\033[91;7u",    0,      0 },
 	{ XK_bracketleft,   Mod1Mask|ControlMask|ShiftMask,     "\033[91;8u",    0,      0 },
 	{ XK_bracketleft,   Mod1Mask|ShiftMask,                 "\033[91;4u",    0,      0 },
-	{ XK_bracketright,  ControlMask,                        "\033[93;5u",    0,      0 },
+	// { XK_bracketright,  ControlMask,                        "\033[93;5u",    0,      0 },
 	{ XK_bracketright,  ControlMask|ShiftMask,              "\033[93;6u",    0,      0 },
 	{ XK_bracketright,  Mod1Mask,                           "\033[93;3u",    0,      0 },
 	{ XK_bracketright,  Mod1Mask|ControlMask,               "\033[93;7u",    0,      0 },
