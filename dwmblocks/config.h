@@ -17,18 +17,18 @@ static const Block blocks[] = {
     /* {"", "sb-doppler", 0, 13}, */
     {"", "sb-tasks", 60, 25},
     {"", "sb-forecast", 0, 5},
-    {"", "sb-cpu", 60, 18},
-    {"", "sb-memory", 60, 14},
-    {"", "sb-disk", 10800, 20},
     /* {"", "sb-nettraf", 1, 16}, */
+    {"", "sb-inputs", 0, 29},
     {"", "sb-volume", 0, 10},
     {"", "sb-bghitness", 0, 23},
     {"", "sb-brightness", 0, 22},
+    {"", "sb-cpu", 60, 18},
+    {"", "sb-memory", 60, 14},
+    {"", "sb-disk", 10800, 20},
     {"", "sb-battery", 5, 3},
-    {"", "sb-inputs", 0, 29},
     /* {"",	"sb-moonphase",	18000,	17}, */
-    {"", "sb-clock", 60, 1},
     {"", "sb-internet", 5, 4},
+    {"", "sb-clock", 60, 1},
     /* {"",	"sb-iplocate", 0,	27}, */
     {"", "sb-ecrypt", 0, 19},
     {"", "sb-help-icon", 0, 15},
