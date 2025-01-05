@@ -9,7 +9,7 @@ static const Block blocks[] = {
     {"", "sb-packages", 0, 8},
     {"", "sb-news", 0, 6},
     {"", "sb-mailbox", 180, 12},
-    {"", "sb-git", 180, 21},
+    {"", "sb-git", 60, 21},
     /* {"",	"sb-price xmr-btc \"Monero to Bitcoin\" 🔒 34",	9000,	34}, */
     /* {"",	"sb-price xmr Monero 🔒 33",			9000,	33}, */
     /* {"",	"sb-price eth Ethereum 🍸 32",			9000,	32}, */
