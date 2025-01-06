@@ -382,7 +382,7 @@ static const Key keys[] = {
     { MODKEY,                               XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
     { MODKEY | ControlMask,                 XK_v,               spawn,              SHCMD("ovpn; kill -38 $(pidof dwmblocks)") },
     { MODKEY,                               XK_Insert,          spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
-    { 0,                                    XK_Print,           spawn,              SHCMD("maim | tee ~/Pictures/screenshot-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard") },
+    { 0,                                    XK_Print,           spawn,              SHCMD("maim | tee ~/Pictures/screenshots/$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard") },
     { ShiftMask,                            XK_Print,           spawn,              { .v = (const char *[]){ "maimpick", NULL } } },
     { MODKEY,                               XK_Print,           spawn,              { .v = (const char *[]){ "dmenurecord", NULL } } },
     { MODKEY,                               XK_Delete,          spawn,              { .v = (const char *[]){ "dmenurecord", "kill", NULL } } },
