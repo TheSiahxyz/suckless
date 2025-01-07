@@ -30,7 +30,7 @@ static const int ulineall 		        = 0;	    /* 1 to show underline on all tags,
 
 static char *fonts[] = {
     "monospace:size=10",
-    "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
+    "NotoColorEmoji:pixelsize=8:antialias=true:autohint=true" };
 static char normbgcolor[]               = "#222222";
 static char normbordercolor[]           = "#444444";
 static char normfgcolor[]               = "#bbbbbb";

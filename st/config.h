@@ -11,9 +11,10 @@ static char *fonts[] = {
 	"Droid Sans Mono:pixelsize=18:antialias=ture:autohint=true",
 	"FiraCode Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
 	"Hack Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
+	"MesloLGDZ Nerd Font Mono:pixelsize=18:antialias=ture:autohint=true",
 };
 static size_t currentfont = 0;
-static char *font2[] = { "NotoColorEmoji:pixelsize=8:antialias=true:autohint=true" };
+static char *font2[] = { "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true" };
 static int borderpx = 2;
 
 /*
