@@ -1,7 +1,7 @@
 // Modify this file to change what commands output to your statusbar, and recompile using the make command.
 static const Block blocks[] = {
     /*Icon*/ /*Command*/ /*Update Interval*/ /*Update Signal*/
-    {"", "sb-music", 1, 11},
+    {"", "sb-music", 0, 11},
     /* {"⌨", "sb-kbselect", 0, 30}, */
     {"", "cat /tmp/recordingicon 2>/dev/null", 0, 9},
     {"", "sb-queues", 10, 26},
@@ -41,4 +41,9 @@ static char *delim = " ";
 // vim with the following line in your vimrc/init.vim:
 
 // autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
+
+// Although, pkill is slightly slower than the command kill, which can
+// make a big difference if we are making semi-frequent changes in a script.
+// To signal with kill, we must send the value plus 34. Just remember 34.
+// So, 10 + 34 = 44, so we use this command: kill -44 $(pidof dwmblocks)
 
