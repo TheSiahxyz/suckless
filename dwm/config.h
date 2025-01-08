@@ -235,8 +235,8 @@ static const Key keys[] = {
 
     /* modifier                             key                 function            argument */
     // AUDIO CONTROLS
-    { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50") },
-    { MODKEY | ShiftMask,                   XK_m,               spawn,              { .v = (const char *[]){ "mpdmenu", NULL } } },
+    { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50 && kill -45 $(pidof dwmblocks)") },
+    { MODKEY | ShiftMask,                   XK_m,               spawn,              SHCMD("mpdmenu && kill -45 $(pidof dwmblocks)") },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") },
     { MODKEY | ShiftMask | ControlMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
     { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle") },
