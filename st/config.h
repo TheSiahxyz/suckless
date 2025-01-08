@@ -8,6 +8,7 @@
 static char *fonts[] = {
 	"monospace:pixelsize=18:antialias=true:autohint=true",
 	"nerdmono:pixelsize=18:antialias=true:autohint=true",
+	"ko:pixelsize=18:antialias=true:autohint=true",
 };
 static size_t currentfont = 0;
 static char *font2[] = { "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true" };
