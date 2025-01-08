@@ -239,8 +239,8 @@ static const Key keys[] = {
     { MODKEY | ShiftMask,                   XK_m,               spawn,              SHCMD("mpdmenu && kill -45 $(pidof dwmblocks)") },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") },
     { MODKEY | ShiftMask | ControlMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
-    { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle") },
-    { MODKEY | ShiftMask,                   XK_p,               spawn,              SHCMD("mpc pause; sleep 1 && pauseallmpv") },
+    { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle && kill -45 $(pidof dwmblocks)") },
+    { MODKEY | ShiftMask,                   XK_p,               spawn,              SHCMD("mpc pause; sleep 1 && pauseallmpv && kill -45 $(pidof dwmblocks)") },
     { MODKEY | ControlMask,                 XK_p,               spawn,              SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -44 $(pidof dwmblocks)") },
     { MODKEY,                               XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "prev", NULL } } },
     { MODKEY,                               XK_period,          spawn,              { .v = (const char *[]){ "mpc", "next", NULL } } },
@@ -250,9 +250,9 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "+60", NULL } } },
     { MODKEY | ControlMask | ShiftMask,     XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
     { MODKEY | ControlMask | ShiftMask,     XK_period,          spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
-    { MODKEY ,                              XK_slash,           spawn,              SHCMD("mpc single on; mpc random off; mpc repeat on") },
-    { MODKEY | ShiftMask,                   XK_slash,           spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on") },
-    { MODKEY | ControlMask,                 XK_slash,           spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off; sleep 1 && pkill -RTMIN+11 dwmblocks") },
+    { MODKEY ,                              XK_slash,           spawn,              SHCMD("mpc single on; mpc random off; mpc repeat on && kill -45 $(pidof dwmblocks)") },
+    { MODKEY | ShiftMask,                   XK_slash,           spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on && kill -45 $(pidof dwmblocks)") },
+    { MODKEY | ControlMask,                 XK_slash,           spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off; sleep 1 && kill -45 $(pidof dwmblocks)") },
 
     // FLOATING SIZES
     { MODKEY2 | ControlMask,                XK_h,               exresize,           { .v = (int []){ -25,   0 } } },
