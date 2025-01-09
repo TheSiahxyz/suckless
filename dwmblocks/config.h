@@ -1,37 +1,37 @@
 // Modify this file to change what commands output to your statusbar, and recompile using the make command.
 static const Block blocks[] = {
-    /*Icon*/ /*Command*/ /*Update Interval*/ /*Update Signal (unused from 30)*/
-    {"", "sb-music", 0, 11},            // Music (far left)
-    {"", "cat /tmp/recordingicon 2>/dev/null", 0, 9},
-    {"", "sb-torrent", 20, 7},          // Torrent
-    {"", "sb-queues", 10, 26},          // Queues
-    {"", "sb-mailbox", 180, 12},        // Mailbox
-    {"", "sb-news", 0, 6},              // News
-    {"", "sb-git", 60, 21},             // Git
-    {"", "sb-tasks", 60, 25},           // Tasks
-    {"", "sb-packages", 0, 8},          // Packages
-    {"", "sb-forecast", 0, 5},          // Weather
-    /* {"", "sb-nettraf", 1, 16}, */
-    {"", "sb-cpu", 60, 18},             // CPU
-    {"", "sb-memory", 60, 14},          // Memory
-    {"", "sb-disk", 10800, 20},         // Disk
-    /* {"⌨", "sb-kbselect", 0, 30}, */
-    {"", "sb-inputs", 0, 29},           // Inputs
-    {"", "sb-bghitness", 0, 23},        // Background Lightness
-    {"", "sb-brightness", 0, 22},       // Brightness
-    {"", "sb-internet", 5, 4},          // Internet
-    {"", "sb-volume", 0, 10},           // Volume
-    {"", "sb-battery", 5, 3},           // Battery
-    {"", "sb-clock", 60, 1},            // Clock
-    /* {"", "sb-moonphase", 18000, 17}, */
-    /* {"", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 34", 9000, 34}, */
-    /* {"", "sb-price xmr Monero 🔒 33", 9000, 33}, */
-    /* {"", "sb-price eth Ethereum 🍸 32", 9000, 32}, */
-    /* {"", "sb-price btc Bitcoin 💰 31", 9000, 31}, */
-    /* {"", "sb-doppler", 0, 13}, */
-    /* {"", "sb-iplocate", 0, 27}, */
-    {"", "sb-ecrypt", 0, 19},           // Ecrypt (rightmost)
-    {"", "sb-help-icon", 0, 15},        // Help Icon (rightmost)
+    /*Icon*/ /*Command*/ /*Update Interval*/ /*Update Signal (1-31)*/
+    {"", "sb-music", 0, 23},            // Music (far left)
+    {"", "cat /tmp/recordingicon 2>/dev/null", 0, 31}, // Recording
+    {"", "sb-torrent", 20, 22},         // Torrent
+    {"", "sb-queues", 10, 21},          // Queues
+    {"", "sb-mailbox", 180, 20},        // Mailbox
+    {"", "sb-news", 0, 19},             // News
+    {"", "sb-git", 60, 18},             // Git
+    {"", "sb-tasks", 60, 17},           // Tasks
+    {"", "sb-packages", 0, 16},         // Packages
+    {"", "sb-forecast", 0, 15},         // Weather
+    /* {"", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000, 30}, */
+    /* {"", "sb-price xmr Monero 🔒 29", 9000, 29}, */
+    /* {"", "sb-price bnb Binance 🫧 28", 9000, 28}, */
+    /* {"", "sb-price xrp XRP 🪓 27", 9000, 27}, */
+    /* {"", "sb-price usdt Tether ⛺ 26", 9000, 26}, */
+    /* {"", "sb-price eth Ethereum 🍸 25", 9000, 25}, */
+    /* {"", "sb-price btc Bitcoin 💰 24", 9000, 24}, */
+    /* {"", "sb-nettraf", 1, 14},          // Network  */
+    {"", "sb-cpu", 60, 13},             // CPU
+    {"", "sb-memory", 60, 12},          // Memory
+    {"", "sb-disk", 10800, 11},         // Disk
+    {"", "sb-keyboard", 0, 10},         // Inputs
+    {"", "sb-bghitness", 0, 9},         // Background Lightness
+    {"", "sb-brightness", 0, 8},        // Brightness
+    {"", "sb-internet", 5, 7},          // Internet
+    {"", "sb-iplocate", 0, 6},          // ip
+    {"", "sb-volume", 0, 5},            // Volume
+    {"", "sb-battery", 5, 4},           // Battery
+    {"", "sb-clock", 60, 3},            // Clock
+    {"", "sb-ecrypt", 0, 2},            // Ecrypt (rightmost)
+    {"", "sb-help-icon", 0, 1},         // Help Icon (rightmost)
 };
 
 // Sets delimiter between status commands. NULL character ('\0') means no delimiter.
