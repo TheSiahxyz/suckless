@@ -139,13 +139,13 @@ static const Layout layouts[] = {
     { {ShiftMask,0,0,0},                    {KEY,0,0,0}, tag,           { .ui = 1 << TAG} },    \
     { {ControlMask|ShiftMask,0,0,0},        {KEY,0,0,0}, toggletag,     { .ui = 1 << TAG} },
 
-#define STACKKEYS(MOD, ACTION)                              \
-    { MOD,  XK_j,   ACTION##stack,  { .i = INC(+1) } },     \
-    { MOD,  XK_k,   ACTION##stack,  { .i = INC(-1) } },     \
-    { MOD,  XK_x,   ACTION##stack,  { .i = 0 } },           \
-    { MOD,  XK_a,   ACTION##stack,  { .i = 1 } },           \
-    { MOD,  XK_z,   ACTION##stack,  { .i = -1 } },          \
-    { MOD,  XK_Tab, ACTION##stack,  { .i = PREVSEL } },     \
+#define STACKKEYS(MOD, ACTION)                                  \
+    { MOD,  XK_j,       ACTION##stack,  { .i = INC(+1) } },     \
+    { MOD,  XK_k,       ACTION##stack,  { .i = INC(-1) } },     \
+    { MOD,  XK_space,   ACTION##stack,  { .i = 0 } },           \
+    { MOD,  XK_a,       ACTION##stack,  { .i = 1 } },           \
+    { MOD,  XK_z,       ACTION##stack,  { .i = -1 } },          \
+    { MOD,  XK_Tab,     ACTION##stack,  { .i = PREVSEL } },     \
 
 #define CSTACKKEYS(MOD, ACTION)                                             \
     { {MOD,0,0,0},  {XK_j, 0,0,0},  ACTION##stack,  { .i = INC(+1) } },     \
@@ -288,7 +288,7 @@ static const Key keys[] = {
     { MODKEY | ControlMask,                 XK_n,               incnmaster,         { .i = +1 } },
     { MODKEY,                               XK_h,               setmfact,           { .f = -0.05 } },
     { MODKEY,                               XK_l,               setmfact,           { .f = +0.05 } },
-    { MODKEY,                               XK_space,           zoom,               {0} },
+    { MODKEY | ShiftMask,                   XK_space,           zoom,               {0} },
     { MODKEY | ControlMask,                 XK_j,               setcfact,           { .f = -0.25 } },
     { MODKEY | ControlMask,                 XK_k,               setcfact,           { .f = +0.25 } },
     { MODKEY | ControlMask,                 XK_l,               setcfact,           { .f = 0.00 } },
