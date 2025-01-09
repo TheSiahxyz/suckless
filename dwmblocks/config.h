@@ -5,9 +5,9 @@ static const Block blocks[] = {
     {"", "cat /tmp/recordingicon 2>/dev/null", 0, 31}, // Recording
     {"", "sb-torrent", 20, 22},         // Torrent
     {"", "sb-queues", 10, 21},          // Queues
-    {"", "sb-mailbox", 180, 20},        // Mailbox
+    {"", "sb-mailbox", 300, 20},        // Mailbox
     {"", "sb-news", 0, 19},             // News
-    {"", "sb-git", 60, 18},             // Git
+    {"", "sb-git", 300, 18},            // Git
     {"", "sb-tasks", 60, 17},           // Tasks
     {"", "sb-packages", 0, 16},         // Packages
     {"", "sb-forecast", 0, 15},         // Weather
