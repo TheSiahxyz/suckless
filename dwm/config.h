@@ -235,8 +235,8 @@ static const Key keys[] = {
 
     /* modifier                             key                 function            argument */
     // AUDIO CONTROLS
-    { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50") },
-    { MODKEY | ShiftMask,                   XK_m,               spawn,              { .v = (const char *[]){ "mpdmenu", NULL } } },
+    { MODKEY,                               XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50; pkill -RTMIN+23 dwmblocks") },
+    { MODKEY | ShiftMask,                   XK_m,               spawn,              SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") },
     { MODKEY | ControlMask,                 XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") },
     { MODKEY | ShiftMask | ControlMask,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
     { MODKEY,                               XK_p,               spawn,              SHCMD("mpc toggle") },
@@ -377,7 +377,7 @@ static const Key keys[] = {
     { MODKEY2 | ShiftMask | ControlMask,    XK_b,               spawn,              { .v = (const char *[]){ "bookmarks", "-v", NULL } } },
     { MODKEY | ShiftMask,                   XK_d,               spawn,              { .v = (const char *[]){ "passmenu", NULL } } },
     { MODKEY | ControlMask,                 XK_d,               spawn,              { .v = (const char *[]){ "passmenu2", NULL } } },
-    { MODKEY | ControlMask,                 XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+2 ${STATUSBAR:-dwmblocks}") },
+    { MODKEY | ControlMask,                 XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+2 dwmblocks") },
     { MODKEY,                               XK_s,               spawn,              { .v = (const char *[]){ "dmenubrowse", NULL } } },
     { MODKEY,                               XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
     { MODKEY | ControlMask,                 XK_v,               spawn,              SHCMD("ovpn; kill -41 $(pidof dwmblocks)") },
