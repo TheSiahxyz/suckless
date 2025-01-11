@@ -175,6 +175,7 @@ static void xinit(int, int);
 static void cresize(int, int);
 static void xresize(int, int);
 static void xhints(void);
+static void xdisplayresolution(int *, int *);
 static int xloadcolor(int, const char *, Color *);
 static int xloadfont(Font *, FcPattern *);
 static void xloadfonts(const char *, double);
@@ -974,6 +975,29 @@ xgeommasktogravity(int mask)
 	return SouthEastGravity;
 }
 
+void
+xdisplayresolution(int *width, int *height)
+{
+    Display *dpy;
+    int screen;
+
+    // Open the display
+    if (!(dpy = XOpenDisplay(NULL))) {
+        fputs("can't open display\n", stderr);
+        *width = 0;
+        *height = 0;
+        return;
+    }
+
+    // Get screen dimensions
+    screen = DefaultScreen(dpy);
+    *width = XDisplayWidth(dpy, screen);
+    *height = XDisplayHeight(dpy, screen);
+
+    // Close the display
+    XCloseDisplay(dpy);
+}
+
 int
 xloadfont(Font *f, FcPattern *pattern)
 {
@@ -1149,6 +1173,7 @@ xloadsparefonts(void)
 	double sizeshift, fontval;
 	int fc;
 	char **fp;
+    int width, height;
 
 	if (frclen != 0)
 		die("can't embed spare fonts. cache isn't empty");
@@ -1174,22 +1199,13 @@ xloadsparefonts(void)
 			die("can't open spare font %s\n", *fp);
 
 		if (defaultfontsize > 0) {
+			sizeshift = usedfontsize - defaultfontsize;
             // Get screen resolution
-            Display *dpy = XOpenDisplay(NULL);
-            if (!dpy) {
-                die("can't open display\n");
-            }
-            int screen = DefaultScreen(dpy);
-            int width = XDisplayWidth(dpy, screen);
-            int height = XDisplayHeight(dpy, screen);
-            XCloseDisplay(dpy);  // Close the display after getting resolution
-
+            xdisplayresolution(&width, &height);
             // If the resolution is under 1024x768, set the fontsize to 12
             if (width <= 1024 && height <= 768) {
-                defaultfontsize = 10;
+               sizeshift -= 4;
             }
-
-			sizeshift = usedfontsize - defaultfontsize;
 			if (sizeshift != 0 &&
 					FcPatternGetDouble(pattern, FC_PIXEL_SIZE, 0, &fontval) ==
 					FcResultMatch) {
@@ -1316,6 +1332,7 @@ xinit(int cols, int rows)
 	XColor xmousefg, xmousebg;
 	XWindowAttributes attr;
 	XVisualInfo vis;
+    int width, height;
 
 	xw.scr = XDefaultScreen(xw.dpy);
 
@@ -1337,14 +1354,7 @@ xinit(int cols, int rows)
     usedfont = (opt_font == NULL)? fonts[currentfont] : opt_font;
 
     // Get screen resolution
-    Display *dpy = XOpenDisplay(NULL);
-    if (!dpy) {
-        die("can't open display\n");
-    }
-    int screen = DefaultScreen(dpy);
-    int width = XDisplayWidth(dpy, screen);
-    int height = XDisplayHeight(dpy, screen);
-    XCloseDisplay(dpy);  // Close the display after getting resolution
+    xdisplayresolution(&width, &height);
 
     // If the resolution is under 1024x768, set the fontsize to 12
     if (width <= 1024 && height <= 768) {
