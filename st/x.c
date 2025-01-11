@@ -175,7 +175,6 @@ static void xinit(int, int);
 static void cresize(int, int);
 static void xresize(int, int);
 static void xhints(void);
-static void xdisplayresolution(int *, int *);
 static int xloadcolor(int, const char *, Color *);
 static int xloadfont(Font *, FcPattern *);
 static void xloadfonts(const char *, double);
@@ -975,29 +974,6 @@ xgeommasktogravity(int mask)
 	return SouthEastGravity;
 }
 
-void
-xdisplayresolution(int *width, int *height)
-{
-    Display *dpy;
-    int screen;
-
-    // Open the display
-    if (!(dpy = XOpenDisplay(NULL))) {
-        fputs("can't open display\n", stderr);
-        *width = 0;
-        *height = 0;
-        return;
-    }
-
-    // Get screen dimensions
-    screen = DefaultScreen(dpy);
-    *width = XDisplayWidth(dpy, screen);
-    *height = XDisplayHeight(dpy, screen);
-
-    // Close the display
-    XCloseDisplay(dpy);
-}
-
 int
 xloadfont(Font *f, FcPattern *pattern)
 {
@@ -1200,12 +1176,6 @@ xloadsparefonts(void)
 
 		if (defaultfontsize > 0) {
 			sizeshift = usedfontsize - defaultfontsize;
-            // Get screen resolution
-            xdisplayresolution(&width, &height);
-            // If the resolution is under 1024x768, set the fontsize to 12
-            if (width <= 1024 && height <= 768) {
-               sizeshift -= 4;
-            }
 			if (sizeshift != 0 &&
 					FcPatternGetDouble(pattern, FC_PIXEL_SIZE, 0, &fontval) ==
 					FcResultMatch) {
@@ -1353,15 +1323,7 @@ xinit(int cols, int rows)
 
     usedfont = (opt_font == NULL)? fonts[currentfont] : opt_font;
 
-    // Get screen resolution
-    xdisplayresolution(&width, &height);
-
-    // If the resolution is under 1024x768, set the fontsize to 12
-    if (width <= 1024 && height <= 768) {
-        xloadfonts(usedfont, 12);
-    } else {
-        xloadfonts(usedfont, 0);
-    }
+    xloadfonts(usedfont, 0);
 
 	/* spare fonts */
 	xloadsparefonts();
