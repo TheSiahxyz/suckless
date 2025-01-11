@@ -1165,7 +1165,6 @@ xloadsparefonts(void)
 	}
 
 	for (fp = font2; fp - font2 < fc; ++fp) {
-
 		if (**fp == '-')
 			pattern = XftXlfdParse(*fp, False, False);
 		else
