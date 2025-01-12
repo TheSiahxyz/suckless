@@ -34,23 +34,23 @@
 
 /* enums */
 enum {
-    SchemeNorm,
-    SchemeSel,
-    SchemeOut,
-    SchemeCursor,
-    SchemeLast
+  SchemeNorm,
+  SchemeSel,
+  SchemeOut,
+  SchemeCursor,
+  SchemeLast
 }; /* color schemes */
 
 struct item {
-    char *text;
-    struct item *left, *right;
-    int out;
-    double distance;
+  char *text;
+  struct item *left, *right;
+  int out;
+  double distance;
 };
 
 typedef struct {
-    KeySym ksym;
-    unsigned int state;
+  KeySym ksym;
+  unsigned int state;
 } Key;
 
 static char text[BUFSIZ] = "";
