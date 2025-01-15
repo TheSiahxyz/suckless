@@ -7,7 +7,7 @@ static const Block blocks[] = {
   {"", "sb-queues", 10, 21},          // Queues
   {"", "sb-mailbox", 300, 20},        // Mailbox
   {"", "sb-news", 0, 19},             // News
-  {"", "sb-repos", 300, 18},          // Git repositories
+  {"", "sb-repos", 0, 18},            // Git repositories
   {"", "sb-tasks", 60, 17},           // Tasks
   {"", "sb-packages", 0, 16},         // Packages
   {"", "sb-forecast", 0, 15},         // Weather
