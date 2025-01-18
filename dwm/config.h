@@ -424,9 +424,9 @@ static const Key keys[] = {
 
   // SYSTEMS
   { MODKEY | ControlMask,                 XK_k,               spawn,              { .v = (const char *[]){ "pkill", "-f", "kakaotalk", NULL } } },
-  { MODKEY,                               XK_q,               killclient,         {0} },
-  { MODKEY | ShiftMask,                   XK_q,               killclient,         { .ui = 1 } },
-  { MODKEY | ControlMask,                 XK_q,               killclient,         { .ui = 2 } },
+  { MODKEY,                               XK_q,               killclient,         {0} }, // kill only current client
+  { MODKEY | ShiftMask,                   XK_q,               killclient,         { .ui = 1 } }, // kill other clients in the same tag
+  { MODKEY | ControlMask,                 XK_q,               killclient,         { .ui = 2 } }, // kill all clients in the same tag
   { MODKEY2,                              XK_q,               toggleallowkill,    {0} },
   { MODKEY,                               XK_BackSpace,       spawn,              { .v = (const char *[]){ "slock", NULL } } },
   { MODKEY | ShiftMask,                   XK_BackSpace,       spawn,              { .v = (const char *[]){ "sysact", NULL } } },
