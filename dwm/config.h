@@ -23,10 +23,10 @@ static const int allowkill              = 1;        /* allow killing clients by 
 static const int vertpad                = PADDING;  /* vertical padding of bar */
 static const int sidepad                = PADDING;  /* horizontal padding of bar */
 static const char *barlayout            = "tln|s";  /* t: tag, l: layout, n: name, s: status */
-static const unsigned int ulinepad	    = 5;	    /* horizontal padding between the underline and tag */
-static const unsigned int ulinestroke	= 2;	    /* thickness / height of the underline */
-static const unsigned int ulinevoffset	= 0;	    /* how far above the bottom of the bar the line should appear */
-static const int ulineall 		        = 0;	    /* 1 to show underline on all tags, 0 for just the active ones */
+static const unsigned int ulinepad	    = 5;	      /* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	  = 2;	      /* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	      /* how far above the bottom of the bar the line should appear */
+static const int ulineall 		          = 0;	      /* 1 to show underline on all tags, 0 for just the active ones */
 
 static char *fonts[] = {
   "monospace:size=10",
@@ -127,20 +127,20 @@ static const Layout layouts[] = {
 #define MODKEY Mod4Mask
 #define MODKEY2 Mod1Mask
 
-#define TAGKEYS(KEY, TAG)                                                               \
+#define TAGKEYS(KEY, TAG)                                                             \
   { MODKEY,                               KEY, view,           { .ui = 1 << TAG } },  \
   { MODKEY | ControlMask,                 KEY, toggleview,     { .ui = 1 << TAG } },  \
   { MODKEY | ShiftMask,                   KEY, tag,            { .ui = 1 << TAG } },  \
   { MODKEY | ControlMask | ShiftMask,     KEY, toggletag,      { .ui = 1 << TAG } },  \
   { MODKEY2 | ShiftMask,                  KEY, tagandview,     { .ui = 1 << TAG } },
 
-#define CTAGKEYS(KEY, TAG)                                                                      \
+#define CTAGKEYS(KEY, TAG)                                                                    \
   { {0,0,0,0},                            {KEY,0,0,0}, view,          { .ui = 1 << TAG} },    \
   { {ControlMask,0,0,0},                  {KEY,0,0,0}, toggleview,    { .ui = 1 << TAG} },    \
   { {ShiftMask,0,0,0},                    {KEY,0,0,0}, tag,           { .ui = 1 << TAG} },    \
   { {ControlMask|ShiftMask,0,0,0},        {KEY,0,0,0}, toggletag,     { .ui = 1 << TAG} },
 
-#define STACKKEYS(MOD, ACTION)                                  \
+#define STACKKEYS(MOD, ACTION)                                \
   { MOD,  XK_j,       ACTION##stack,  { .i = INC(+1) } },     \
   { MOD,  XK_k,       ACTION##stack,  { .i = INC(-1) } },     \
   { MOD,  XK_space,   ACTION##stack,  { .i = 0 } },           \
@@ -148,7 +148,7 @@ static const Layout layouts[] = {
   { MOD,  XK_z,       ACTION##stack,  { .i = -1 } },          \
   { MOD,  XK_Tab,     ACTION##stack,  { .i = PREVSEL } },     \
 
-#define CSTACKKEYS(MOD, ACTION)                                             \
+#define CSTACKKEYS(MOD, ACTION)                                           \
   { {MOD,0,0,0},  {XK_j, 0,0,0},  ACTION##stack,  { .i = INC(+1) } },     \
   { {MOD,0,0,0},  {XK_k, 0,0,0},  ACTION##stack,  { .i = INC(-1) } },     \
   { {MOD,0,0,0},  {XK_Tab,0,0,0}, ACTION##stack,  { .i = PREVSEL } },     \
