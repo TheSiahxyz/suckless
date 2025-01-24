@@ -140,21 +140,21 @@ static const Layout layouts[] = {
   { {ShiftMask,0,0,0},                    {KEY,0,0,0}, tag,           { .ui = 1 << TAG} },    \
   { {ControlMask|ShiftMask,0,0,0},        {KEY,0,0,0}, toggletag,     { .ui = 1 << TAG} },
 
-#define STACKKEYS(MOD, ACTION)                                \
-  { MOD,  XK_j,       ACTION##stack,  { .i = INC(+1) } },     \
-  { MOD,  XK_k,       ACTION##stack,  { .i = INC(-1) } },     \
-  { MOD,  XK_space,   ACTION##stack,  { .i = 0 } },           \
-  { MOD,  XK_a,       ACTION##stack,  { .i = 1 } },           \
-  { MOD,  XK_z,       ACTION##stack,  { .i = -1 } },          \
-  { MOD,  XK_Tab,     ACTION##stack,  { .i = PREVSEL } },     \
+#define STACKKEYS(MOD, ACTION)                               \
+  { MOD,  XK_j,       ACTION##stack, { .i = INC(+1) } },     \
+  { MOD,  XK_k,       ACTION##stack, { .i = INC(-1) } },     \
+  { MOD,  XK_Tab,     ACTION##stack, { .i = PREVSEL } },     \
+  { MOD,  XK_space,   ACTION##stack, { .i = 0 } },           \
+  { MOD,  XK_a,       ACTION##stack, { .i = 1 } },           \
+  { MOD,  XK_z,       ACTION##stack, { .i = -1 } },
 
 #define CSTACKKEYS(MOD, ACTION)                                           \
-  { {MOD,0,0,0},  {XK_j, 0,0,0},  ACTION##stack,  { .i = INC(+1) } },     \
-  { {MOD,0,0,0},  {XK_k, 0,0,0},  ACTION##stack,  { .i = INC(-1) } },     \
-  { {MOD,0,0,0},  {XK_Tab,0,0,0}, ACTION##stack,  { .i = PREVSEL } },     \
-  { {MOD,0,0,0},  {XK_x, 0,0,0},  ACTION##stack,  { .i = 0 } },           \
-  { {MOD,0,0,0},  {XK_a, 0,0,0},  ACTION##stack,  { .i = 1 } },           \
-  { {MOD,0,0,0},  {XK_z, 0,0,0},  ACTION##stack,  { .i = -1 } },
+  { {MOD,0,0,0},  {XK_j,      0,0,0}, ACTION##stack, { .i = INC(+1) } },  \
+  { {MOD,0,0,0},  {XK_k,      0,0,0}, ACTION##stack, { .i = INC(-1) } },  \
+  { {MOD,0,0,0},  {XK_Tab,    0,0,0}, ACTION##stack, { .i = PREVSEL } },  \
+  { {MOD,0,0,0},  {XK_space,  0,0,0}, ACTION##stack, { .i = 0 } },        \
+  { {MOD,0,0,0},  {XK_a,      0,0,0}, ACTION##stack, { .i = 1 } },        \
+  { {MOD,0,0,0},  {XK_z,      0,0,0}, ACTION##stack, { .i = -1 } },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL } }
@@ -444,9 +444,9 @@ static const Key keys[] = {
 
   // TRAVERSALS
   { MODKEY,                               XK_apostrophe,      togglemark,         {0} },
-  { MODKEY | ShiftMask,                   XK_Tab,             swapfocus,          {0} },
-  { MODKEY | ControlMask,                 XK_Tab,             swapclient,         {0} },
   { MODKEY2,                              XK_Tab,             view,               {0} },
+  { MODKEY2 | ShiftMask,                  XK_Tab,             swapfocus,          {0} },
+  { MODKEY2 | ControlMask,                XK_Tab,             swapclient,         {0} },
   { MODKEY,                               XK_0,               view,               { .ui = ~0 } },
   { MODKEY | ShiftMask,                   XK_0,               tag,                { .ui = ~0 } },
   { MODKEY2,                              XK_bracketleft,     shiftview,          { .i = -1 } },
