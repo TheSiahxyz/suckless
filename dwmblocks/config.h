@@ -2,7 +2,7 @@
 static const Block blocks[] = {
   /*Icon*/ /*Command*/ /*Update Interval*/ /*Update Signal (1-31)*/
   {"", "sb-music", 0, 23},            // Music (far left)
-  {"", "cat /tmp/recordingicon 2>/dev/null", 0, 31}, // Recording
+  {"", "cat /tmp/recordingicon 2>/dev/null", 0, 24}, // Recording
   {"", "sb-torrent", 20, 22},         // Torrent
   {"", "sb-queues", 10, 21},          // Queues
   {"", "sb-mailbox", 300, 20},        // Mailbox
@@ -11,13 +11,13 @@ static const Block blocks[] = {
   {"", "sb-tasks", 60, 17},           // Tasks
   {"", "sb-packages", 0, 16},         // Packages
   {"", "sb-forecast", 3600, 15},      // Weather
-  /* {"", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000, 30}, */
-  /* {"", "sb-price xmr Monero 🔒 29", 9000, 29}, */
-  /* {"", "sb-price bnb Binance 🫧 28", 9000, 28}, */
-  /* {"", "sb-price xrp XRP 🪓 27", 9000, 27}, */
-  /* {"", "sb-price usdt Tether ⛺ 26", 9000, 26}, */
-  /* {"", "sb-price eth Ethereum 🍸 25", 9000, 25}, */
-  /* {"", "sb-price btc Bitcoin 💰 24", 9000, 24}, */
+  /* {"", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000, 31}, */
+  /* {"", "sb-price xmr Monero 🔒 29", 9000, 30}, */
+  /* {"", "sb-price bnb Binance 🫧 28", 9000, 29}, */
+  /* {"", "sb-price xrp XRP 🪓 27", 9000, 28}, */
+  /* {"", "sb-price usdt Tether ⛺ 26", 9000, 27}, */
+  /* {"", "sb-price eth Ethereum 🍸 25", 9000, 26}, */
+  /* {"", "sb-price btc Bitcoin 💰 24", 9000, 25}, */
   /* {"", "sb-nettraf", 1, 14},          // Network  */
   {"", "sb-cpu", 60, 13},             // CPU
   {"", "sb-memory", 60, 12},          // Memory
@@ -26,7 +26,7 @@ static const Block blocks[] = {
   {"", "sb-bghitness", 0, 9},         // Background Lightness
   {"", "sb-brightness", 0, 8},        // Brightness
   {"", "sb-internet", 5, 7},          // Internet
-  {"", "sb-iplocate", 0, 6},          // ip
+  /* {"", "sb-iplocate", 0, 6},          // ip */
   {"", "sb-volume", 0, 5},            // Volume
   {"", "sb-battery", 5, 4},           // Battery
   {"", "sb-clock", 60, 3},            // Clock
