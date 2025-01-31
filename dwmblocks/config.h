@@ -10,7 +10,7 @@ static const Block blocks[] = {
   {"", "sb-repos", 60, 18},           // Git repositories
   {"", "sb-tasks", 60, 17},           // Tasks
   {"", "sb-packages", 0, 16},         // Packages
-  {"", "sb-forecast", 3600, 15},      // Weather
+  {"", "sb-forecast", 10800, 15},     // Weather
   /* {"", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000, 31}, */
   /* {"", "sb-price xmr Monero 🔒 29", 9000, 30}, */
   /* {"", "sb-price bnb Binance 🫧 28", 9000, 29}, */
