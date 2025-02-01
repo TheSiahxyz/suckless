@@ -398,6 +398,8 @@ static const Key keys[] = {
   { ShiftMask,                            XK_Print,           spawn,              { .v = (const char *[]){ "maimpick", NULL } } },
   { MODKEY,                               XK_Print,           spawn,              { .v = (const char *[]){ "dmenurecord", NULL } } },
   { MODKEY | ControlMask,                 XK_Print,           spawn,              { .v = (const char *[]){ "dmenurecord", "kill", NULL } } },
+  { 0,                                    XK_Scroll_Lock,     spawn,              SHCMD("remaps") },
+  { MODKEY,                               XK_Scroll_Lock,     spawn,              SHCMD("remaps") },
   { MODKEY,                               XK_Scroll_Lock,     spawn,              SHCMD("killall screenkey || screenkey -t 3 -p fixed -s small -g 20%x5%+40%-5% --key-mode keysyms --bak-mode normal --mods-mode normal -f ttf-font-awesome --opacity 0.5 &") },
   { MODKEY,                               XK_F1,              spawn,              SHCMD("groff -mom /usr/local/share/dwm/thesiah.mom -Tpdf | zathura -") },
   { MODKEY | ShiftMask,                   XK_F1,              spawn,              SHCMD("nsxiv -a ${XDG_PICTURES_DIR:-${HOME}/Pictures}/resources") },
@@ -422,7 +424,7 @@ static const Key keys[] = {
   { MODKEY | ShiftMask,                   XK_F11,             spawn,              { .v = (const char *[]){ "webcam", NULL } } },
   { MODKEY,                               XK_F12,             spawn,              SHCMD("remaps") },
   { ShiftMask,                            XK_F12,             spawn,              SHCMD("remaps") },
-  { MODKEY | ShiftMask,                   XK_F12,             spawn,              { .v = (const char *[]){ "fcitx5-configtool", NULL } } },
+  { MODKEY,                               XK_F12,             spawn,              { .v = (const char *[]){ "fcitx5-configtool", NULL } } },
 
   // SYSTEMS
   { MODKEY | ControlMask,                 XK_k,               spawn,              { .v = (const char *[]){ "pkill", "-f", "kakaotalk", NULL } } },
