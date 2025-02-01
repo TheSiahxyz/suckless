@@ -405,6 +405,7 @@ static const Key keys[] = {
   { MODKEY,                               XK_F2,              spawn,              { .v = (const char *[]){ "tutorialvids", NULL } } },
   { MODKEY,                               XK_F3,              spawn,              { .v = (const char *[]){ "displayselect", NULL } } },
   { MODKEY,                               XK_F4,              spawn,              SHCMD(TERMINAL " -e pulsemixer; kill -39 $(pidof dwmblocks)") },
+  { MODKEY | ControlMask,                 XK_F4,              spawn,              { .v = (const char *[]){ "toggleoutput", NULL } } },
   { MODKEY,                               XK_F5,              xrdb,               { .v = NULL } },
   { MODKEY | ShiftMask,                   XK_F5,              spawn,              { .v = (const char *[]){ "stw", NULL } } },
   { MODKEY | ControlMask,                 XK_F5,              spawn,              { .v = (const char *[]){ "rbackup", NULL } } },
