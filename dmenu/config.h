@@ -44,7 +44,7 @@ static const char worddelimiters[] = " ";
  */
 static unsigned int vi_mode = 1;
 static unsigned int start_mode = 0;             /* mode to use when -vi is passed. 0 = insert mode, 1 = normal mode */
-static Key global_esc = { XK_c, ControlMask};   /* escape key when vi mode is not enabled explicitly */
+static Key global_esc = { XK_Escape, 0};   /* escape key when vi mode is not enabled explicitly */
 static Key quit_keys[] = {
   /* keysym   modifier */
   { XK_q,         0 },
