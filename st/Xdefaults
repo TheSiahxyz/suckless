@@ -1,6 +1,6 @@
 !! Transparency (0-1):
-st.alpha: 0.92
-st.alphaOffset: 0.3
+st.alpha: 0.8
+st.alphaOffset: 0.05
 
 !! Set a default font and font size as below:
 st.font: Monospace-11;
@@ -11,7 +11,7 @@ st.font: Monospace-11;
 !! Set the background, foreground and cursor colors as below:
 
 !! gruvbox:
-*.color0: #1d2021
+*.color0: #282828
 *.color1: #cc241d
 *.color2: #98971a
 *.color3: #d79921
@@ -28,8 +28,8 @@ st.font: Monospace-11;
 *.color14: #8ec07c
 *.color15: #ebdbb2
 *.background: #282828
-*.foreground: white
-*.cursorColor: white
+*.foreground: #ebdbb2
+*.cursorColor: #add8e6
 
 /* /1* !! gruvbox light: *1/ */
 /* *.color0: #fbf1c7 */
