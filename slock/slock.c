@@ -714,8 +714,8 @@ main(int argc, char **argv) {
   snprintf(command, size_needed, "mount | grep -q ' %s/Private '", home_path);
   int result = system(command);
   free(command);
-  if (result != 0) {
-      background_image = ".local/share/wallpapers/lock";
+  if (result == 0) {
+      background_image = private_image;
       privateblur = 0;
   }
   if (strcmp(background_image, "") == 0) {

@@ -53,6 +53,7 @@ static const int pixelSize = 0;
 
 /* Background image path, should be available to the user above */
 static const char *background_image = "";
+static const char *private_image = "Private/photo/19CDB48F-C92D-437D-A65E-F7DD30F0A05F.png";
 
 /* PAM service that's used for authentication */
 static const char *pam_service = "system-login";
