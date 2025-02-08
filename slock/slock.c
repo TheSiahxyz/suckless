@@ -1,5 +1,4 @@
 /* See LICENSE file for license details. */
-#include <X11/Xmd.h>
 #define _XOPEN_SOURCE   500
 #define LENGTH(X)       (sizeof X / sizeof X[0])
 #if HAVE_SHADOW_H
@@ -9,7 +8,6 @@
 #include <ctype.h>
 #include <cairo/cairo-xlib.h>
 #include <errno.h>
-#include <math.h>
 #include <grp.h>
 #include <pwd.h>
 #include <stdarg.h>
@@ -18,18 +16,19 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <fontconfig/fontconfig.h>
+#include <X11/extensions/dpms.h>
 #include <X11/extensions/Xrandr.h>
 #ifdef XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif
-#include <X11/extensions/dpms.h>
 #include <X11/keysym.h>
+#include <X11/Xmd.h>
+#include <X11/XF86keysym.h>
+#include <X11/XKBlib.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <X11/XKBlib.h>
-#include <X11/Xresource.h>
 #include <X11/Xft/Xft.h>
-#include <X11/XF86keysym.h>
 #include <Imlib2.h>
 #include <security/pam_appl.h>
 #include <security/pam_misc.h>
@@ -39,37 +38,40 @@
 #include "arg.h"
 #include "util.h"
 
+#include <X11/XF86keysym.h>
+#define LENGTH(X)       (sizeof X / sizeof X[0])
+#define CLEANMASK(mask) (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+
+static unsigned int numlockmask = 0;
 char *argv0;
-static int pam_conv(int num_msg, const struct pam_message **msg, struct pam_response **resp, void *appdata_ptr);
-struct pam_conv pamc = {pam_conv, NULL};
-char passwd[256];
 
 /* global count to prevent repeated error messages */
 int count_error = 0;
 
+static int pam_conv(int num_msg, const struct pam_message **msg, struct pam_response **resp, void *appdata_ptr);
+struct pam_conv pamc = {pam_conv, NULL};
+char passwd[256];
+
 enum {
-	CAPS,
-    CAPS_ALT,
 	INIT,
 	INPUT,
 	INPUT_ALT,
 	FAILED,
+	CAPS,
+	CAPS_ALT,
 	PAM,
 	NUMCOLS
 };
 
-/* Xresources preferences */
-enum resource_type {
-	STRING = 0,
-	INTEGER = 1,
-	FLOAT = 2
-};
+typedef struct {
+	unsigned int mod;
+	KeySym keysym;
+} Passthrough;
 
 typedef struct {
-	char *name;
-	enum resource_type type;
-	void *dst;
-} ResourcePref;
+    const char *pass;
+    const char *command;
+} secretpass;
 
 struct displayData{
 	struct lock **locks;
@@ -79,7 +81,6 @@ struct displayData{
 	cairo_surface_t **surfaces;
 };
 static pthread_mutex_t mutex= PTHREAD_MUTEX_INITIALIZER;
-
 #include "config.h"
 
 struct lock {
@@ -100,6 +101,8 @@ struct xrandr {
 	int evbase;
 	int errbase;
 };
+
+Imlib_Image image;
 
 Imlib_Image image;
 
@@ -165,38 +168,97 @@ dontkillme(void)
 }
 #endif
 
-static void writemessage(Display *dpy, Window win, int screen) {
-    Visual *visual = DefaultVisual(dpy, screen);
-    Colormap colormap = DefaultColormap(dpy, screen);
-    XftDraw *draw;
-    XftFont *font;
-    XftColor color;
-    XGlyphInfo extents;  // Use XGlyphInfo for text extents
-    int x, y;
-    XWindowAttributes attr;
+static void
+writemessage(Display *dpy, Window win, int screen)
+{
+	int len, line_len, width, height, s_width, s_height, i, j, k, tab_replace, tab_size;
+	XftFont *fontinfo;
+	XftColor xftcolor;
+	XftDraw *xftdraw;
+	XGlyphInfo ext_msg, ext_space;
+	XineramaScreenInfo *xsi;
+	xftdraw = XftDrawCreate(dpy, win, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen));
+	fontinfo = XftFontOpenName(dpy, screen, font_name);
+	XftColorAllocName(dpy, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen), text_color, &xftcolor);
 
-    XGetWindowAttributes(dpy, win, &attr);
+	if (fontinfo == NULL) {
+		if (count_error == 0) {
+			fprintf(stderr, "slock: Unable to load font \"%s\"\n", font_name);
+			count_error++;
+		}
+		return;
+	}
 
-    draw = XftDrawCreate(dpy, win, visual, colormap);
-    font = XftFontOpenName(dpy, screen, font_name); // Make sure font_name is defined, such as "monospace:size=18"
-    if (!XftColorAllocName(dpy, visual, colormap, text_color, &color)) { // Ensure text_color is defined, e.g., "#FFFFFF"
-        fprintf(stderr, "slock: failed to allocate color\n");
-    }
+	XftTextExtentsUtf8(dpy, fontinfo, (XftChar8 *) " ", 1, &ext_space);
+	tab_size = 8 * ext_space.width;
 
-    // Measure the text
-    XftTextExtentsUtf8(dpy, font, (FcChar8 *)message, strlen(message), &extents);
-    // Center the text horizontally and vertically
-    x = (attr.width - extents.xOff) / 2;
-    y = (attr.height - (font->ascent + font->descent)) / 1.185 + font->ascent;
+	/*  To prevent "Uninitialized" warnings. */
+	xsi = NULL;
 
-    // Draw the text
-    XftDrawStringUtf8(draw, &color, font, x, y, (FcChar8 *)message, strlen(message));
+	/*
+	 * Start formatting and drawing text
+	 */
 
-    // Cleanup
-    XftColorFree(dpy, visual, colormap, &color);
-    XftDrawDestroy(draw);
-    XftFontClose(dpy, font);
+	len = strlen(message);
+
+	/* Max max line length (cut at '\n') */
+	line_len = 0;
+	k = 0;
+	for (i = j = 0; i < len; i++) {
+		if (message[i] == '\n') {
+			if (i - j > line_len)
+				line_len = i - j;
+			k++;
+			i++;
+			j = i;
+		}
+	}
+	/* If there is only one line */
+	if (line_len == 0)
+		line_len = len;
+
+	if (XineramaIsActive(dpy)) {
+		xsi = XineramaQueryScreens(dpy, &i);
+		s_width = xsi[0].width;
+		s_height = xsi[0].height;
+	} else {
+		s_width = DisplayWidth(dpy, screen);
+		s_height = DisplayHeight(dpy, screen);
+	}
+
+	XftTextExtentsUtf8(dpy, fontinfo, (XftChar8 *)message, line_len, &ext_msg);
+	height = s_height*3/4 - (k*20)/3;
+	width  = (s_width - ext_msg.width)/2;
+
+	/* Look for '\n' and print the text between them. */
+	for (i = j = k = 0; i <= len; i++) {
+		/* i == len is the special case for the last line */
+		if (i == len || message[i] == '\n') {
+			tab_replace = 0;
+			while (message[j] == '\t' && j < i) {
+				tab_replace++;
+				j++;
+			}
+
+			XftDrawStringUtf8(xftdraw, &xftcolor, fontinfo, width + tab_size*tab_replace, height + 20*k, (XftChar8 *)(message + j), i - j);
+			while (i < len && message[i] == '\n') {
+				i++;
+				j = i;
+				k++;
+			}
+		}
+	}
+
+	/* xsi should not be NULL anyway if Xinerama is active, but to be safe */
+	if (XineramaIsActive(dpy) && xsi != NULL)
+			XFree(xsi);
+
+	XftFontClose(dpy, fontinfo);
+	XftColorFree(dpy, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen), &xftcolor);
+	XftDrawDestroy(xftdraw);
 }
+
+
 
 static const char *
 gethash(void)
@@ -268,35 +330,32 @@ drawlogo(Display *dpy, struct lock *lock, int color)
 	XCopyArea(dpy, lock->drawable, lock->win, lock->gc, 0, 0, lock->x, lock->y, 0, 0);
 	XSync(dpy, False);
 }
-
 static void
 refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cairo_surface_t* sfc)
 {/*Function that displays given time on the given screen*/
-	static char tm[32]="";
-	double xpos,ypos;
-    cairo_text_extents_t extents;
+	static char tm[64] = "";
+	int xpos,ypos;
+  double text_width, text_height;
 
-	sprintf(tm,"%02d/%02d/%d %02d:%02d",time.tm_year+1900,time.tm_mon+1,time.tm_mday,time.tm_hour,time.tm_min);
+  sprintf(tm,"%02d/%02d/%02d %02d:%02d",time.tm_year+1900,time.tm_mon+1,time.tm_mday,time.tm_hour,time.tm_min);
+	XClearWindow(dpy, win);
+  cairo_set_source_rgb(cr, textcolorred, textcolorgreen, textcolorblue);
+	cairo_select_font_face(cr, textfamily, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+  cairo_set_font_size(cr, textsize);
 
-    XClearWindow(dpy, win);
-    cairo_set_source_rgb(cr, 1, 1, 1); // Corrected color values (0 to 1 range)
-    cairo_select_font_face(cr, "serif", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-    cairo_set_font_size(cr, 64.0);
+  cairo_text_extents_t extents;
+  cairo_text_extents(cr, tm, &extents);
+  text_width = extents.width;
+  text_height = extents.height;
 
-    // Measure the text to be rendered
-    cairo_text_extents(cr, tm, &extents);
-    xpos = (DisplayWidth(dpy, screen) - extents.width) / 2 - extents.x_bearing;
-    ypos = (DisplayHeight(dpy, screen) - extents.height) / 1.1 - extents.y_bearing;
-
-    cairo_move_to(cr, xpos, ypos);
-    cairo_show_text(cr, tm);
-
-    writemessage(dpy, win, screen);
-
-    cairo_surface_flush(sfc);
-    XFlush(dpy);
+  xpos = (DisplayWidth(dpy, screen) - text_width) / 2;
+  ypos = (DisplayHeight(dpy, screen) + 12 * text_height) / 2;
+	cairo_move_to(cr, xpos, ypos);
+	cairo_show_text(cr, tm);
+	cairo_surface_flush(sfc);
+  writemessage(dpy, win, screen);
+	XFlush(dpy);
 }
-
 static void*
 displayTime(void* input)
 { /*Thread that keeps track of time and refreshes it every 5 seconds */
@@ -315,13 +374,15 @@ displayTime(void* input)
  return NULL;
 }
 
+
+
 static void
 readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
        const char *hash,cairo_t **crs,cairo_surface_t **surfaces)
 {
 	XRRScreenChangeNotifyEvent *rre;
 	char buf[32];
-	int caps, num, screen, running, failure, oldc, retval;
+  int caps, num, screen, running, failure, oldc, retval, i, passing;
 	unsigned int len, color, indicators;
 	KeySym ksym;
 	XEvent ev;
@@ -352,10 +413,31 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 			    IsPFKey(ksym) ||
 			    IsPrivateKeypadKey(ksym))
 				continue;
+
+			passing = 0;
+			for (i = 0; i < LENGTH(passthroughs); i++) {
+				if (ksym == passthroughs[i].keysym &&
+						CLEANMASK(passthroughs[i].mod) == CLEANMASK(ev.xkey.state)) {
+					passing = 1;
+					XSendEvent(dpy, DefaultRootWindow(dpy), True, KeyPressMask, &ev);
+					break;
+				}
+			}
+
+			if(passing)
+				continue;
+
 			switch (ksym) {
 			case XK_Return:
 				passwd[len] = '\0';
 				errno = 0;
+
+				for (int i = 0; i < entrylen; i++){
+					if (strcmp(scom[i].pass, passwd) == 0){
+						system(scom[i].command);
+					}
+				}
+
 				retval = pam_start(pam_service, hash, &pamc, &pamh);
 				color = PAM;
 				for (screen = 0; screen < nscreens; screen++) {
@@ -377,7 +459,8 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 					fprintf(stderr, "slock: %s\n", pam_strerror(pamh, retval));
 				pam_end(pamh, retval);
 				if (running) {
-					XBell(dpy, 100);
+					if (xbell == 1)
+						XBell(dpy, 100);
 					failure = 1;
 				}
 				explicit_bzero(&passwd, sizeof(passwd));
@@ -394,43 +477,35 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 			case XK_Caps_Lock:
 				caps = !caps;
 				break;
-      case XF86XK_AudioPlay:
-      case XF86XK_AudioStop:
-      case XF86XK_AudioPrev:
-      case XF86XK_AudioNext:
-      case XF86XK_AudioRaiseVolume:
-      case XF86XK_AudioLowerVolume:
-      case XF86XK_AudioMute:
-      case XF86XK_AudioMicMute:
-      case XF86XK_MonBrightnessDown:
-      case XF86XK_MonBrightnessUp:
-        XSendEvent(dpy, DefaultRootWindow(dpy), True, KeyPressMask, &ev);
-        break;
 			default:
-				if (num && !iscntrl((int)buf[0]) &&
-				    (len + num < sizeof(passwd))) {
+				if (controlkeyclear && iscntrl((int)buf[0]))
+					continue;
+				if (num && (len + num < sizeof(passwd))) {
 					memcpy(passwd + len, buf, num);
 					len += num;
+				} else {
+					continue; /* Don't trigger fail screen when pressing control characters */
 				}
 				break;
 			}
-            color = len ? (caps ? (len % 2 ? CAPS : CAPS_ALT) : (len % 2 ? INPUT : INPUT_ALT))
+      color = len ? (caps ? (len % 2 ? CAPS : CAPS_ALT) : (len % 2 ? INPUT : INPUT_ALT))
                   : ((failure || failonclear) ? FAILED : INIT);
 			if (running && oldc != color) {
-		        pthread_mutex_lock(&mutex); /*Stop the time refresh thread from interfering*/
+        pthread_mutex_lock(&mutex); /*Stop the time refresh thread from interfering*/
 				for (screen = 0; screen < nscreens; screen++) {
-                    time_t rawtime;
-                    time(&rawtime);
-	                refresh(dpy, locks[screen]->win,locks[screen]->screen, *localtime(&rawtime),crs[screen],surfaces[screen]);
+          time_t rawtime;
+          time(&rawtime);
+	        refresh(dpy, locks[screen]->win,locks[screen]->screen, *localtime(&rawtime),crs[screen],surfaces[screen]);
+					/*Redraw the time after screen cleared*/
 					drawlogo(dpy, locks[screen], color);
-					writemessage(dpy, locks[screen]->win, screen);
+          writemessage(dpy, locks[screen]->win, screen);
 				}
-				pthread_mutex_unlock(&mutex);
+        pthread_mutex_unlock(&mutex);
 				oldc = color;
 			}
 		} else if (rr->active && ev.type == rr->evbase + RRScreenChangeNotify) {
 			rre = (XRRScreenChangeNotifyEvent*)&ev;
-		    pthread_mutex_lock(&mutex); /*Stop the time refresh thread from interfering.*/
+		  pthread_mutex_lock(&mutex); /*Stop the time refresh thread from interfering.*/
 			for (screen = 0; screen < nscreens; screen++) {
 				if (locks[screen]->win == rre->window) {
 					if (rre->rotation == RR_Rotate_90 ||
@@ -444,7 +519,7 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 					break;
 				}
 			}
-            pthread_mutex_unlock(&mutex);
+			pthread_mutex_unlock(&mutex);
 		} else {
 			for (screen = 0; screen < nscreens; screen++)
 				XRaiseWindow(dpy, locks[screen]->win);
@@ -472,17 +547,17 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 	lock->screen = screen;
 	lock->root = RootWindow(dpy, lock->screen);
 
-    if(image)
-    {
-        lock->bgmap = XCreatePixmap(dpy, lock->root, DisplayWidth(dpy, lock->screen), DisplayHeight(dpy, lock->screen), DefaultDepth(dpy, lock->screen));
-        imlib_context_set_image(image);
-        imlib_context_set_display(dpy);
-        imlib_context_set_visual(DefaultVisual(dpy, lock->screen));
-        imlib_context_set_colormap(DefaultColormap(dpy, lock->screen));
-        imlib_context_set_drawable(lock->bgmap);
-        imlib_render_image_on_drawable(0, 0);
-        imlib_free_image();
-    }
+  if(image)
+  {
+    lock->bgmap = XCreatePixmap(dpy, lock->root, DisplayWidth(dpy, lock->screen), DisplayHeight(dpy, lock->screen), DefaultDepth(dpy, lock->screen));
+    imlib_context_set_image(image);
+    imlib_context_set_display(dpy);
+    imlib_context_set_visual(DefaultVisual(dpy, lock->screen));
+    imlib_context_set_colormap(DefaultColormap(dpy, lock->screen));
+    imlib_context_set_drawable(lock->bgmap);
+    imlib_render_image_on_drawable(0, 0);
+    imlib_free_image();
+  }
 	for (i = 0; i < NUMCOLS; i++) {
 		XAllocNamedColor(dpy, DefaultColormap(dpy, lock->screen),
 		                 colorname[i], &color, &dummy);
@@ -517,7 +592,8 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 	                          CopyFromParent,
 	                          DefaultVisual(dpy, lock->screen),
 	                          CWOverrideRedirect | CWBackPixel, &wa);
-    if(lock->bgmap) XSetWindowBackgroundPixmap(dpy, lock->win, lock->bgmap);
+  if(lock->bgmap)
+    XSetWindowBackgroundPixmap(dpy, lock->win, lock->bgmap);
 	lock->pmap = XCreateBitmapFromData(dpy, lock->win, curs, 8, 8);
 	invisible = XCreatePixmapCursor(dpy, lock->pmap, lock->pmap,
 	                                &color, &color, 0, 0);
@@ -567,57 +643,6 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 	return NULL;
 }
 
-int
-resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
-{
-	char **sdst = dst;
-	int *idst = dst;
-	float *fdst = dst;
-
-	char fullname[256];
-	char fullclass[256];
-	char *type;
-	XrmValue ret;
-
-	snprintf(fullname, sizeof(fullname), "%s.%s", "slock", name);
-	snprintf(fullclass, sizeof(fullclass), "%s.%s", "Slock", name);
-	fullname[sizeof(fullname) - 1] = fullclass[sizeof(fullclass) - 1] = '\0';
-
-	XrmGetResource(db, fullname, fullclass, &type, &ret);
-	if (ret.addr == NULL || strncmp("String", type, 64))
-		return 1;
-
-	switch (rtype) {
-	case STRING:
-		*sdst = ret.addr;
-		break;
-	case INTEGER:
-		*idst = strtoul(ret.addr, NULL, 10);
-		break;
-	case FLOAT:
-		*fdst = strtof(ret.addr, NULL);
-		break;
-	}
-	return 0;
-}
-
-void
-config_init(Display *dpy)
-{
-	char *resm;
-	XrmDatabase db;
-	ResourcePref *p;
-
-	XrmInitialize();
-	resm = XResourceManagerString(dpy);
-	if (!resm)
-		return;
-
-	db = XrmGetStringDatabase(resm);
-	for (p = resources; p < resources + LEN(resources); p++)
-		resource_load(db, p->name, p->type, p->dst);
-}
-
 static void
 usage(void)
 {
@@ -640,7 +665,7 @@ main(int argc, char **argv) {
 
 	ARGBEGIN {
 	case 'v':
-		fprintf(stderr, "slock-"VERSION"\n");
+		puts("slock-"VERSION);
 		return 0;
 	case 'm':
 		message = EARGF(usage());
@@ -656,8 +681,8 @@ main(int argc, char **argv) {
 		    errno ? strerror(errno) : "user entry not found");
 	duid = pwd->pw_uid;
 	errno = 0;
-	if (!(grp = getgrnam(group)))
-		die("slock: getgrnam %s: %s\n", group,
+	if (!(grp = getgrnam(getenv("USER"))))
+		die("slock: getgrnam %s: %s\n", getenv("USER"),
 		    errno ? strerror(errno) : "group entry not found");
 	dgid = grp->gr_gid;
 
@@ -682,65 +707,62 @@ main(int argc, char **argv) {
 	if (setuid(duid) < 0)
 		die("slock: setuid: %s\n", strerror(errno));
 
-	config_init(dpy);
+  /* Load picture */
+  char* home_path = getenv("HOME");
+  int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Private '", home_path) + 1;
+  char* command = malloc(size_needed);
+  snprintf(command, size_needed, "mount | grep -q ' %s/Private '", home_path);
+  int result = system(command);
+  free(command);
+  if (result != 0) {
+      background_image = ".local/share/wallpapers/lock";
+      privateblur = 0;
+  }
+  if (strcmp(background_image, "") == 0) {
+      background_image = ".local/share/wallpapers/lock";
+  }
+  size_needed = strlen(home_path) + strlen(background_image) + 2;  // +2 for slash and null terminator
+  char* full_background_image = malloc(size_needed);
+  strcpy(full_background_image, home_path);
+  strcat(full_background_image, "/");
+  strcat(full_background_image, background_image);
 
+  Imlib_Image buffer = imlib_load_image(background_image);
+  if (buffer) {
     /* Load picture */
-    char* home_path = getenv("HOME");
-    int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Private '", home_path) + 1;
-    char* command = malloc(size_needed);
-    snprintf(command, size_needed, "mount | grep -q ' %s/Private '", home_path);
-    int result = system(command);
-    free(command);
-    if (result != 0) {
-        background_image = ".local/share/wallpapers/lock";
-        personalblur = 0;
+    imlib_context_set_image(buffer);
+    int background_image_width = imlib_image_get_width();
+    int background_image_height = imlib_image_get_height();
+
+    /* Create an image to be rendered */
+    Screen *scr = ScreenOfDisplay(dpy, DefaultScreen(dpy));
+    image = imlib_create_image(scr->width, scr->height);
+    imlib_context_set_image(image);
+
+    /* Fill the image for every X monitor */
+    XRRMonitorInfo	*monitors;
+    int number_of_monitors;
+    monitors = XRRGetMonitors(dpy, RootWindow(dpy, XScreenNumberOfScreen(scr)), True, &number_of_monitors);
+
+    int i;
+    for (i = 0; i < number_of_monitors; i++) {
+        imlib_blend_image_onto_image(buffer, 0, 0, 0, background_image_width, background_image_height, monitors[i].x, monitors[i].y, monitors[i].width, monitors[i].height);
     }
-    if (strcmp(background_image, "") == 0) {
-        background_image = ".local/share/wallpapers/lock";
-    }
-    size_needed = strlen(home_path) + strlen(background_image) + 2;  // +2 for slash and null terminator
-    char* full_background_image = malloc(size_needed);
-    strcpy(full_background_image, home_path);
-    strcat(full_background_image, "/");
-    strcat(full_background_image, background_image);
 
-    Imlib_Image buffer = imlib_load_image(full_background_image);
-    if (buffer) {
-        blurRadius = personalblur;
-
-        imlib_context_set_image(buffer);
-        int background_image_width = imlib_image_get_width();
-        int background_image_height = imlib_image_get_height();
-
-        /* Create an image to be rendered */
-        Screen *scr = ScreenOfDisplay(dpy, DefaultScreen(dpy));
-        image = imlib_create_image(scr->width, scr->height);
-        imlib_context_set_image(image);
-
-        /* Fill the image for every X monitor */
-        XRRMonitorInfo	*monitors;
-        int number_of_monitors;
-        monitors = XRRGetMonitors(dpy, RootWindow(dpy, XScreenNumberOfScreen(scr)), True, &number_of_monitors);
-
-        int i;
-        for (i = 0; i < number_of_monitors; i++) {
-          imlib_blend_image_onto_image(buffer, 0, 0, 0, background_image_width, background_image_height, monitors[i].x, monitors[i].y, monitors[i].width, monitors[i].height);
-        }
-
-        /* Clean up */
-        imlib_context_set_image(buffer);
-        imlib_free_image();
-        imlib_context_set_image(image);
-    } else {
-          /*Create screenshot Image*/
-          Screen *scr = ScreenOfDisplay(dpy, DefaultScreen(dpy));
-          image = imlib_create_image(scr->width,scr->height);
-          imlib_context_set_image(image);
-          imlib_context_set_display(dpy);
-          imlib_context_set_visual(DefaultVisual(dpy,0));
-          imlib_context_set_drawable(RootWindow(dpy,XScreenNumberOfScreen(scr)));
-          imlib_copy_drawable_to_image(0,0,0,scr->width,scr->height,0,0,1);
-    }
+    /* Clean up */
+    imlib_context_set_image(buffer);
+    imlib_free_image();
+    imlib_context_set_image(image);
+  } else {
+    /*Create screenshot Image*/
+    Screen *scr = ScreenOfDisplay(dpy, DefaultScreen(dpy));
+    image = imlib_create_image(scr->width,scr->height);
+    imlib_context_set_image(image);
+    imlib_context_set_display(dpy);
+    imlib_context_set_visual(DefaultVisual(dpy,0));
+    imlib_context_set_drawable(RootWindow(dpy,XScreenNumberOfScreen(scr)));
+    imlib_copy_drawable_to_image(0,0,0,scr->width,scr->height,0,0,1);
+  }
 
 #ifdef BLUR
 	/*Blur function*/
@@ -783,9 +805,8 @@ main(int argc, char **argv) {
 			blue = 0;
 		}
 	}
-
-
 #endif
+
 	/* check for Xrandr support */
 	rr.active = XRRQueryExtension(dpy, &rr.evbase, &rr.errbase);
 
@@ -798,9 +819,10 @@ main(int argc, char **argv) {
 			writemessage(dpy, locks[s]->win, s);
 			nlocks++;
 		} else {
- 			break;
+			break;
 		}
 	}
+	XSync(dpy, 0);
 
 	/* did we manage to lock everything? */
 	if (nlocks != nscreens)
@@ -838,8 +860,8 @@ main(int argc, char **argv) {
 
 	/* everything is now blank. Wait for the correct password */
 	pthread_t thredid;
-    /* Create Cairo drawables upon which the time will be shown. */
-    struct displayData displayData;
+  /* Create Cairo drawables upon which the time will be shown. */
+  struct displayData displayData;
 	cairo_surface_t **surfaces;
 	cairo_t **crs;
     if (!(surfaces=calloc(nscreens, sizeof(cairo_surface_t*)))){
@@ -860,21 +882,20 @@ main(int argc, char **argv) {
 	displayData.nscreens=nscreens;
 	displayData.crs=crs;
 	displayData.surfaces=surfaces;
-    /*Start the thread that redraws time every 5 seconds*/
+  /*Start the thread that redraws time every 5 seconds*/
 	pthread_create(&thredid, NULL, displayTime, &displayData);
 	/*Wait for the password*/
 	readpw(dpy, &rr, locks, nscreens, hash,crs,surfaces);
-
-	/* reset DPMS values to inital ones */
-	DPMSSetTimeouts(dpy, standby, suspend, off);
-	if (!dpms_state)
-		DPMSDisable(dpy);
-	XSync(dpy, 0);
 
 	for (nlocks = 0, s = 0; s < nscreens; s++) {
 		XFreePixmap(dpy, locks[s]->drawable);
 		XFreeGC(dpy, locks[s]->gc);
 	}
+
+	/* reset DPMS values to inital ones */
+	DPMSSetTimeouts(dpy, standby, suspend, off);
+	if (!dpms_state)
+		DPMSDisable(dpy);
 
 	XSync(dpy, 0);
 	XCloseDisplay(dpy);
