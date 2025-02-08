@@ -284,9 +284,9 @@ static const Key keys[] = {
   // LAYOUTS
   { MODKEY,       XK_f,               togglefullscr,      {0} },
   { WINMOD2,      XK_f,               togglefloating,     {0} },
-  { WINMOD2,      XK_s,               togglesticky,       {0} },
 	{ WINMOD,       XK_h,               layoutscroll,       { .i = -1 } },
 	{ WINMOD,       XK_l,               layoutscroll,       { .i = +1 } },
+  { WINMOD2,      XK_s,               togglesticky,       {0} },
   { EXTRAMOD,     XK_grave,           setlayout,          { .v = &layouts[0] } },
   { EXTRAMOD,     XK_1,               setlayout,          { .v = &layouts[1] } },
   { EXTRAMOD,     XK_2,               setlayout,          { .v = &layouts[2] } },
@@ -303,11 +303,8 @@ static const Key keys[] = {
   { EXTRAMOD,     XK_backslash,       setlayout,          { .v = &layouts[13] } },
 
   // LAYOUT SIZES
-  { WINMOD,       XK_n,               incnmaster,         { .i = -1 } },
-  { WINMOD2,      XK_n,               incnmaster,         { .i = +1 } },
   { MODKEY,       XK_h,               setmfact,           { .f = -0.05 } },
   { MODKEY,       XK_l,               setmfact,           { .f = +0.05 } },
-  { WINMOD,       XK_space,           zoom,               {0} },
   { WINMOD2,      XK_j,               setcfact,           { .f = -0.25 } },
   { WINMOD2,      XK_k,               setcfact,           { .f = +0.25 } },
   { WINMOD2,      XK_l,               setcfact,           { .f = 0.00 } },
@@ -315,6 +312,8 @@ static const Key keys[] = {
   { WINMOD2,      XK_c,               incrgaps,           { .i = +5 } },
   { WINMOD,       XK_i,               incrigaps,          { .i = -5 } },
   { WINMOD2,      XK_i,               incrigaps,          { .i = +5 } },
+  { WINMOD,       XK_n,               incnmaster,         { .i = -1 } },
+  { WINMOD2,      XK_n,               incnmaster,         { .i = +1 } },
   { WINMOD,       XK_o,               incrogaps,          { .i = -5 } },
   { WINMOD2,      XK_o,               incrogaps,          { .i = +5 } },
   { WINMOD,       XK_y,               incrihgaps,         { .i = -5 } },
@@ -327,6 +326,7 @@ static const Key keys[] = {
   { WINMOD2,      XK_r,               incrovgaps,         { .i = +5 } },
   { WINMOD,       XK_g,               defaultgaps,        {0} },
   { WINMOD2,      XK_g,               togglegaps,         {0} },
+  { WINMOD,       XK_space,           zoom,               {0} },
 
   // MEDIA CONTROLS
   { 0, NoSymbol,                          spawn,  { .v = termcmd } },
