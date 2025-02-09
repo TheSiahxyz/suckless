@@ -576,11 +576,11 @@ static Command commands[] = {
 
   // SUCKLESS CONFIGS
   { { ShiftMask, 0, 0, 0 },   { XK_p, 0, 0, 0 },              spawn,                  SHCMD(TERMINAL " -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") },
-  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_d, XK_b, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.h") },
-  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_d, XK_m, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.h") },
-  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_d, XK_w, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.h") },
-  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_s, XK_t, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.h") },
-  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_s, XK_l, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.h") },
+  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_d, XK_b, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") },
+  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_d, XK_m, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
+  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_d, XK_w, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") },
+  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_s, XK_t, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") },
+  { { ShiftMask, 0, 0, 0 },   { XK_s, XK_s, XK_l, 0 },        spawn,                  SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") },
 };
 
 /* button definitions */
@@ -607,11 +607,11 @@ static const Button buttons[] = {
   { ClkStatusText,    ControlMask,  Button4,    sigdwmblocks,   { .i = 14 } },
   { ClkStatusText,    ControlMask,  Button5,    sigdwmblocks,   { .i = 15 } },
 #endif
-  { ClkStatusText,    MODKEY,       Button1,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.h") },
-  { ClkStatusText,    WINMOD,       Button1,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.h") },
-  { ClkStatusText,    WINMOD2,      Button1,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.h") },
-  { ClkStatusText,    MODKEY,       Button3,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.h") },
-  { ClkStatusText,    WINMOD,       Button3,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.h") },
+  { ClkStatusText,    MODKEY,       Button1,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") },
+  { ClkStatusText,    WINMOD,       Button1,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") },
+  { ClkStatusText,    WINMOD2,      Button1,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
+  { ClkStatusText,    MODKEY,       Button3,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") },
+  { ClkStatusText,    WINMOD,       Button3,    spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") },
   { ClkClientWin,     MODKEY,       Button1,    movemouse,      {0} },
   { ClkClientWin,     WINMOD,       Button1,    killclient,     {0} },
   { ClkClientWin,     WINMOD2,      Button1,    killclient,     { .ui = 2 } },
