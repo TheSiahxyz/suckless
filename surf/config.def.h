@@ -1,3 +1,9 @@
+#define HOMEPAGE    "https://searx.thesiah.xyz/"
+#define PROMPT_GO   "Go to:"
+#define PROMPT_FIND "Find:"
+
+/* enable to open GO prompt on startup */
+static int startgo = 0;
 /* modifier 0 means no modifier */
 static int surfuseragent    = 1;  /* Append Surf version to default WebKit user agent */
 static char *fulluseragent  = ""; /* Or override the whole user agent string */
@@ -7,15 +13,19 @@ static char *certdir        = "~/.surf/certificates/";
 static char *cachedir       = "~/.surf/cache/";
 static char *cookiefile     = "~/.surf/cookies.txt";
 static char *historyfile    = "~/.surf/history.txt";
-
-
+static char *searchengine   = "https://searx.thesiah.xyz/?q=";
 static SearchEngine searchengines[] = {
-	{ " ", "https://duckduckgo.com/?q=%s" },
-	{ "osrs ", "https://oldschool.runescape.wiki/?search=%s" },
+	{ " ", "https://searx.thesiah.xyz/?q=%s" },
+	{ "sd", "https://duckduckgo.com/?q=%s" },
 };
 
-/* enable to open GO prompt on startup */
-static int startgo = 0;
+/* Put here your aliases */
+static Alias aliases[] = {
+  /* Alias                URI */
+  { "ss",         "https://searx.thesiah.xyz" },
+  { "ddg",        "https://duckduckgo.com" },
+  { "wiki",       "https://www.wikipedia.org" }
+};
 
 /* Webkit default features */
 /* Highest priority value will be used.
@@ -71,9 +81,6 @@ static int winsize[] = { 800, 600 };
 
 static WebKitFindOptions findopts = WEBKIT_FIND_OPTIONS_CASE_INSENSITIVE |
                                     WEBKIT_FIND_OPTIONS_WRAP_AROUND;
-
-#define PROMPT_GO   "Go:"
-#define PROMPT_FIND "Find:"
 
 /* SETPROP(readprop, setprop, prompt)*/
 #define SETPROP(r, s, p) { \
@@ -151,70 +158,61 @@ static SiteSpecific certs[] = {
  * edit the CLEANMASK() macro.
  */
 static Key keys[] = {
-	/* modifier              keyval          function    arg */
-	{ 0,                     GDK_KEY_g,      spawn,      SETPROP("_SURF_URI", "_SURF_GO", PROMPT_GO) },
-	{ 0,                     GDK_KEY_f,      spawn,      SETPROP("_SURF_FIND", "_SURF_FIND", PROMPT_FIND) },
-	{ 0,                     GDK_KEY_slash,  spawn,      SETPROP("_SURF_FIND", "_SURF_FIND", PROMPT_FIND) },
-	{ MODKEY,                GDK_KEY_m,      spawn,      BM_ADD("_SURF_URI") },
+	/* modifier               keyval          function    arg */
+	{ 0,                      GDK_KEY_g,      spawn,      SETPROP("_SURF_URI", "_SURF_GO", PROMPT_GO) },
+	{ 0,                      GDK_KEY_f,      spawn,      SETPROP("_SURF_FIND", "_SURF_FIND", PROMPT_FIND) },
+	{ 0,                      GDK_KEY_slash,  spawn,      SETPROP("_SURF_FIND", "_SURF_FIND", PROMPT_FIND) },
+	{ 0,                      GDK_KEY_m,      spawn,      BM_ADD("_SURF_URI") },
 
-	{ MODKEY,                GDK_KEY_w,      playexternal, { 0 } },
+	{ 0,                      GDK_KEY_w,      playexternal, { 0 } },
 
-	{ 0,                     GDK_KEY_c,      stop,       { 0 } },
+	{ 0,                      GDK_KEY_c,      stop,       { 0 } },
 
-	{ 0,			               GDK_KEY_q,	     quit,	     { 0 } },
+	{ 0,			                GDK_KEY_q,	     quit,	     { 0 } },
 
-	{ 0,                     GDK_KEY_Escape, insert,     { .i = 0 } },
-	{ 0,                     GDK_KEY_i,      insert,     { .i = 1 } },
+	{ 0,                      GDK_KEY_Escape, insert,     { .i = 0 } },
+	{ 0,                      GDK_KEY_i,      insert,     { .i = 1 } },
 
-	{ MODKEY,                GDK_KEY_r,      reload,     { .i = 1 } },
-	{ 0,                     GDK_KEY_r,      reload,     { .i = 0 } },
+	{ MODKEY,                 GDK_KEY_r,      reload,     { .i = 1 } },
+	{ 0,                      GDK_KEY_r,      reload,     { .i = 0 } },
 
 	/* vertical and horizontal scrolling, in viewport percentage */
-	{ 0,                     GDK_KEY_j,      scrollv,    { .i = +10 } },
-	{ 0,                     GDK_KEY_k,      scrollv,    { .i = -10 } },
-	{ 0,                     GDK_KEY_space,  scrollv,    { .i = +50 } },
-	{ 0,                     GDK_KEY_b,      scrollv,    { .i = -50 } },
-	{ 0,                     GDK_KEY_i,      scrollh,    { .i = +10 } },
-	{ 0,                     GDK_KEY_u,      scrollh,    { .i = -10 } },
+	{ 0,                      GDK_KEY_j,      scrollv,    { .i = +10 } },
+	{ 0,                      GDK_KEY_k,      scrollv,    { .i = -10 } },
+	{ 0,                      GDK_KEY_space,  scrollv,    { .i = +50 } },
+	{ 0,                      GDK_KEY_b,      scrollv,    { .i = -50 } },
+	{ 0,                      GDK_KEY_i,      scrollh,    { .i = +10 } },
+	{ 0,                      GDK_KEY_u,      scrollh,    { .i = -10 } },
 
-	{ 0|GDK_SHIFT_MASK,      GDK_KEY_j,      zoom,       { .i = -1 } },
-	{ 0|GDK_SHIFT_MASK,      GDK_KEY_k,      zoom,       { .i = +1 } },
-	{ 0|GDK_SHIFT_MASK,      GDK_KEY_q,      zoom,       { .i = 0  } },
-	{ 0,                     GDK_KEY_minus,  zoom,       { .i = -1 } },
-	{ 0|GDK_SHIFT_MASK,      GDK_KEY_plus,   zoom,       { .i = +1 } },
-	{ 0,                     GDK_KEY_equal,  zoom,       { .i = 0  } },
+	{ 0|GDK_SHIFT_MASK,       GDK_KEY_j,      zoom,       { .i = -1 } },
+	{ 0|GDK_SHIFT_MASK,       GDK_KEY_k,      zoom,       { .i = +1 } },
+	{ 0|GDK_SHIFT_MASK,       GDK_KEY_q,      zoom,       { .i = 0  } },
+	{ 0,                      GDK_KEY_minus,  zoom,       { .i = -1 } },
+	{ 0|GDK_SHIFT_MASK,       GDK_KEY_plus,   zoom,       { .i = +1 } },
+	{ 0,                      GDK_KEY_equal,  zoom,       { .i = 0  } },
 
-	{ 0,                     GDK_KEY_p,      clipboard,  { .i = 1 } },
-	{ 0,                     GDK_KEY_y,      clipboard,  { .i = 0 } },
+	{ 0,                      GDK_KEY_p,      clipboard,  { .i = 1 } },
+	{ 0,                      GDK_KEY_y,      clipboard,  { .i = 0 } },
 
-	{ 0,                     GDK_KEY_n,      find,       { .i = +1 } },
-	{ 0|GDK_SHIFT_MASK,      GDK_KEY_n,      find,       { .i = -1 } },
+	{ 0,                      GDK_KEY_n,      find,       { .i = +1 } },
+	{ 0|GDK_SHIFT_MASK,       GDK_KEY_n,      find,       { .i = -1 } },
 
-	{ MODKEY,                GDK_KEY_p,      print,      { 0 } },
-	{ MODKEY,                GDK_KEY_t,      showcert,   { 0 } },
+	{ MODKEY,                 GDK_KEY_p,      print,      { 0 } },
+	{ MODKEY,                 GDK_KEY_t,      showcert,   { 0 } },
 
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_a,      togglecookiepolicy, { 0 } },
-	{ 0,                     GDK_KEY_F11,    togglefullscreen, { 0 } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_o,      toggleinspector, { 0 } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_a,      togglecookiepolicy, { 0 } },
+	{ 0,                      GDK_KEY_F11,    togglefullscreen, { 0 } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_o,      toggleinspector, { 0 } },
 
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_c,      toggle,     { .i = CaretBrowsing } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_g,      toggle,     { .i = Geolocation } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_s,      toggle,     { .i = JavaScript } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_i,      toggle,     { .i = LoadImages } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_b,      toggle,     { .i = ScrollBars } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_l,      toggle,     { .i = Notifications } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_t,      toggle,     { .i = StrictTLS } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_m,      toggle,     { .i = Style } },
-	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_d,      toggle,     { .i = DarkMode } },
-};
-
-static char *searchengine = "https://duckduckgo.com/?q=";
-
-/* Put here your aliases */
-static Alias aliases[] = {
-  /* Alias        URI */
-  { "ddg",       "https://duckduckgo.com" },
-  { "wikipedia", "https://www.wikipedia.org" }
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_c,      toggle,     { .i = CaretBrowsing } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_g,      toggle,     { .i = Geolocation } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_s,      toggle,     { .i = JavaScript } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_i,      toggle,     { .i = LoadImages } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_b,      toggle,     { .i = ScrollBars } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_l,      toggle,     { .i = Notifications } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_t,      toggle,     { .i = StrictTLS } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_m,      toggle,     { .i = Style } },
+	{ MODKEY|GDK_SHIFT_MASK,  GDK_KEY_d,      toggle,     { .i = DarkMode } },
 };
 
 /* button definitions */
@@ -228,6 +226,4 @@ static Button buttons[] = {
 	{ OnAny,        0,              9,      clicknavigate,  { .i = +1 },    1 },
 	{ OnMedia,      MODKEY,         1,      clickexternplayer, { 0 },       1 },
 };
-
-#define HOMEPAGE "https://duckduckgo.com/"
 
