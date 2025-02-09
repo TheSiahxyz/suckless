@@ -1864,7 +1864,7 @@ parseuri(const gchar *uri)
 void
 handle_zoommtg(WebKitURISchemeRequest *request)
 {
-	char* uri = webkit_uri_scheme_request_get_uri (request);
+	const char* uri = webkit_uri_scheme_request_get_uri (request);
 	Arg a = (Arg)PLUMB(uri);
 	printf("handleplumb: %s",(char*)a.v);
 	if (fork() == 0) {
