@@ -3,8 +3,8 @@
 /* constants */
 #define TERMINAL                        "st"
 #define TERMCLASS                       "St"
-#define BROWSER                         "firefox"
-#define BROWSERCLASS                    "Firefox"
+#define BROWSER                         "qutebrowser"
+#define BROWSERCLASS                    "Qutebrowser"
 #define GAP                             8
 #define PADDING                         0
 
