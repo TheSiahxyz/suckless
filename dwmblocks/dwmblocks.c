@@ -251,7 +251,7 @@ void sighandler()
 
 void buttonhandler(int ssi_int)
 {
-	char button[2] = {'0' + ssi_int & 0xff, '\0'};
+	char button[2] = {('0' + ssi_int) & 0xff, '\0'};
 	pid_t process_id = getpid();
 	int sig = ssi_int >> 8;
 	if (fork() == 0)

@@ -1,3 +1,14 @@
 #!/bin/sh
-LANG="en_US.UTF-8"
-dmenu_path | dmenu "$@" | ${SHELL:-"/bin/sh"} &
+
+# dmenu_run improved
+# command ending with '!', is started in the terminal.
+
+test -s "$HOME"/.dmenurc && . "$HOME"/.dmenurc
+
+cmd="$(dmenu_path | dmenu -H "${XDG_CACHE_HOME:-$HOME/.cache/}/dmenu_run.hist" "$@")"
+
+case $cmd in
+'') ;;
+*\;) exec "${TERMINAL:-st}" -e ${cmd%?} & ;;
+*) exec ${cmd} & ;;
+esac
