@@ -1,14 +1,32 @@
 #!/bin/sh
+# end a command with ; to run in a terminal
 
-# dmenu_run improved
-# command ending with '!', is started in the terminal.
+term="${TERMINAL:-st} -e"
+cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
+cache="$cachedir/dmenu_recent"
 
-test -s "$HOME"/.dmenurc && . "$HOME"/.dmenurc
+touch "$cache"
 
-cmd="$(dmenu_path | dmenu -H "${XDG_CACHE_HOME:-$HOME/.cache/}/dmenu_run.hist" "$@")"
+# cleaning
+sort -u "$cache" | while read cmd; do
+  command -v "${cmd%;}" >/dev/null 2>&1 || sed -i "/$cmd/d" "$cache"
+done
 
-case $cmd in
-'') ;;
-*\;) exec "${TERMINAL:-st}" -e ${cmd%?} & ;;
-*) exec ${cmd} & ;;
+most_used=$(sort "$cache" | uniq -c | sort -rh | sed 's/\s*//' | cut -d' ' -f2-)
+run=$( (
+  echo "$most_used"
+  dmenu_path | grep -vxF "$most_used"
+) | dmenu -i "$@")
+
+[ -z "$run" ] && exit 1
+
+(
+  echo "$run"
+  head -n 99 "$cache"
+) >"$cache.$$"
+mv "$cache.$$" "$cache"
+
+case "$run" in
+*\;) exec $(echo $term ${run%;}) ;;
+*) exec "$run" ;;
 esac
