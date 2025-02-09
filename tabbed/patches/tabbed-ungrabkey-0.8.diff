@@ -1,0 +1,33 @@
+Author: Chris Noxz <chris@noxz.tech>
+
+diff -upN tabbed-0.8-a/tabbed.c tabbed-0.8-b/tabbed.c
+--- tabbed-0.8-a/tabbed.c	2024-03-19 12:23:17.000000000 +0100
++++ tabbed-0.8-b/tabbed.c	2024-06-11 20:07:21.814961956 +0200
+@@ -1132,6 +1132,11 @@ toggle(const Arg *arg)
+ void
+ unmanage(int c)
+ {
++	int i, j;
++	unsigned int modifiers[] = { 0, LockMask, numlockmask,
++	                             numlockmask | LockMask };
++	KeyCode code;
++
+ 	if (c < 0 || c >= nclients) {
+ 		drawbar();
+ 		XSync(dpy, False);
+@@ -1141,6 +1146,15 @@ unmanage(int c)
+ 	if (!nclients)
+ 		return;
+ 
++	/* ungrab keys */
++	for (i = 0; i < LENGTH(keys); i++) {
++		if ((code = XKeysymToKeycode(dpy, keys[i].keysym))) {
++			for (j = 0; j < LENGTH(modifiers); j++) {
++				XUngrabKey(dpy, code, keys[i].mod | modifiers[j], clients[c]->win);
++			}
++		}
++	}
++
+ 	if (c == 0) {
+ 		/* First client. */
+ 		nclients--;
