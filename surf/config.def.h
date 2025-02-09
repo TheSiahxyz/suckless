@@ -10,9 +10,9 @@ static char *fulluseragent  = ""; /* Or override the whole user agent string */
 static char *scriptfile     = "~/.surf/script.js";
 static char *styledir       = "~/.surf/styles/";
 static char *certdir        = "~/.surf/certificates/";
-static char *cachedir       = "~/.surf/cache/";
-static char *cookiefile     = "~/.surf/cookies.txt";
-static char *historyfile    = "~/.surf/history.txt";
+static char *cachedir       = "/tmp/";
+static char *cookiefile     = "/tmp/cookies.txt";
+static char *historyfile    = "/tmp/history.txt";
 static char *searchengine   = "https://searx.thesiah.xyz/?q=";
 static SearchEngine searchengines[] = {
 	{ " ", "https://searx.thesiah.xyz/?q=%s" },
