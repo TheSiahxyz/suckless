@@ -1,0 +1,106 @@
+From 3233530cdaa1dc06f007cfa54ee923b66b95dbf2 Mon Sep 17 00:00:00 2001
+From: Randolph Sapp <rs@ti.com>
+Date: Mon, 3 Apr 2023 15:29:39 -0500
+Subject: [PATCH] surf: update notifications patch for latest
+
+Update "notifications" patch for use with surf version
+665a709b522a6fa18c671f1fc41297603292d0e8
+
+Signed-off-by: Randolph Sapp <rs@ti.com>
+---
+ config.def.h |  2 ++
+ surf.c       | 16 +++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index ca77061..12a598d 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -36,6 +36,7 @@ static Parameter defconfig[ParameterLast] = {
+ 	[KioskMode]           =       { { .i = 0 },     },
+ 	[LoadImages]          =       { { .i = 1 },     },
+ 	[MediaManualPlay]     =       { { .i = 1 },     },
++	[Notifications]       =       { { .i = 0 }      },
+ 	[PreferredLanguages]  =       { { .v = (char *[]){ NULL } }, },
+ 	[RunInFullscreen]     =       { { .i = 0 },     },
+ 	[ScrollBars]          =       { { .i = 1 },     },
+@@ -178,6 +179,7 @@ static Key keys[] = {
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_s,      toggle,     { .i = JavaScript } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_i,      toggle,     { .i = LoadImages } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_b,      toggle,     { .i = ScrollBars } },
++	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_l,      toggle,     { .i = Notifications } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_t,      toggle,     { .i = StrictTLS } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_m,      toggle,     { .i = Style } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_d,      toggle,     { .i = DarkMode } },
+diff --git a/surf.c b/surf.c
+index 001f776..7d34c9b 100644
+--- a/surf.c
++++ b/surf.c
+@@ -72,6 +72,7 @@ typedef enum {
+ 	KioskMode,
+ 	LoadImages,
+ 	MediaManualPlay,
++	Notifications,
+ 	PreferredLanguages,
+ 	RunInFullscreen,
+ 	ScrollBars,
+@@ -245,7 +246,7 @@ static void clicknewwindow(Client *c, const Arg *a, WebKitHitTestResult *h);
+ static void clickexternplayer(Client *c, const Arg *a, WebKitHitTestResult *h);
+ 
+ static char winid[64];
+-static char togglestats[11];
++static char togglestats[12];
+ static char pagestats[2];
+ static Atom atoms[AtomLast];
+ static Window embed;
+@@ -680,6 +681,7 @@ gettogglestats(Client *c)
+ 	togglestats[7] = curconfig[FrameFlattening].val.i ? 'F' : 'f';
+ 	togglestats[8] = curconfig[Certificate].val.i ?     'X' : 'x';
+ 	togglestats[9] = curconfig[StrictTLS].val.i ?       'T' : 't';
++	togglestats[10] = curconfig[Notifications].val.i ?   'L' : 'l';
+ }
+ 
+ void
+@@ -828,6 +830,9 @@ setparameter(Client *c, int refresh, ParamName p, const Arg *a)
+ 		webkit_settings_set_media_playback_requires_user_gesture(
+ 		    c->settings, a->i);
+ 		break;
++	case Notifications:
++		refresh = 0;
++		return;
+ 	case PreferredLanguages:
+ 		return; /* do nothing */
+ 	case RunInFullscreen:
+@@ -1035,6 +1040,7 @@ newwindow(Client *c, const Arg *a, int noembed)
+ 		cmd[i++] = scriptfile;
+ 	}
+ 	cmd[i++] = curconfig[JavaScript].val.i ? "-S" : "-s";
++	cmd[i++] = curconfig[Notifications].val.i ? "-L" : "-l";
+ 	cmd[i++] = curconfig[StrictTLS].val.i ? "-T" : "-t";
+ 	if (fulluseragent && g_strcmp0(fulluseragent, "")) {
+ 		cmd[i++] = "-u";
+@@ -1628,6 +1634,8 @@ permissionrequested(WebKitWebView *v, WebKitPermissionRequest *r, Client *c)
+ 		else if (webkit_user_media_permission_is_for_video_device(
+ 		         WEBKIT_USER_MEDIA_PERMISSION_REQUEST(r)))
+ 			param = AccessWebcam;
++	} else if (WEBKIT_IS_NOTIFICATION_PERMISSION_REQUEST(r)) {
++		param = Notifications;
+ 	} else {
+ 		return FALSE;
+ 	}
+@@ -2092,6 +2100,12 @@ main(int argc, char *argv[])
+ 		defconfig[KioskMode].val.i = 1;
+ 		defconfig[KioskMode].prio = 2;
+ 		break;
++	case 'l':
++		defconfig[Notifications].val.i = 0;
++		break;
++	case 'L':
++		defconfig[Notifications].val.i = 1;
++		break;
+ 	case 'm':
+ 		defconfig[Style].val.i = 0;
+ 		defconfig[Style].prio = 2;
+-- 
+2.40.0
+
