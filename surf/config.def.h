@@ -168,13 +168,16 @@ static Key keys[] = {
 
 	{ 0,                      GDK_KEY_c,      stop,       { 0 } },
 
-	{ 0,			                GDK_KEY_q,	     quit,	     { 0 } },
+	{ 0,			                GDK_KEY_q,	    quit,	     { 0 } },
 
 	{ 0,                      GDK_KEY_Escape, insert,     { .i = 0 } },
 	{ 0,                      GDK_KEY_i,      insert,     { .i = 1 } },
 
 	{ MODKEY,                 GDK_KEY_r,      reload,     { .i = 1 } },
 	{ 0,                      GDK_KEY_r,      reload,     { .i = 0 } },
+
+	{ 0,                      GDK_KEY_l,      navigate,   { .i = +1 } },
+	{ 0,                      GDK_KEY_h,      navigate,   { .i = -1 } },
 
 	/* vertical and horizontal scrolling, in viewport percentage */
 	{ 0,                      GDK_KEY_j,      scrollv,    { .i = +10 } },
