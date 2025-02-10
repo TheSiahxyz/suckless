@@ -365,6 +365,15 @@ static const Key keys[] = {
   // MODE
   { MODKEY,       XK_Escape,          setkeymode,         { .ui = ModeCommand } },
 
+  // MOUSE
+  { ULTRAMOD,     XK_h,               spawn,              { .v = (const char *[]){ "xdotmouse", "h", NULL } } },
+  { ULTRAMOD,     XK_j,               spawn,              { .v = (const char *[]){ "xdotmouse", "j", NULL } } },
+  { ULTRAMOD,     XK_k,               spawn,              { .v = (const char *[]){ "xdotmouse", "k", NULL } } },
+  { ULTRAMOD,     XK_l,               spawn,              { .v = (const char *[]){ "xdotmouse", "l", NULL } } },
+  { ULTRAMOD,     XK_Return,          spawn,              { .v = (const char *[]){ "xdotmouse", "c", NULL } } },
+  { ULTRAMOD,     XK_Return,          spawn,              { .v = (const char *[]){ "xdotmouse", "C", NULL } } },
+  { ULTRAMOD,     XK_Return,          spawn,              { .v = (const char *[]){ "xdotmouse", "r", NULL } } },
+
   // PROGRAMS
   { MODKEY,       XK_c,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "calcurse", NULL } } },
   { MODKEY,       XK_d,               spawn,              { .v = (const char *[]){ "dmenu_run", NULL } } },
