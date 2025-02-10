@@ -40,7 +40,7 @@ static char *delim = " ";
 // Have dwmblocks automatically recompile and run when you edit this file in
 // vim with the following line in your vimrc/init.vim:
 
-// autocmd BufWritePost ~/.local/src/suckless/dwmblocks/config.def.h !cd ~/.local/src/suckless/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
+// autocmd BufWritePost ~/.local/src/suckless/dwmblocks/config.def.h !cd ~/.local/src/suckless/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid -f dwmblocks }
 
 // Although, pkill is slightly slower than the command kill, which can
 // make a big difference if we are making semi-frequent changes in a script.
