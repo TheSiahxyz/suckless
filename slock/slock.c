@@ -716,7 +716,7 @@ main(int argc, char **argv) {
   free(command);
   if (result == 0) {
       background_image = private_image;
-      privateblur = 0;
+      blurRadius = privateblur;
   }
   if (strcmp(background_image, "") == 0) {
       background_image = ".local/share/wallpapers/lock";
