@@ -372,7 +372,7 @@ static const Key keys[] = {
   { ULTRAMOD,     XK_l,               spawn,              { .v = (const char *[]){ "xdotmouse", "l", NULL } } },
   { ULTRAMOD,     XK_i,               spawn,              { .v = (const char *[]){ "xdotmouse", "c", NULL } } },
   { ULTRAMOD,     XK_u,               spawn,              { .v = (const char *[]){ "xdotmouse", "C", NULL } } },
-  { ULTRAMOD,     XK_o,               spawn,              { .v = (const char *[]){ "xdotmouse", "r", NULL } } },
+  { ULTRAMOD,     XK_o,               spawn,              { .v = (const char *[]){ "xdotmouse", "m", NULL } } },
 
   // PROGRAMS
   { MODKEY,       XK_c,               spawn,              { .v = (const char *[]){ TERMINAL, "-e", "calcurse", NULL } } },
