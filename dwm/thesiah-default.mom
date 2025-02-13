@@ -100,7 +100,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .PP
 The \f(CWMOD\fP key differs between DWM and ST. In DWM, if the \f(CWMOD\fP key is the \f(CWSuper\fP key, then in ST, the \f(CWMOD\fP key is the \f(CWAlt\fP key. Conversely, if the \f(CWMOD\fP key in DWM is the \f(CWAlt\fP key, then in ST, the \f(CWMOD\fP key is the \f(CWSuper\fP key.
 .PP
-When config.h in DWM and ST is saved, key bindings will be extracted and updated below.
+When config.def.h in DWM and ST is saved, key bindings will be extracted and updated below.
 .HEADING 2 "Other buttons"
 .PP
 I've mapped those extra buttons that some keyboards have (play and pause buttons, screen brightness, email, web browsing buttons, etc.) to what you would expect. Even there are gestures for simple mouse movements (up, down, left, and right). Each movement opens or runs a program.
@@ -111,9 +111,9 @@ Check files under .config/shell, .config/zsh, and .local/share/thesiah. There ar
 Dotfiles/settings files are located in \f(CW~/.dotfiles/\fP and \f(CW~/.config/\fP.
 .PP
 Suckless programs, dwm (the window manager), st (the terminal), dmenu (the dynamic menu), and slock (the screen locker) among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/suckless/\fP (press \f(CWrr\fP to jump to that directory).
-There you can modify their \f(CWconfig.h\fP files or other source code, then \f(CWsudo make install\fP to reinstall.
+There you can modify their \f(CWconfig.def.h\fP files or other source code, then \f(CWsudo make install\fP to reinstall.
 .PP
-vim is set to automatically recompile and install these programs whenever you save changes to any \f(CWconfig.h\fP file
+vim is set to automatically recompile and install these programs whenever you save changes to any \f(CWconfig.def.h\fP file
 (compilation will be nearly instantaneous).
 You'll have to restart the program to see its effects obviously.
 .HEADING 1 "Frequently Asked Questions (FAQs)"
