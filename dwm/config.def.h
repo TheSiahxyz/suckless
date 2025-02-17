@@ -408,6 +408,7 @@ static const Key keys[] = {
   { WINMOD2,      XK_e,               spawn,              SHCMD("ecrypt; pkill -RTMIN+2 dwmblocks") },
   { MODKEY,       XK_s,               spawn,              { .v = (const char *[]){ "dmenubrowse", NULL } } },
   { MODKEY,       XK_v,               spawn,              { .v = (const char *[]){ "mpvplay", NULL } } },
+  { WINMOD,       XK_v,               spawn,              { .v = (const char *[]){ "clipmenu", NULL } } },
   { WINMOD2,      XK_v,               spawn,              SHCMD("ovpn; kill -41 $(pidof dwmblocks)") },
   { MODKEY,       XK_Insert,          spawn,              SHCMD("xdotool type $(grep -v '^#' ~/.local/share/thesiah/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
   { 0,            XK_Print,           spawn,              SHCMD("maim | tee ~/Pictures/screenshots/$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard") },
