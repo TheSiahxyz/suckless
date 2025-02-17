@@ -243,7 +243,7 @@ static const Key keys[] = {
 
   /* modifier     key                 function            argument */
   // AUDIO CONTROLS
-  { MODKEY,       XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50 && pkill -RTMIN+23") },
+  { MODKEY,       XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play; sleep 1 && mpc volume 50 && sb-music && pkill -RTMIN+23") },
   { WINMOD,       XK_m,               spawn,              SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") },
   { WINMOD2,      XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") },
   { ULTRAMOD,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
