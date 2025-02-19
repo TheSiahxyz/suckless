@@ -32,18 +32,19 @@ static char *fonts[] = {
   "monospace:size=10",
   "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true"
 };
+
+static const unsigned int baralpha      = 0xd0;
+static const unsigned int borderalpha   = OPAQUE;
 static char normbgcolor[]               = "#222222";
 static char normbordercolor[]           = "#444444";
 static char normfgcolor[]               = "#bbbbbb";
-static char selfgcolor[]                = "#eeeeee";
-static char selbordercolor[]            = "#770000";
-static char selbgcolor[]                = "#005577";
 static char normmarkcolor[]             = "#009900";	/*border color for marked client*/
+static char selfgcolor[]                = "#eeeeee";
+static char selbgcolor[]                = "#005577";
+static char selbordercolor[]            = "#770000";
 static char selmarkcolor[]              = "#00CC00";	/*border color for marked client on focus*/
-static const unsigned int baralpha      = 0xd0;
-static const unsigned int borderalpha   = OPAQUE;
 static char *colors[][4] = {
-  /*                      fg              bg              border          mark*/
+  /*                      fg              bg              border          mark  */
   [SchemeNorm]    = { normfgcolor,     normbgcolor,    normbordercolor,   normmarkcolor },
   [SchemeSel]     = { selfgcolor,      selbgcolor,     selbordercolor,    selmarkcolor },
 };
@@ -185,18 +186,20 @@ ResourcePref resources[] = {
   { "color0", STRING, &selfgcolor },
   { "color4", STRING, &selbgcolor },
   { "borderpx", INTEGER, &borderpx },
-  { "snap", INTEGER, &snap },
-  { "showbar", INTEGER, &showbar },
-  { "topbar", INTEGER, &topbar },
-  { "nmaster", INTEGER, &nmaster },
-  { "resizehints", INTEGER, &resizehints },
-  { "mfact", FLOAT, &mfact },
   { "gappih", INTEGER, &gappih },
   { "gappiv", INTEGER, &gappiv },
   { "gappoh", INTEGER, &gappoh },
   { "gappov", INTEGER, &gappov },
-  { "swallowfloating", INTEGER, &swallowfloating },
+  { "mfact", FLOAT, &mfact },
+  { "nmaster", INTEGER, &nmaster },
+  { "normmarkcolor", INTEGER, &normmarkcolor },
+  { "resizehints", INTEGER, &resizehints },
+  { "selmarkcolor", INTEGER, &selmarkcolor },
+  { "showbar", INTEGER, &showbar },
   { "smartgaps", INTEGER, &smartgaps },
+  { "snap", INTEGER, &snap },
+  { "swallowfloating", INTEGER, &swallowfloating },
+  { "topbar", INTEGER, &topbar },
 };
 
 /* gestures

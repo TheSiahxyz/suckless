@@ -2914,9 +2914,9 @@ unfocus(Client *c, int setfocus)
         return;
     grabbuttons(c, 0);
     if (c == mark)
-		XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColMark].pixel);
-	else
-		XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
+      XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColMark].pixel);
+    else
+      XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
     if (setfocus)
     {
         XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
