@@ -444,9 +444,9 @@ static const Key keys[] = {
   { WINMOD2,      XK_F10,             spawn,              { .v = (const char *[]){ "dmenusmbdel", NULL } } },
   { MODKEY,       XK_F11,             spawn,              { .v = (const char *[]){ "webcam", "h", NULL } } },
   { WINMOD,       XK_F11,             spawn,              { .v = (const char *[]){ "webcam", NULL } } },
-  { MODKEY,       XK_F12,             spawn,              SHCMD("remaps") },
-  { ShiftMask,    XK_F12,             spawn,              SHCMD("remaps") },
   { MODKEY,       XK_F12,             spawn,              { .v = (const char *[]){ "fcitx5-configtool", NULL } } },
+  { WINMOD,       XK_F12,             spawn,              SHCMD("remaps") },
+  { ShiftMask,    XK_F12,             spawn,              SHCMD("remaps") },
 
   // SYSTEMS
   { WINMOD2,      XK_k,               spawn,              { .v = (const char *[]){ "pkill", "-f", "kakaotalk", NULL } } },
