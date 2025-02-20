@@ -464,7 +464,7 @@ static const Key keys[] = {
   { WINMOD2,      XK_equal,           spawn,              SHCMD("pkexec brillo -A 5 -q; kill -43 $(pidof dwmblocks)") },
   { ULTRAMOD,     XK_minus,           spawn,              SHCMD("monitorbright -dec 5; kill -42 $(pidof dwmblocks)") },
   { ULTRAMOD,     XK_equal,           spawn,              SHCMD("monitorbright -inc 5; kill -42 $(pidof dwmblocks)") },
-  { 0,            XK_Alt_R,           spawn,              SHCMD("fcitx5-remote -t; kill -44 $(pidof dwmblocks)") },
+  { 0,            XK_Alt_R,           spawn,              SHCMD("fcitx5-remote -t && kill -44 $(pidof dwmblocks)") },
   { ControlMask,  XK_F5,              quit,               {1} },
   { EXTRAMOD,     XK_F5,              spawn,              SHCMD("killall -q dwmblocks; setsid -f dwmblocks") },
 
