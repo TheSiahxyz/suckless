@@ -260,7 +260,7 @@ static const Key keys[] = {
   { WINMOD2,      XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "-60", NULL } } },
   { WINMOD2,      XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "+60", NULL } } },
   { ULTRAMOD,     XK_comma,           spawn,              { .v = (const char *[]){ "mpc", "seek", "0%", NULL } } },
-  { ULTRAMOD,     XK_period,          spawn,              { .v = (const char *[]){ "mpc", "repeat", NULL } } },
+  { ULTRAMOD,     XK_period,          spawn,              { .v = (const char *[]){ "mpc", "seek", "90%", NULL } } },
   { MODKEY ,      XK_slash,           spawn,              SHCMD("mpc single on; mpc random on; mpc repeat on") },
   { WINMOD,       XK_slash,           spawn,              SHCMD("mpc single off; mpc random on; mpc repeat on") },
   { WINMOD2,      XK_slash,           spawn,              SHCMD("mpc repeat off; mpc random off; mpc single off") },
