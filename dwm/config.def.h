@@ -249,7 +249,7 @@ static const Key keys[] = {
   { MODKEY,       XK_m,               spawn,              SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+23") },
   { WINMOD,       XK_m,               spawn,              SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") },
   { WINMOD2,      XK_m,               spawn,              SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") },
-  { ULTRAMOD,     XK_m,               spawn,              { .v = (const char *[]){ "delmusic", NULL } } },
+  { ULTRAMOD,     XK_m,               spawn,              { .v = (const char *[]){ "dmenudelmusic", NULL } } },
   { MODKEY,       XK_p,               spawn,              SHCMD("mpc toggle") },
   { WINMOD,       XK_p,               spawn,              SHCMD("mpc pause; sleep 1 && pauseallmpv") },
   { WINMOD2,      XK_p,               spawn,              SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -39 $(pidof dwmblocks)") },
