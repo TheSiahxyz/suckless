@@ -330,6 +330,7 @@ drawlogo(Display *dpy, struct lock *lock, int color)
 	XCopyArea(dpy, lock->drawable, lock->win, lock->gc, 0, 0, lock->x, lock->y, 0, 0);
 	XSync(dpy, False);
 }
+
 static void
 refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cairo_surface_t* sfc)
 {/*Function that displays given time on the given screen*/
@@ -348,7 +349,7 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
   text_width = extents.width;
   text_height = extents.height;
 
-  xpos = (DisplayWidth(dpy, screen) - text_width) / 2;
+  xpos = DisplayWidth(dpy, screen) / 4 - text_width / 2;
   ypos = (DisplayHeight(dpy, screen) + 12 * text_height) / 2;
 	cairo_move_to(cr, xpos, ypos);
 	cairo_show_text(cr, tm);
@@ -356,6 +357,7 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
   writemessage(dpy, win, screen);
 	XFlush(dpy);
 }
+
 static void*
 displayTime(void* input)
 { /*Thread that keeps track of time and refreshes it every 5 seconds */
@@ -373,8 +375,6 @@ displayTime(void* input)
  }
  return NULL;
 }
-
-
 
 static void
 readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,

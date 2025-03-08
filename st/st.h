@@ -11,8 +11,7 @@
 #define DIVCEIL(n, d)		(((n) + ((d) - 1)) / (d))
 #define DEFAULT(a, b)		(a) = (a) ? (a) : (b)
 #define LIMIT(x, a, b)		(x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
-#define ATTRCMP(a, b)		(((a).mode & (~ATTR_WRAP) & (~ATTR_LIGA)) != ((b).mode & (~ATTR_WRAP) & (~ATTR_LIGA)) || \
-				(a).fg != (b).fg || \
+#define ATTRCMP(a, b)		((a).mode != (b).mode || (a).fg != (b).fg || \
 				(a).bg != (b).bg)
 #define TIMEDIFF(t1, t2)	((t1.tv_sec-t2.tv_sec)*1000 + \
 				(t1.tv_nsec-t2.tv_nsec)/1E6)
@@ -35,8 +34,14 @@ enum glyph_attribute {
 	ATTR_WIDE       = 1 << 9,
 	ATTR_WDUMMY     = 1 << 10,
 	ATTR_BOXDRAW    = 1 << 11,
-	ATTR_LIGA       = 1 << 12,
+	ATTR_URL        = 1 << 12,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
+};
+
+enum drawing_mode {
+    DRAW_NONE = 0,
+    DRAW_BG = 1 << 0,
+    DRAW_FG = 1 << 1,
 };
 
 enum selection_mode {
@@ -80,21 +85,28 @@ typedef union {
 	const char *s;
 } Arg;
 
+void autocomplete (const Arg *);
+
 void die(const char *, ...);
 void redraw(void);
 void tfulldirt(void);
 void draw(void);
 
 void externalpipe(const Arg *);
+void fullscreen(const Arg *);
+void iso14755(const Arg *);
 void kscrolldown(const Arg *);
 void kscrollup(const Arg *);
-
+void newterm(const Arg *);
+void opencopied(const Arg *);
 void printscreen(const Arg *);
 void printsel(const Arg *);
 void sendbreak(const Arg *);
 void toggleprinter(const Arg *);
+void copyurl(const Arg *);
 
 int tattrset(int);
+int tisaltscr(void);
 void tnew(int, int);
 void tresize(int, int);
 void tsetdirtattr(int);
@@ -113,11 +125,16 @@ void selextend(int, int, int, int);
 int selected(int, int);
 char *getsel(void);
 
+void highlighturlsline(int);
+void unhighlighturlsline(int);
+int followurl(int, int);
+
 size_t utf8encode(Rune, char *);
 
 void *xmalloc(size_t);
 void *xrealloc(void *, size_t);
 char *xstrdup(const char *);
+int trt_kbdselect(KeySym, char *, int);
 
 int isboxdraw(Rune);
 ushort boxdrawindex(const Glyph *);
@@ -128,6 +145,7 @@ void drawboxes(int, int, int, int, XftColor *, XftColor *, const XftGlyphFontSpe
 #endif
 
 /* config.h globals */
+extern char *externalpipe_sigusr1[];
 extern char *utmp;
 extern char *scroll;
 extern char *stty_args;
@@ -139,8 +157,13 @@ extern char *termname;
 extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
-extern float alpha, alpha_def;
-extern float alphaUnfocus;
-extern const int boxdraw, boxdraw_bold, boxdraw_braille;
 extern unsigned int defaultcs;
+extern float alpha, alphaUnfocused;
+extern const int boxdraw, boxdraw_bold, boxdraw_braille;
+extern char *urlhandler;
+extern char urlchars[];
+extern char *urlprefixes[];
+extern int nurlprefixes;
+extern char *iso14755_cmd;
+extern float alpha_def;
 

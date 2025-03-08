@@ -160,3 +160,10 @@ shiftswaptags(const Arg *arg)
 	// uncomment if you also want to "go" (view) the tag where the the clients are going
 	//view(&shifted);
 }
+void
+tagandview(const Arg *arg)
+{
+  tag(arg);
+  view(arg);
+}
+

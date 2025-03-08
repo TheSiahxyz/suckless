@@ -1,7 +1,5 @@
 #!/bin/sh
 
-command -v xmenu >/dev/null || exit 1
-
 cat <<EOF | xmenu
 0 []= Tile
 1 [M] Monocle
@@ -17,5 +15,6 @@ cat <<EOF | xmenu
 11 ::: Gaplessgrid
 12 |M| Centeredmaster
 13 >M> Centeredfloatingmaster
-14 ><> Float
+14 [S] Stairs
+15 ><> Float
 EOF

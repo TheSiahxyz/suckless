@@ -16,9 +16,14 @@
 #include <termios.h>
 #include <unistd.h>
 #include <wchar.h>
+#include <X11/keysym.h>
+#include <X11/X.h>
 
+#include "autocomplete.h"
 #include "st.h"
 #include "win.h"
+
+extern char *argv0;
 
 #if   defined(__linux)
  #include <pty.h>
@@ -44,8 +49,8 @@
 #define ISCONTROL(c)		(ISCONTROLC0(c) || ISCONTROLC1(c))
 #define ISDELIM(u)		(u && wcschr(worddelimiters, u))
 #define TLINE(y)		((y) < term.scr ? term.hist[((y) + term.histi - \
-				term.scr + HISTSIZE + 1) % HISTSIZE] : \
-				term.line[(y) - term.scr])
+            term.scr + HISTSIZE + 1) % HISTSIZE] : \
+            term.line[(y) - term.scr])
 #define TLINE_HIST(y)           ((y) <= HISTSIZE-term.row+2 ? term.hist[(y)] : term.line[(y-HISTSIZE+term.row-3)])
 
 enum term_mode {
@@ -118,7 +123,6 @@ typedef struct {
 typedef struct {
 	int row;      /* nb row */
 	int col;      /* nb col */
-	int maxcol;
 	Line *line;   /* screen */
 	Line *alt;    /* alternate screen */
 	Line hist[HISTSIZE]; /* history buffer */
@@ -161,9 +165,16 @@ typedef struct {
 	int narg;              /* nb of args */
 } STREscape;
 
+typedef struct {
+	int state;
+	size_t length;
+} URLdfa;
+
 static void execsh(char *, char **);
+static int chdir_by_pid(pid_t pid);
 static void stty(char **);
 static void sigchld(int);
+static void sigusr1(int);
 static void ttywriteraw(const char *, size_t);
 
 static void csidump(void);
@@ -209,6 +220,7 @@ static void tdefutf8(char);
 static int32_t tdefcolor(const int *, int *, int);
 static void tdeftran(char);
 static void tstrsequence(uchar);
+static int daddch(URLdfa *, char);
 
 static void drawregion(int, int, int, int);
 
@@ -225,6 +237,8 @@ static char *base64dec(const char *);
 static char base64dec_getc(const char **);
 
 static ssize_t xwrite(int, const char *, size_t);
+
+static int gettmuxpts(void);
 
 /* Globals */
 static Term term;
@@ -280,8 +294,6 @@ xrealloc(void *p, size_t len)
 char *
 xstrdup(const char *s)
 {
-	if ((s = strdup(s)) == NULL)
-		die("strdup: %s\n", strerror(errno));
 	char *p;
 
 	if ((p = strdup(s)) == NULL)
@@ -488,7 +500,6 @@ selextend(int col, int row, int type, int done)
 	sel.mode = done ? SEL_IDLE : SEL_READY;
 }
 
-
 void
 selnormalize(void)
 {
@@ -661,6 +672,92 @@ getsel(void)
 	return str;
 }
 
+char *
+strstrany(char* s, char** strs) {
+	char *match;
+	for (int i = 0; strs[i]; i++) {
+		if ((match = strstr(s, strs[i]))) {
+			return match;
+		}
+	}
+	return NULL;
+}
+
+void
+highlighturlsline(int row)
+{
+	char *linestr = calloc(sizeof(char), term.col+1); /* assume ascii */
+	char *match;
+	for (int j = 0; j < term.col; j++) {
+		if (term.line[row][j].u < 127) {
+			linestr[j] = term.line[row][j].u;
+		}
+		linestr[term.col] = '\0';
+	}
+	int url_start = -1;
+	while ((match = strstrany(linestr + url_start + 1, urlprefixes))) {
+		url_start = match - linestr;
+		for (int c = url_start; c < term.col && strchr(urlchars, linestr[c]); c++) {
+			term.line[row][c].mode |= ATTR_URL;
+			tsetdirt(row, c);
+		}
+	}
+	free(linestr);
+}
+
+void
+unhighlighturlsline(int row)
+{
+	for (int j = 0; j < term.col; j++) {
+		Glyph* g = &term.line[row][j];
+		if (g->mode & ATTR_URL) {
+			g->mode &= ~ATTR_URL;
+			tsetdirt(row, j);
+		}
+	}
+	return;
+}
+
+int
+followurl(int col, int row) {
+	char *linestr = calloc(sizeof(char), term.col+1); /* assume ascii */
+	char *match;
+	for (int i = 0; i < term.col; i++) {
+		if (term.line[row][i].u < 127) {
+			linestr[i] = term.line[row][i].u;
+		}
+		linestr[term.col] = '\0';
+	}
+	int url_start = -1, found_url = 0;
+	while ((match = strstrany(linestr + url_start + 1, urlprefixes))) {
+		url_start = match - linestr;
+		int url_end = url_start;
+		for (int c = url_start; c < term.col && strchr(urlchars, linestr[c]); c++) {
+			url_end++;
+		}
+		if (url_start <= col && col < url_end) {
+			found_url = 1;
+			linestr[url_end] = '\0';
+			break;
+		}
+	}
+	if (!found_url) {
+		free(linestr);
+		return 0;
+	}
+
+	pid_t chpid;
+	if ((chpid = fork()) == 0) {
+		if (fork() == 0)
+			execlp(urlhandler, urlhandler, linestr + url_start, NULL);
+		exit(1);
+	}
+	if (chpid > 0)
+		waitpid(chpid, NULL, 0);
+	free(linestr);
+    return 1;
+}
+
 void
 selclear(void)
 {
@@ -735,6 +832,13 @@ execsh(char *cmd, char **args)
 }
 
 void
+sigusr1(int unused)
+{
+  static Arg a = {.v = externalpipe_sigusr1};
+  externalpipe(&a);
+}
+
+void
 sigchld(int a)
 {
 	int stat;
@@ -743,8 +847,14 @@ sigchld(int a)
 	if ((p = waitpid(pid, &stat, WNOHANG)) < 0)
 		die("waiting for pid %hd failed: %s\n", pid, strerror(errno));
 
-	if (pid != p)
+	if (pid != p) {
+		if (p == 0 && wait(&stat) < 0)
+			die("wait: %s\n", strerror(errno));
+
+		/* reinstall sigchld handler */
+		signal(SIGCHLD, sigchld);
 		return;
+	}
 
 	if (WIFEXITED(stat) && WEXITSTATUS(stat))
 		die("child exited with status %d\n", WEXITSTATUS(stat));
@@ -780,6 +890,12 @@ stty(char **args)
 int
 ttynew(const char *line, char *cmd, const char *out, char **args)
 {
+	static struct sigaction sa;
+	sa.sa_handler = sigusr1;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGUSR1, &sa, NULL);
+
 	int m, s;
 
 	if (out) {
@@ -828,9 +944,10 @@ ttynew(const char *line, char *cmd, const char *out, char **args)
 		break;
 	default:
 #ifdef __OpenBSD__
-		if (pledge("stdio rpath tty proc", NULL) == -1)
+		if (pledge("stdio rpath tty proc exec", NULL) == -1)
 			die("pledge\n");
 #endif
+		fcntl(m, F_SETFD, FD_CLOEXEC);
 		close(s);
 		cmdfd = m;
 		signal(SIGCHLD, sigchld);
@@ -1071,6 +1188,124 @@ tnew(int col, int row)
 	treset();
 }
 
+int tisaltscr(void)
+{
+	return IS_SET(MODE_ALTSCREEN);
+}
+
+void
+newterm(const Arg* a)
+{
+	int pts;
+	FILE *fsession, *fpid;
+	char session[5];
+	char pidstr[10];
+	char buf[48];
+	size_t size;
+	switch (fork()) {
+	case -1:
+		die("fork failed: %s\n", strerror(errno));
+		break;
+	case 0:
+		switch (fork()) {
+		case -1:
+			fprintf(stderr, "fork failed: %s\n", strerror(errno));
+			_exit(1);
+			break;
+		case 0:
+			signal(SIGCHLD, SIG_DFL); /* pclose() needs to use wait() */
+			pts = gettmuxpts();
+			if (pts != -1) {
+				snprintf(buf, sizeof buf, "tmux lsc -t /dev/pts/%d -F \"#{client_session}\"", pts);
+				fsession = popen(buf, "r");
+				if (!fsession) {
+					fprintf(stderr, "Couldn't launch tmux.");
+					_exit(1);
+				}
+				size = fread(session, 1, sizeof session, fsession);
+				if (pclose(fsession) != 0 || size == 0) {
+					fprintf(stderr, "Couldn't get tmux session.");
+					_exit(1);
+				}
+				session[size - 1] = '\0'; /* size - 1 is used to also trim the \n */
+
+				snprintf(buf, sizeof buf, "tmux list-panes -st %s -F \"#{pane_pid}\"", session);
+				fpid = popen(buf, "r");
+				if (!fpid) {
+					fprintf(stderr, "Couldn't launch tmux.");
+					_exit(1);
+				}
+				size = fread(pidstr, 1, sizeof pidstr, fpid);
+				if (pclose(fpid) != 0 || size == 0) {
+					fprintf(stderr, "Couldn't get tmux session.");
+					_exit(1);
+				}
+				pidstr[size - 1] = '\0';
+			}
+
+			chdir_by_pid(pts != -1 ? atol(pidstr) : pid);
+			execl("/proc/self/exe", argv0, NULL);
+			_exit(1);
+			break;
+		default:
+			_exit(0);
+		}
+	default:
+		wait(NULL);
+	}
+}
+
+static int
+chdir_by_pid(pid_t pid)
+{
+	char buf[32];
+	snprintf(buf, sizeof buf, "/proc/%ld/cwd", (long)pid);
+	return chdir(buf);
+}
+
+/* returns the pty of tmux client or -1 if the child of st isn't tmux */
+static int
+gettmuxpts(void)
+{
+	char buf[32];
+	char comm[17];
+	int tty;
+	FILE *fstat;
+	FILE *fcomm;
+	size_t numread;
+
+	snprintf(buf, sizeof buf, "/proc/%ld/comm", (long)pid);
+
+	fcomm = fopen(buf, "r");
+	if (!fcomm) {
+		fprintf(stderr, "Couldn't open %s: %s\n", buf, strerror(errno));
+		_exit(1);
+	}
+
+	numread = fread(comm, 1, sizeof comm - 1, fcomm);
+	comm[numread] = '\0';
+
+	fclose(fcomm);
+
+	if (strcmp("tmux: client\n", comm) != 0)
+		return -1;
+
+	snprintf(buf, sizeof buf, "/proc/%ld/stat", (long)pid);
+	fstat = fopen(buf, "r");
+	if (!fstat) {
+		fprintf(stderr, "Couldn't open %s: %s\n", buf, strerror(errno));
+		_exit(1);
+	}
+
+	/*
+	 * We can't skip the second field with %*s because it contains a space so
+	 * we skip strlen("tmux: client") + 2 for the braces which is 14.
+	 */
+	fscanf(fstat, "%*d %*14c %*c %*d %*d %*d %d", &tty);
+	fclose(fstat);
+	return ((0xfff00000 & tty) >> 12) | (0xff & tty);
+}
+
 void
 tswapscreen(void)
 {
@@ -1177,7 +1412,7 @@ tscrollup(int orig, int n, int copyhist)
 void
 selscroll(int orig, int n)
 {
-	if (sel.ob.x == -1)
+	if (sel.ob.x == -1 || sel.alt != IS_SET(MODE_ALTSCREEN))
 		return;
 
 	if (BETWEEN(sel.nb.y, orig, term.bot) != BETWEEN(sel.ne.y, orig, term.bot)) {
@@ -1311,8 +1546,8 @@ tclearregion(int x1, int y1, int x2, int y2)
 	if (y1 > y2)
 		temp = y1, y1 = y2, y2 = temp;
 
-	LIMIT(x1, 0, term.maxcol-1);
-	LIMIT(x2, 0, term.maxcol-1);
+	LIMIT(x1, 0, term.col-1);
+	LIMIT(x2, 0, term.col-1);
 	LIMIT(y1, 0, term.row-1);
 	LIMIT(y2, 0, term.row-1);
 
@@ -1726,7 +1961,7 @@ csihandle(void)
 			ttywrite(vtiden, strlen(vtiden), 0);
 		break;
 	case 'b': /* REP -- if last char is printable print it <n> more times */
-		DEFAULT(csiescseq.arg[0], 1);
+		LIMIT(csiescseq.arg[0], 1, 65535);
 		if (term.lastc)
 			while (csiescseq.arg[0]-- > 0)
 				tputc(term.lastc);
@@ -1811,6 +2046,7 @@ csihandle(void)
 		}
 		break;
 	case 'S': /* SU -- Scroll <n> line up */
+		if (csiescseq.priv) break;
 		DEFAULT(csiescseq.arg[0], 1);
 		tscrollup(term.top, csiescseq.arg[0], 0);
 		break;
@@ -1852,11 +2088,18 @@ csihandle(void)
 	case 'm': /* SGR -- Terminal attribute (color) */
 		tsetattr(csiescseq.arg, csiescseq.narg);
 		break;
-	case 'n': /* DSR – Device Status Report (cursor position) */
-		if (csiescseq.arg[0] == 6) {
+	case 'n': /* DSR -- Device Status Report */
+		switch (csiescseq.arg[0]) {
+		case 5: /* Status Report "OK" `0n` */
+			ttywrite("\033[0n", sizeof("\033[0n") - 1, 0);
+			break;
+		case 6: /* Report Cursor Position (CPR) "<row>;<column>R" */
 			len = snprintf(buf, sizeof(buf), "\033[%i;%iR",
-					term.c.y+1, term.c.x+1);
+			               term.c.y+1, term.c.x+1);
 			ttywrite(buf, len, 0);
+			break;
+		default:
+			goto unknown;
 		}
 		break;
 	case 'r': /* DECSTBM -- Set Scrolling Region */
@@ -1885,6 +2128,33 @@ csihandle(void)
 			goto unknown;
 		}
 		break;
+	case 't': /* title stack operations */
+		switch (csiescseq.arg[0]) {
+		case 22: /* pust current title on stack */
+			switch (csiescseq.arg[1]) {
+			case 0:
+			case 1:
+			case 2:
+				xpushtitle();
+				break;
+			default:
+				goto unknown;
+			}
+			break;
+		case 23: /* pop last title from stack */
+			switch (csiescseq.arg[1]) {
+			case 0:
+			case 1:
+			case 2:
+				xsettitle(NULL, 1);
+				break;
+			default:
+				goto unknown;
+			}
+			break;
+		default:
+			goto unknown;
+		}
 	}
 }
 
@@ -1963,7 +2233,7 @@ strhandle(void)
 		switch (par) {
 		case 0:
 			if (narg > 1) {
-				xsettitle(strescseq.args[1]);
+				xsettitle(strescseq.args[1], 0);
 				xseticontitle(strescseq.args[1]);
 			}
 			return;
@@ -1973,7 +2243,7 @@ strhandle(void)
 			return;
 		case 2:
 			if (narg > 1)
-				xsettitle(strescseq.args[1]);
+				xsettitle(strescseq.args[1], 0);
 			return;
 		case 52:
 			if (narg > 2 && allowwindowops) {
@@ -2015,8 +2285,10 @@ strhandle(void)
 			if (p && !strcmp(p, "?")) {
 				osc_color_response(j, 0, 1);
 			} else if (xsetcolorname(j, p)) {
-				if (par == 104 && narg <= 1)
+				if (par == 104 && narg <= 1) {
+					xloadcols();
 					return; /* color reset without parameter */
+				}
 				fprintf(stderr, "erresc: invalid color j=%d, p=%s\n",
 				        j, p ? p : "(null)");
 			} else {
@@ -2024,13 +2296,15 @@ strhandle(void)
 				 * TODO if defaultbg color is changed, borders
 				 * are dirty
 				 */
+				if (j == defaultbg)
+					xclearwin();
 				tfulldirt();
 			}
 			return;
 		}
 		break;
 	case 'k': /* old title set compatibility */
-		xsettitle(strescseq.args[0]);
+		xsettitle(strescseq.args[0], 0);
 		return;
 	case 'P': /* DCS -- Device Control String */
 	case '_': /* APC -- Application Program Command */
@@ -2170,6 +2444,28 @@ tprinter(char *s, size_t len)
 		close(iofd);
 		iofd = -1;
 	}
+}
+
+void
+iso14755(const Arg *arg)
+{
+	FILE *p;
+	char *us, *e, codepoint[9], uc[UTF_SIZ];
+	unsigned long utf32;
+
+	if (!(p = popen(iso14755_cmd, "r")))
+		return;
+
+	us = fgets(codepoint, sizeof(codepoint), p);
+	pclose(p);
+
+	if (!us || *us == '\0' || *us == '-' || strlen(us) > 7)
+		return;
+	if ((utf32 = strtoul(us, &e, 16)) == ULONG_MAX ||
+	    (*e != '\n' && *e != '\0'))
+		return;
+
+	ttywrite(uc, utf8encode(utf32, uc), 1);
 }
 
 void
@@ -2457,8 +2753,10 @@ eschandle(uchar ascii)
 		break;
 	case 'c': /* RIS -- Reset to initial state */
 		treset();
+		xfreetitlestack();
 		resettitle();
 		xloadcols();
+		xsetmode(0, MODE_HIDE);
 		break;
 	case '=': /* DECPAM -- Application keypad */
 		xsetmode(1, MODE_APPKEYPAD);
@@ -2551,6 +2849,9 @@ check_control_code:
 	 * they must not cause conflicts with sequences.
 	 */
 	if (control) {
+		/* in UTF-8 mode ignore handling C1 control characters */
+		if (IS_SET(MODE_UTF8) && ISCONTROLC1(u))
+			return;
 		tcontrolcode(u);
 		/*
 		 * control codes are not shown ever
@@ -2597,11 +2898,16 @@ check_control_code:
 		gp = &term.line[term.c.y][term.c.x];
 	}
 
-	if (IS_SET(MODE_INSERT) && term.c.x+width < term.col)
+	if (IS_SET(MODE_INSERT) && term.c.x+width < term.col) {
 		memmove(gp+width, gp, (term.col - term.c.x - width) * sizeof(Glyph));
+		gp->mode &= ~ATTR_WIDE;
+	}
 
 	if (term.c.x+width > term.col) {
-		tnewline(1);
+		if (IS_SET(MODE_WRAP))
+			tnewline(1);
+		else
+			tmoveto(term.col - width, term.c.y);
 		gp = &term.line[term.c.y][term.c.x];
 	}
 
@@ -2662,23 +2968,21 @@ void
 tresize(int col, int row)
 {
 	int i, j;
-	int tmp;
-	int minrow, mincol;
+	int minrow = MIN(row, term.row);
+	int mincol = MIN(col, term.col);
 	int *bp;
 	TCursor c;
 
-	tmp = col;
-	if (!term.maxcol)
-		term.maxcol = term.col;
-	col = MAX(col, term.maxcol);
-	minrow = MIN(row, term.row);
-	mincol = MIN(col, term.maxcol);
+	if ( row < term.row  || col < term.col )
+		toggle_winmode(trt_kbdselect(XK_Escape, NULL, 0));
 
 	if (col < 1 || row < 1) {
 		fprintf(stderr,
 		        "tresize: error resizing to %dx%d\n", col, row);
 		return;
 	}
+
+	autocomplete ((const Arg []) { ACMPL_DEACTIVATE });
 
 	/*
 	 * slide screen to keep cursor where we expect it -
@@ -2724,18 +3028,17 @@ tresize(int col, int row)
 		term.line[i] = xmalloc(col * sizeof(Glyph));
 		term.alt[i] = xmalloc(col * sizeof(Glyph));
 	}
-	if (col > term.maxcol) {
-		bp = term.tabs + term.maxcol;
+	if (col > term.col) {
+		bp = term.tabs + term.col;
 
-		memset(bp, 0, sizeof(*term.tabs) * (col - term.maxcol));
+		memset(bp, 0, sizeof(*term.tabs) * (col - term.col));
 		while (--bp > term.tabs && !*bp)
 			/* nothing */ ;
 		for (bp += tabspaces; bp < term.tabs + col; bp += tabspaces)
 			*bp = 1;
 	}
 	/* update terminal size */
-	term.col = tmp;
-	term.maxcol = col;
+	term.col = col;
 	term.row = row;
 	/* reset scrolling region */
 	tsetscroll(0, row-1);
@@ -2759,7 +3062,7 @@ tresize(int col, int row)
 void
 resettitle(void)
 {
-	xsettitle(NULL);
+	xsettitle(NULL, 0);
 }
 
 void
@@ -2772,6 +3075,8 @@ drawregion(int x1, int y1, int x2, int y2)
 			continue;
 
 		term.dirty[y] = 0;
+		unhighlighturlsline(y);
+		highlighturlsline(y);
 		xdrawline(TLINE(y), x1, y, x2);
 	}
 }
@@ -2795,11 +3100,7 @@ draw(void)
 	drawregion(0, 0, term.col, term.row);
 	if (term.scr == 0)
 		xdrawcursor(cx, term.c.y, term.line[term.c.y][cx],
-				term.ocx, term.ocy, term.line[term.ocy][term.ocx],
-				term.line[term.ocy], term.col);
-	/* xdrawcursor(cx, term.c.y, term.line[term.c.y][cx], */
-	/* 		term.ocx, term.ocy, term.line[term.ocy][term.ocx], */
-	/* 		term.line[term.ocy], term.col); */
+				term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
 	term.ocx = cx;
 	term.ocy = term.c.y;
 	xfinishdraw();
@@ -2812,5 +3113,541 @@ redraw(void)
 {
 	tfulldirt();
 	draw();
+}
+
+void set_notifmode(int type, KeySym ksym) {
+	static char *lib[] = { " MOVE ", " SEL  "};
+	static Glyph *g, *deb, *fin;
+	static int col, bot;
+
+	if ( ksym == -1 ) {
+		free(g);
+		col = term.col, bot = term.bot;
+		g = xmalloc(col * sizeof(Glyph));
+		memcpy(g, term.line[bot], col * sizeof(Glyph));
+
+	}
+	else if ( ksym == -2 )
+		memcpy(term.line[bot], g, col * sizeof(Glyph));
+
+	if ( type < 2 ) {
+		char *z = lib[type];
+		for (deb = &term.line[bot][col - 6], fin = &term.line[bot][col]; deb < fin; z++, deb++)
+			deb->mode = ATTR_REVERSE,
+				deb->u = *z,
+				deb->fg = defaultfg, deb->bg = defaultbg;
+	}
+	else if ( type < 5 )
+		memcpy(term.line[bot], g, col * sizeof(Glyph));
+	else {
+		for (deb = &term.line[bot][0], fin = &term.line[bot][col]; deb < fin; deb++)
+			deb->mode = ATTR_REVERSE,
+				deb->u = ' ',
+				deb->fg = defaultfg, deb->bg = defaultbg;
+		term.line[bot][0].u = ksym;
+	}
+
+	term.dirty[bot] = 1;
+	drawregion(0, bot, col, bot + 1);
+}
+
+void select_or_drawcursor(int selectsearch_mode, int type) {
+	int done = 0;
+
+	if ( selectsearch_mode & 1 ) {
+		selextend(term.c.x, term.c.y, type, done);
+		xsetsel(getsel());
+	}
+	else
+		xdrawcursor(term.c.x, term.c.y, term.line[term.c.y][term.c.x],
+			    term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
+}
+
+void search(int selectsearch_mode, Rune *target, int ptarget, int incr, int type, TCursor *cu) {
+	Rune *r;
+	int i, bound = (term.col * cu->y + cu->x) * (incr > 0) + incr;
+
+	for (i = term.col * term.c.y + term.c.x + incr; i != bound; i += incr) {
+		for (r = target; r - target < ptarget; r++) {
+			if ( *r == term.line[(i + r - target) / term.col][(i + r - target) % term.col].u ) {
+				if ( r - target == ptarget - 1 )     break;
+			} else {
+				r = NULL;
+				break;
+			}
+		}
+		if ( r != NULL )    break;
+	}
+
+	if ( i != bound ) {
+		term.c.y = i / term.col, term.c.x = i % term.col;
+		select_or_drawcursor(selectsearch_mode, type);
+	}
+}
+
+int trt_kbdselect(KeySym ksym, char *buf, int len) {
+	static TCursor cu;
+	static Rune target[64];
+	static int type = 1, ptarget, in_use;
+	static int sens, quant;
+	static char selectsearch_mode;
+	int i, bound, *xy;
+
+
+	if ( selectsearch_mode & 2 ) {
+		if ( ksym == XK_Return ) {
+			selectsearch_mode ^= 2;
+			set_notifmode(selectsearch_mode, -2);
+			if ( ksym == XK_Escape )    ptarget = 0;
+			return 0;
+		}
+		else if ( ksym == XK_BackSpace ) {
+			if ( !ptarget )     return 0;
+			term.line[term.bot][ptarget--].u = ' ';
+		}
+		else if ( len < 1 ) {
+			return 0;
+		}
+		else if ( ptarget == term.col  || ksym == XK_Escape ) {
+			return 0;
+		}
+		else {
+			utf8decode(buf, &target[ptarget++], len);
+			term.line[term.bot][ptarget].u = target[ptarget - 1];
+		}
+
+		if ( ksym != XK_BackSpace )
+			search(selectsearch_mode, &target[0], ptarget, sens, type, &cu);
+
+		term.dirty[term.bot] = 1;
+		drawregion(0, term.bot, term.col, term.bot + 1);
+		return 0;
+	}
+
+	switch ( ksym ) {
+	case -1 :
+		in_use = 1;
+		cu.x = term.c.x, cu.y = term.c.y;
+		set_notifmode(0, ksym);
+		return MODE_KBDSELECT;
+	case XK_s :
+		if ( selectsearch_mode & 1 )
+			selclear();
+		else
+			selstart(term.c.x, term.c.y, 0);
+		set_notifmode(selectsearch_mode ^= 1, ksym);
+		break;
+	case XK_t :
+		selextend(term.c.x, term.c.y, type ^= 3, i = 0);  /* 2 fois */
+		selextend(term.c.x, term.c.y, type, i = 0);
+		break;
+	case XK_slash :
+	case XK_KP_Divide :
+	case XK_question :
+		ksym &= XK_question;                /* Divide to slash */
+		sens = (ksym == XK_slash) ? -1 : 1;
+		ptarget = 0;
+		set_notifmode(15, ksym);
+		selectsearch_mode ^= 2;
+		break;
+	case XK_Escape :
+		if ( !in_use )  break;
+		selclear();
+	case XK_Return :
+		set_notifmode(4, ksym);
+		term.c.x = cu.x, term.c.y = cu.y;
+		select_or_drawcursor(selectsearch_mode = 0, type);
+		in_use = quant = 0;
+		return MODE_KBDSELECT;
+	case XK_n :
+	case XK_N :
+		if ( ptarget )
+			search(selectsearch_mode, &target[0], ptarget, (ksym == XK_n) ? -1 : 1, type, &cu);
+		break;
+	case XK_BackSpace :
+		term.c.x = 0;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	case XK_dollar :
+		term.c.x = term.col - 1;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	case XK_Home :
+		term.c.x = 0, term.c.y = 0;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	case XK_End :
+		term.c.x = cu.x, term.c.y = cu.y;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	case XK_Page_Up :
+	case XK_Page_Down :
+		term.c.y = (ksym == XK_Prior ) ? 0 : cu.y;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	case XK_exclam :
+		term.c.x = term.col >> 1;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	case XK_asterisk :
+	case XK_KP_Multiply :
+		term.c.x = term.col >> 1;
+	case XK_underscore :
+		term.c.y = cu.y >> 1;
+		select_or_drawcursor(selectsearch_mode, type);
+		break;
+	default :
+		if ( ksym >= XK_0 && ksym <= XK_9 ) {               /* 0-9 keyboard */
+			quant = (quant * 10) + (ksym ^ XK_0);
+			return 0;
+		}
+		else if ( ksym >= XK_KP_0 && ksym <= XK_KP_9 ) {    /* 0-9 numpad */
+			quant = (quant * 10) + (ksym ^ XK_KP_0);
+			return 0;
+		}
+		else if ( ksym == XK_k || ksym == XK_h )
+			i = ksym & 1;
+		else if ( ksym == XK_l || ksym == XK_j )
+			i = ((ksym & 6) | 4) >> 1;
+		else if ( (XK_Home & ksym) != XK_Home || (i = (ksym ^ XK_Home) - 1) > 3 )
+			break;
+
+		xy = (i & 1) ? &term.c.y : &term.c.x;
+		sens = (i & 2) ? 1 : -1;
+		bound = (i >> 1 ^ 1) ? 0 : (i ^ 3) ? term.col - 1 : term.bot;
+
+		if ( quant == 0 )
+			quant++;
+
+		if ( *xy == bound && ((sens < 0 && bound == 0) || (sens > 0 && bound > 0)) )
+			break;
+
+		*xy += quant * sens;
+		if ( *xy < 0 || ( bound > 0 && *xy > bound) )
+			*xy = bound;
+
+		select_or_drawcursor(selectsearch_mode, type);
+	}
+	quant = 0;
+	return 0;
+}
+
+int
+daddch(URLdfa *dfa, char c)
+{
+	/* () and [] can appear in urls, but excluding them here will reduce false
+	 * positives when figuring out where a given url ends.
+	 */
+	static const char URLCHARS[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz"
+		"0123456789-._~:/?#@!$&'*+,;=%";
+	static const char RPFX[] = "//:sptth";
+
+	if (!strchr(URLCHARS, c)) {
+		dfa->length = 0;
+		dfa->state = 0;
+
+		return 0;
+	}
+
+	dfa->length++;
+
+	if (dfa->state == 2 && c == '/') {
+		dfa->state = 0;
+	} else if (dfa->state == 3 && c == 'p') {
+		dfa->state++;
+	} else if (c != RPFX[dfa->state]) {
+		dfa->state = 0;
+		return 0;
+	}
+
+	if (dfa->state++ == 7) {
+		dfa->state = 0;
+		return 1;
+	}
+
+	return 0;
+}
+
+/*
+** Select and copy the previous url on screen (do nothing if there's no url).
+*/
+void
+copyurl(const Arg *arg) {
+	int row = 0, /* row of current URL */
+		col = 0, /* column of current URL start */
+		colend = 0, /* column of last occurrence */
+		passes = 0; /* how many rows have been scanned */
+
+	const char *c = NULL,
+		 *match = NULL;
+	URLdfa dfa = { 0 };
+
+	row = (sel.ob.x >= 0 && sel.nb.y > 0) ? sel.nb.y : term.bot;
+	LIMIT(row, term.top, term.bot);
+
+	colend = (sel.ob.x >= 0 && sel.nb.y > 0) ? sel.nb.x : term.col;
+	LIMIT(colend, 0, term.col);
+
+	/*
+	** Scan from (term.row - 1,term.col - 1) to (0,0) and find
+	** next occurrance of a URL
+	*/
+	for (passes = 0; passes < term.row; passes++) {
+		/* Read in each column of every row until
+		** we hit previous occurrence of URL
+		*/
+		for (col = colend; col--;)
+			if (daddch(&dfa, term.line[row][col].u < 128 ? term.line[row][col].u : ' '))
+				break;
+
+		if (col >= 0)
+			break;
+
+        /* .i = 0 --> botton-up
+         * .i = 1 --> top-down
+         */
+        if (!arg->i) {
+            if (--row < 0)
+                row = term.row - 1;
+        } else {
+            if (++row >= term.row)
+                row = 0;
+        }
+
+		colend = term.col;
+	}
+
+	if (passes < term.row) {
+		selstart(col, row, 0);
+		selextend((col + dfa.length - 1) % term.col, row + (col + dfa.length - 1) / term.col, SEL_REGULAR, 0);
+		selextend((col + dfa.length - 1) % term.col, row + (col + dfa.length - 1) / term.col, SEL_REGULAR, 1);
+		xsetsel(getsel());
+		xclipcopy();
+	}
+}
+
+void autocomplete (const Arg *arg) {
+    static _Bool active = 0;
+    int acmpl_cmdindex = arg->i;
+    static int acmpl_cmdindex_prev;
+
+    if (active == 0)
+        acmpl_cmdindex_prev = acmpl_cmdindex;
+
+    static const char * const acmpl_cmd[] = {
+        [ACMPL_DEACTIVATE]   = "__DEACTIVATE__",
+        [ACMPL_WORD]         = "word-complete",
+        [ACMPL_WWORD]        = "WORD-complete",
+        [ACMPL_FUZZY_WORD]   = "fuzzy-word-complete",
+        [ACMPL_FUZZY_WWORD]  = "fuzzy-WORD-complete",
+        [ACMPL_FUZZY]        = "fuzzy-complete",
+        [ACMPL_SUFFIX]       = "suffix-complete",
+        [ACMPL_SURROUND]     = "surround-complete",
+        [ACMPL_UNDO]         = "__UNDO__",
+    };
+
+    static FILE *acmpl_exec = NULL;
+    static int acmpl_status;
+    static char *stbuffile;
+    static char *target = NULL;
+    static size_t targetlen;
+    static char *completion = NULL;
+    static size_t complen_prev = 0;
+    static int cx, cy;
+
+    if (acmpl_cmdindex == ACMPL_DEACTIVATE) {
+        if (active) {
+            active = 0;
+            pclose(acmpl_exec);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+
+            if (complen_prev) {
+                selclear();
+                complen_prev = 0;
+            }
+        }
+        return;
+    }
+
+    if (acmpl_cmdindex == ACMPL_UNDO) {
+        if (active) {
+            active = 0;
+            pclose(acmpl_exec);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+
+            if (complen_prev) {
+                selclear();
+                for (size_t i = 0; i < complen_prev; i++)
+                    ttywrite((char[]) {'\b'}, 1, 1);
+                complen_prev = 0;
+                ttywrite(target, targetlen, 0);
+            }
+        }
+        return;
+    }
+
+    if (acmpl_cmdindex != acmpl_cmdindex_prev) {
+        if (active) {
+            acmpl_cmdindex_prev = acmpl_cmdindex;
+            goto acmpl_begin;
+        }
+    }
+
+    if (active == 0) {
+        acmpl_cmdindex_prev = acmpl_cmdindex;
+        cx = term.c.x;
+        cy = term.c.y;
+
+        char filename[] = "/tmp/st-autocomplete-XXXXXX";
+        int fd = mkstemp(filename);
+
+        if (fd == -1) {
+            perror("mkstemp");
+            return;
+        }
+
+        stbuffile = strdup(filename);
+
+        FILE *stbuf = fdopen(fd, "w");
+        if (!stbuf) {
+            perror("fdopen");
+            close(fd);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+            return;
+        }
+
+        char *stbufline = malloc(term.col + 2);
+        if (!stbufline) {
+            perror("malloc");
+            fclose(stbuf);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+            return;
+        }
+
+        int cxp = 0;
+        for (size_t y = 0; y < term.row; y++) {
+            if (y == term.c.y) cx += cxp * term.col;
+
+            size_t x = 0;
+            for (; x < term.col; x++)
+                utf8encode(term.line[y][x].u, stbufline + x);
+            if (term.line[y][x - 1].mode & ATTR_WRAP) {
+                x--;
+                if (y <= term.c.y) cy--;
+                cxp++;
+            } else {
+                stbufline[x] = '\n';
+                cxp = 0;
+            }
+            stbufline[x + 1] = 0;
+            fputs(stbufline, stbuf);
+        }
+
+        free(stbufline);
+        fclose(stbuf);
+
+acmpl_begin:
+        target = malloc(term.col + 1);
+        completion = malloc(term.col + 1);
+        if (!target || !completion) {
+            perror("malloc");
+            free(target);
+            free(completion);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+            return;
+        }
+
+        char acmpl[1500];
+        snprintf(acmpl, sizeof(acmpl),
+                 "cat %s | st-autocomplete %s %d %d",
+                 stbuffile, acmpl_cmd[acmpl_cmdindex], cy, cx);
+
+        acmpl_exec = popen(acmpl, "r");
+        if (!acmpl_exec) {
+            perror("popen");
+            free(target);
+            free(completion);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+            return;
+        }
+
+        if (fscanf(acmpl_exec, "%s\n", target) != 1) {
+            perror("fscanf");
+            pclose(acmpl_exec);
+            free(target);
+            free(completion);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+            return;
+        }
+        targetlen = strlen(target);
+    }
+
+    unsigned line, beg, end;
+
+    acmpl_status = fscanf(acmpl_exec, "%[^\n]\n%u\n%u\n%u\n", completion, &line, &beg, &end);
+    if (acmpl_status == EOF) {
+        if (active == 0) {
+            pclose(acmpl_exec);
+            free(target);
+            free(completion);
+            unlink(stbuffile);
+            free(stbuffile);
+            stbuffile = NULL;
+            return;
+        }
+        active = 0;
+        pclose(acmpl_exec);
+        ttywrite(target, targetlen, 0);
+        goto acmpl_begin;
+    }
+
+    active = 1;
+
+    if (complen_prev == 0) {
+        for (size_t i = 0; i < targetlen; i++)
+            ttywrite((char[]) {'\b'}, 1, 1);
+    } else {
+        selclear();
+        for (size_t i = 0; i < complen_prev; i++)
+            ttywrite((char[]) {'\b'}, 1, 1);
+        complen_prev = 0;
+    }
+
+    complen_prev = strlen(completion);
+    ttywrite(completion, complen_prev, 0);
+
+    if (line == cy && beg > cx) {
+        beg += complen_prev - targetlen;
+        end += complen_prev - targetlen;
+    }
+
+    end--;
+
+    int wl = 0;
+    int tl = line;
+    for (int l = 0; l < tl; l++)
+        if (term.line[l][term.col - 1].mode & ATTR_WRAP) {
+            wl++;
+            tl++;
+        }
+
+    selstart(beg % term.col, line + wl + beg / term.col, 0);
+    selextend(end % term.col, line + wl + end / term.col, 1, 0);
+    xsetsel(getsel());
 }
 

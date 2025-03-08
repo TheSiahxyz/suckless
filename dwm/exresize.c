@@ -41,26 +41,26 @@ exresize(const Arg *arg) {
 	ny = c->y - y/2;
 
 	if (!((abs(c->x + c->w/2 - (selmon->wx + selmon->ww/2)) < snap))) {
-		if ((nw == selmon->ww) || 
+		if ((nw == selmon->ww) ||
 				(nx < selmon->wx) ||
 				(abs(selmon->wx - c->x) < snap))
 			nx = selmon->wx;
-		else if ((nx+nw > (selmon->wx + selmon->ww)) || 
+		else if ((nx+nw > (selmon->wx + selmon->ww)) ||
 				(abs((selmon->wx + selmon->ww) - (c->x + c->w)) < snap))
 			nx = (selmon->wx + selmon->ww) - nw - c->bw*2;
-    } else 
+    } else
 		nx = selmon->wx + selmon->ww/2 - nw/2;
 
     if (!((abs(c->y + c->h/2 - (selmon->wy + selmon->wh/2)) < snap))) {
 
-		if ((nh == selmon->wh) || 
+		if ((nh == selmon->wh) ||
 				(ny < selmon->wy) ||
 				(abs(selmon->wy - c->y) < snap))
 			ny = selmon->wy;
 		else if ((ny+nh > (selmon->wy + selmon->wh)) ||
 				(abs((selmon->wy + selmon->wh) - (c->y + c->h)) < snap))
 			ny = (selmon->wy + selmon->wh) - nh - c->bw*2;
-	} else 
+	} else
         ny = selmon->wy + selmon->wh/2 - nh/2;
 
 
