@@ -2259,7 +2259,7 @@ run(void)
 void
 runAutostart(void)
 {
-  system("killall -q -9 dwmblocks; dwmblocks &");
+  system("killall -q dwmblocks; dwmblocks &");
 }
 
 void
@@ -4067,8 +4067,8 @@ main(int argc, char *argv[])
 		die("pledge");
 #endif /* __OpenBSD__ */
 	scan();
-	run();
   runAutostart();
+	run();
 	if(restart) execvp(argv[0], argv);
 	cleanup();
 	XCloseDisplay(dpy);
