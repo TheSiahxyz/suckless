@@ -348,7 +348,7 @@ static Shortcut shortcuts[] = {
   { ALTKEY,               XK_o,           externalpipe,   {.v = openurlcmd } },
 
   // PRINTERS
-	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
+	{ ALTKEY,               XK_Print,       printsel,       {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 
