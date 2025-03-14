@@ -316,26 +316,6 @@ static Keychord *keychords[] = {
 	&((Keychord){3, {{WINKEY,	XK_t},{0,XK_b},{0, XK_t}},              togglebartitle,         {0} }),
 	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{ControlMask, XK_t}},    toggletopbar,           {0} }),
 
-  // AUDIO CONTROLS
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_d}},             spawn,                  SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") }),
-  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_d}},             spawn,                  {.v = (const char *[]){ "dmenudelmusic", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_m}},             spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+23 dwmblocks") }),
-  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_m}},             spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_o}},             spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_p}},             spawn,                  SHCMD("mpc pause; sleep 1 && pauseallmpv") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_r}},             spawn,                  SHCMD("mpc single off; mpc random on; mpc repeat on") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_s}},             spawn,                  SHCMD("mpc single on; mpc random on; mpc repeat on") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_t}},             spawn,                  SHCMD("mpc toggle") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_x}},             spawn,                  SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "prev", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_period}},        spawn,                  {.v = (const char *[]){ "mpc", "next", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "seek", "-10", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_period}},        spawn,                  {.v = (const char *[]){ "mpc", "seek", "+10", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{ControlMask, XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "seek", "-60", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{ControlMask, XK_period}},        spawn,                  {.v = (const char *[]){ "mpc", "seek", "+60", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_bracketleft}},   spawn,                  {.v = (const char *[]){ "mpc", "seek", "0%", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_bracketright}},  spawn,                  {.v = (const char *[]){ "mpc", "seek", "90%", NULL } } }),
-
   // FLOATING POSITIONS
 	&((Keychord){2, {{WINKEY, XK_f},{0, XK_c}},                       movecenter,             {0} }),
 	&((Keychord){2, {{WINKEY, XK_f},{0, XK_m}},                       explace,                {.ui = EX_SW }}),
@@ -442,6 +422,26 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{0, XF86XK_TouchpadOff}},                        spawn,                  {.v = (const char *[]){ "synclient", "TouchpadOff=1", NULL } } }),
   &((Keychord){1, {{0, XF86XK_TouchpadOn}},                         spawn,                  {.v = (const char *[]){ "synclient", "TouchpadOff=0", NULL } } }),
   &((Keychord){1, {{0, XF86XK_TouchpadToggle}},                     spawn,                  SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") }),
+
+  // MUSIC CONTROLS
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_d}},             spawn,                  SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_d}},             spawn,                  {.v = (const char *[]){ "dmenudelmusic", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_m}},             spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+23 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_m}},             spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -39 $(pidof dwmblocks)") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_o}},             spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_p}},             spawn,                  SHCMD("mpc pause; sleep 1 && pauseallmpv") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_r}},             spawn,                  SHCMD("mpc single off; mpc random on; mpc repeat on") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_s}},             spawn,                  SHCMD("mpc single on; mpc random on; mpc repeat on") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_t}},             spawn,                  SHCMD("mpc toggle") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_x}},             spawn,                  SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "prev", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_period}},        spawn,                  {.v = (const char *[]){ "mpc", "next", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "seek", "-10", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_period}},        spawn,                  {.v = (const char *[]){ "mpc", "seek", "+10", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{ControlMask, XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "seek", "-60", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{ControlMask, XK_period}},        spawn,                  {.v = (const char *[]){ "mpc", "seek", "+60", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_bracketleft}},   spawn,                  {.v = (const char *[]){ "mpc", "seek", "0%", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_bracketright}},  spawn,                  {.v = (const char *[]){ "mpc", "seek", "90%", NULL } } }),
 
   // MOUSE
   &((Keychord){1, {{ULTRAMOD, XK_j}},                               spawn,                  { .v = (const char *[]){ "xdotmouse", "h", NULL } } }),
@@ -584,13 +584,14 @@ static Keychord *keychords[] = {
 	&((Keychord){2, {{WINKEY, XK_s},{0, XK_x}},                       scratchpad_remove,      {0} }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_f}},                       togglefloating,         {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{ControlMask, XK_f}},             togglecanfocusfloating, {0} }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       togglemark,             {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; kill -40 $(pidof dwmblocks)") }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_p}},                       togglescratch,          {.ui = 1 } }), // calculator //
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_q}},                       toggleallowkill,        {0} }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_Tab}},                     toggleall,              {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_apostrophe}},              togglemark,             {0} }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_space}},	                  togglealwaysontop,      {0} }),
-  &((Keychord){1, {{WINMOD2,  XK_Return}},                          togglescratch,          {.ui = 0 } }), // terminal //
+	&((Keychord){2, {{WINKEY, XK_t},{0, XK_Tab}},                     toggleall,              {0} }),
+  &((Keychord){1, {{WINMOD2, XK_Return}},                           togglescratch,          {.ui = 0 } }), // terminal //
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_1}},  	                    togglescratch,          {.ui = 0 } }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_2}},	                      togglescratch,          {.ui = 1 } }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_3}},	                      togglescratch,          {.ui = 2 } }),
