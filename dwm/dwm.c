@@ -572,7 +572,7 @@ applyrules(Client *c)
 		XFree(ch.res_class);
 	if (ch.res_name)
 		XFree(ch.res_name);
-  if(c->tags != SCRATCHPAD_MASK_1 && c->tags != SCRATCHPAD_MASK_2 && c->tags != SCRATCHPAD_MASK_3)
+  if (c->tags != SCRATCHPAD_MASK_1 && c->tags != SCRATCHPAD_MASK_2 && c->tags != SCRATCHPAD_MASK_3)
     c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : (c->mon->tagset[c->mon->seltags] & ~SPTAGMASK);
 }
 
@@ -803,10 +803,10 @@ changefocusopacity(const Arg *arg)
   if (!selmon->sel)
     return;
   selmon->sel->opacity+=arg->f;
-  if(selmon->sel->opacity > 1.0)
+  if (selmon->sel->opacity > 1.0)
     selmon->sel->opacity = 1.0;
 
-  if(selmon->sel->opacity < 0.1)
+  if (selmon->sel->opacity < 0.1)
     selmon->sel->opacity = 0.1;
 
   opacity(selmon->sel, selmon->sel->opacity);
@@ -818,10 +818,10 @@ changeunfocusopacity(const Arg *arg)
   if (!selmon->sel)
     return;
   selmon->sel->unfocusopacity+=arg->f;
-  if(selmon->sel->unfocusopacity > 1.0)
+  if (selmon->sel->unfocusopacity > 1.0)
     selmon->sel->unfocusopacity = 1.0;
 
-  if(selmon->sel->unfocusopacity < 0.1)
+  if (selmon->sel->unfocusopacity < 0.1)
     selmon->sel->unfocusopacity = 0.1;
 
   opacity(selmon->sel, selmon->sel->unfocusopacity);
@@ -1174,7 +1174,7 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		/* Do not draw vacant tags */
-		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
 			continue;
 		if (selmon->showtags) {
       if (taglbl && masterclientontag[i])
@@ -1279,7 +1279,7 @@ focus(Client *c)
 		grabbuttons(c, 1);
 		if (c == mark)
 			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColMark].pixel);
-    else if(c->isfloating)
+    else if (c->isfloating)
 			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColFloat].pixel);
 		else
 			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
@@ -1555,7 +1555,7 @@ grabkeys(void)
 							 keychords[i]->keys[currentkey].mod | modifiers[c],
 							 root, True,
 							 GrabModeAsync, GrabModeAsync);
-          if(currentkey > 0)
+          if (currentkey > 0)
             XGrabKey(dpy, XKeysymToKeycode(dpy, XK_Escape), AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
 		XFree(syms);
 	}
@@ -1602,10 +1602,10 @@ keypress(XEvent *e)
     keysym = XKeycodeToKeysym(dpy, (KeyCode)ev->keycode, 0);
     size_t w = 0;
     for (int i = 0; i < r; i++){
-      if(keysym == (*(rpointer + i))->keys[currentkey].keysym
+      if (keysym == (*(rpointer + i))->keys[currentkey].keysym
          && CLEANMASK((*(rpointer + i))->keys[currentkey].mod) == CLEANMASK(ev->state)
          && (*(rpointer + i))->func){
-        if((*(rpointer + i))->n == currentkey +1){
+        if ((*(rpointer + i))->n == currentkey +1){
           (*(rpointer + i))->func(&((*(rpointer + i))->arg));
           ran = 1;
         } else {
@@ -1615,11 +1615,11 @@ keypress(XEvent *e)
       }
     }
     currentkey++;
-    if(w == 0 || ran == 1)
+    if (w == 0 || ran == 1)
       break;
     grabkeys();
     while (running && !XNextEvent(dpy, &event) && !ran)
-      if(event.type == KeyPress)
+      if (event.type == KeyPress)
          break;
     r = w;
     Keychord **holder = rpointer;
@@ -1707,7 +1707,7 @@ manage(Window w, XWindowAttributes *wa)
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
 	if (c == mark)
 		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColMark].pixel);
-  else if(c->isfloating)
+  else if (c->isfloating)
 		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColFloat].pixel);
 	else
 		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
@@ -1748,7 +1748,7 @@ manage(Window w, XWindowAttributes *wa)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
-	if(c->isfloating)
+	if (c->isfloating)
 		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColFloat].pixel);
 	attach(c);
 	attachstack(c);
@@ -1756,7 +1756,7 @@ manage(Window w, XWindowAttributes *wa)
 		(unsigned char *) &(c->win), 1);
 	XMoveResizeWindow(dpy, c->win, c->x + 2 * sw, c->y, c->w, c->h); /* some windows require this */
 	setclientstate(c, NormalState);
-	if(selmon->sel && selmon->sel->isfullscreen && !c->isfloating)
+	if (selmon->sel && selmon->sel->isfullscreen && !c->isfloating)
 		setfullscreen(selmon->sel, 0);
 	if (c->mon == selmon)
 		unfocus(selmon->sel, 0);
@@ -1832,7 +1832,7 @@ gesture(const Arg *arg) {
 	if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
 		None, cursor[CurMove]->cursor, CurrentTime) != GrabSuccess)
 		return;
-	if(!getrootptr(&x, &y))
+	if (!getrootptr(&x, &y))
 		return;
 	do {
 		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
@@ -1843,7 +1843,7 @@ gesture(const Arg *arg) {
 				handler[ev.type](&ev);
 				break;
 			case MotionNotify:
-				if(count++ < 10)
+				if (count++ < 10)
 					break;
 				count = 0;
 				dx = ev.xmotion.x - x;
@@ -1851,14 +1851,14 @@ gesture(const Arg *arg) {
 				x = ev.xmotion.x;
 				y = ev.xmotion.y;
 
-				if( abs(dx)/(abs(dy)+1) == 0 )
+				if ( abs(dx)/(abs(dy)+1) == 0 )
 					move = dy<0?'u':'d';
 				else
 					move = dx<0?'l':'r';
 
-				if(move!=currGest[gestpos-1])
+				if (move!=currGest[gestpos-1])
 				{
-					if(gestpos>9)
+					if (gestpos>9)
 					{	ev.type++;
 						break;
 					}
@@ -1868,7 +1868,7 @@ gesture(const Arg *arg) {
 
 					valid = 0;
 					for(q = 0; q<LENGTH(gestures); q++)
-					{	if(!strcmp(currGest, gestures[q].gname))
+					{	if (!strcmp(currGest, gestures[q].gname))
 						{	valid++;
 							listpos = q;
 						}
@@ -1878,7 +1878,7 @@ gesture(const Arg *arg) {
 		}
 	} while(ev.type != ButtonRelease);
 
-	if(valid)
+	if (valid)
 		gestures[listpos].func(&(gestures[listpos].arg));
 
 	XUngrabPointer(dpy, CurrentTime);
@@ -1938,7 +1938,7 @@ movemouse(const Arg *arg)
           Client *cc = c->mon->clients;
           while (1) {
             if (cc == 0) break;
-            if(
+            if (
              cc != c && !cc->isfloating && ISVISIBLE(cc) &&
              ev.xmotion.x_root > cc->x &&
              ev.xmotion.x_root < cc->x + cc->w &&
@@ -2012,7 +2012,7 @@ nexttiled(Client *c)
 void
 opacity(Client *c, double opacity)
 {
-  if(opacity > 0 && opacity < 1) {
+  if (opacity > 0 && opacity < 1) {
     unsigned long real_opacity[] = { opacity * 0xffffffff };
     XChangeProperty(dpy, c->win, netatom[NetWMWindowsOpacity], XA_CARDINAL,
                     32, PropModeReplace, (unsigned char *)real_opacity,
@@ -2077,15 +2077,15 @@ pushstack(const Arg *arg) {
 	int i = stackpos(arg);
 	Client *sel = selmon->sel, *c, *p;
 
-	if(i < 0)
+	if (i < 0)
 		return;
-	else if(i == 0) {
+	else if (i == 0) {
 		detach(sel);
 		attach(sel);
 	}
 	else {
 		for(p = NULL, c = selmon->clients; c; p = c, c = c->next)
-			if(!(i -= (ISVISIBLE(c) && c != sel)))
+			if (!(i -= (ISVISIBLE(c) && c != sel)))
 				break;
 		c = c ? c : p;
 		detach(sel);
@@ -2098,7 +2098,7 @@ pushstack(const Arg *arg) {
 void
 quit(const Arg *arg)
 {
-	if(arg->i) restart = 1;
+	if (arg->i) restart = 1;
 	running = 0;
 }
 
@@ -2175,7 +2175,7 @@ resizemouse(const Arg *arg)
 	if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
 		None, cursor[CurResize]->cursor, CurrentTime) != GrabSuccess)
 		return;
-	if(!getrootptr(&x, &y))
+	if (!getrootptr(&x, &y))
 		return;
 	do {
 		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
@@ -2225,7 +2225,7 @@ restack(Monitor *m)
 	/* raise the aot window */
 	for(Monitor *m_search = mons; m_search; m_search = m_search->next){
 		for(c = m_search->clients; c; c = c->next){
-			if(c->isalwaysontop){
+			if (c->isalwaysontop){
 				XRaiseWindow(dpy, c->win);
 				break;
 			}
@@ -2259,7 +2259,7 @@ run(void)
 void
 runAutostart(void)
 {
-  system("killall -q dwmblocks; sleep 1 && dwmblocks &");
+  system("sleep 3 && killall -q dwmblocks; dwmblocks &");
 }
 
 void
@@ -2292,25 +2292,25 @@ scan(void)
 static void
 scratchpad_hide(const Arg *arg)
 {
-  if(scratchpad_hide_flag < 4) {
-    if(arg->i == 1) {
-      if(selmon->sel) {
+  if (scratchpad_hide_flag < 4) {
+    if (arg->i == 1) {
+      if (selmon->sel) {
         selmon->sel->tags = SCRATCHPAD_MASK_1;
         selmon->sel->isfloating = 1;
         focus(NULL);
         arrange(selmon);
         scratchpad_hide_flag++;
       }
-    } else if(arg->i == 2) {
-      if(selmon->sel) {
+    } else if (arg->i == 2) {
+      if (selmon->sel) {
         selmon->sel->tags = SCRATCHPAD_MASK_2;
         selmon->sel->isfloating = 1;
         focus(NULL);
         arrange(selmon);
         scratchpad_hide_flag++;
       }
-    } else if(arg->i == 3) {
-      if(selmon->sel) {
+    } else if (arg->i == 3) {
+      if (selmon->sel) {
         selmon->sel->tags = SCRATCHPAD_MASK_3;
         selmon->sel->isfloating = 1;
         focus(NULL);
@@ -2324,8 +2324,8 @@ scratchpad_hide(const Arg *arg)
 static void
 scratchpad_remove()
 {
-  if(selmon->sel && (scratchpad_last_showed_1 != NULL || scratchpad_last_showed_2 != NULL ||scratchpad_last_showed_3 != NULL) && (selmon->sel == scratchpad_last_showed_1 || selmon->sel == scratchpad_last_showed_2 || selmon->sel == scratchpad_last_showed_3))  {
-    if(scratchpad_last_showed_1 == selmon->sel) {
+  if (selmon->sel && (scratchpad_last_showed_1 != NULL || scratchpad_last_showed_2 != NULL ||scratchpad_last_showed_3 != NULL) && (selmon->sel == scratchpad_last_showed_1 || selmon->sel == scratchpad_last_showed_2 || selmon->sel == scratchpad_last_showed_3))  {
+    if (scratchpad_last_showed_1 == selmon->sel) {
       scratchpad_last_showed_1 = NULL;
       scratchpad_hide_flag--;
     } else if (scratchpad_last_showed_2 == selmon->sel) {
@@ -2341,11 +2341,11 @@ scratchpad_remove()
 static void
 scratchpad_show(const Arg *arg)
 {
-  if(arg->i == 1) {
-    if(scratchpad_last_showed_1 == NULL) {
+  if (arg->i == 1) {
+    if (scratchpad_last_showed_1 == NULL) {
       scratchpad_show_first(arg->i);
     } else {
-      if(scratchpad_last_showed_1->tags != SCRATCHPAD_MASK_1) {
+      if (scratchpad_last_showed_1->tags != SCRATCHPAD_MASK_1) {
         scratchpad_last_showed_1->tags = SCRATCHPAD_MASK_1;
         focus(NULL);
         arrange(selmon);
@@ -2353,11 +2353,11 @@ scratchpad_show(const Arg *arg)
         scratchpad_show_first(arg->i);
       }
     }
-  } else if(arg->i == 2) {
-    if(scratchpad_last_showed_2 == NULL) {
+  } else if (arg->i == 2) {
+    if (scratchpad_last_showed_2 == NULL) {
       scratchpad_show_first(arg->i);
     } else {
-      if(scratchpad_last_showed_2->tags != SCRATCHPAD_MASK_2) {
+      if (scratchpad_last_showed_2->tags != SCRATCHPAD_MASK_2) {
         scratchpad_last_showed_2->tags = SCRATCHPAD_MASK_2;
         focus(NULL);
         arrange(selmon);
@@ -2365,11 +2365,11 @@ scratchpad_show(const Arg *arg)
         scratchpad_show_first(arg->i);
       }
     }
-  } else if(arg->i == 3) {
-    if(scratchpad_last_showed_3 == NULL) {
+  } else if (arg->i == 3) {
+    if (scratchpad_last_showed_3 == NULL) {
       scratchpad_show_first(arg->i);
     } else {
-      if(scratchpad_last_showed_3->tags != SCRATCHPAD_MASK_3) {
+      if (scratchpad_last_showed_3->tags != SCRATCHPAD_MASK_3) {
         scratchpad_last_showed_3->tags = SCRATCHPAD_MASK_3;
         focus(NULL);
         arrange(selmon);
@@ -2392,13 +2392,13 @@ static void
 scratchpad_show_first(int scratchNum)
 {
   for(Client *c = selmon->clients; c !=NULL; c = c->next) {
-    if(c->tags == SCRATCHPAD_MASK_1 && scratchNum == 1) {
+    if (c->tags == SCRATCHPAD_MASK_1 && scratchNum == 1) {
       scratchpad_last_showed_1 = c;
       scratchpad_show_client(c);
-    } else if(c->tags == SCRATCHPAD_MASK_2 && scratchNum == 2) {
+    } else if (c->tags == SCRATCHPAD_MASK_2 && scratchNum == 2) {
       scratchpad_last_showed_2 = c;
       scratchpad_show_client(c);
-    } else if(c->tags == SCRATCHPAD_MASK_3 && scratchNum == 3) {
+    } else if (c->tags == SCRATCHPAD_MASK_3 && scratchNum == 3) {
       scratchpad_last_showed_3 = c;
       scratchpad_show_client(c);
     }
@@ -2546,7 +2546,7 @@ layoutscroll(const Arg *arg)
 
 	if (switchto == l)
 		switchto = 0;
-	else if(switchto < 0)
+	else if (switchto < 0)
 		switchto = l - 1;
 
 	selmon->ltcur = switchto;
@@ -2558,11 +2558,11 @@ void
 	 setsticky(Client *c, int sticky)
 	 {
 
-		 if(sticky && !c->issticky) {
+		 if (sticky && !c->issticky) {
 			 XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
 					 PropModeReplace, (unsigned char *) &netatom[NetWMSticky], 1);
 			 c->issticky = 1;
-		 } else if(!sticky && c->issticky){
+		 } else if (!sticky && c->issticky){
 			 XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
 					 PropModeReplace, (unsigned char *)0, 0);
 			 c->issticky = 0;
@@ -2578,7 +2578,7 @@ setlayout(const Arg *arg)
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag] ^= 1;
 		if (!selmon->lt[selmon->sellt]->arrange) {
 			for (Client *c = selmon->clients ; c ; c = c->next) {
-				if(!c->isfloating) {
+				if (!c->isfloating) {
 					/*restore last known float dimensions*/
 					resize(c, selmon->mx + c->sfx, selmon->my + c->sfy,
 					       c->sfw, c->sfh, 0);
@@ -2602,12 +2602,12 @@ setcfact(const Arg *arg) {
 
 	c = selmon->sel;
 
-	if(!arg || !c || !selmon->lt[selmon->sellt]->arrange)
+	if (!arg || !c || !selmon->lt[selmon->sellt]->arrange)
 		return;
 	f = arg->f + c->cfact;
-	if(arg->f == 0.0)
+	if (arg->f == 0.0)
 		f = 1.0;
-	else if(f < 0.25 || f > 4.0)
+	else if (f < 0.25 || f > 4.0)
 		return;
 	c->cfact = f;
 	arrange(selmon);
@@ -2867,7 +2867,7 @@ swapfocus(const Arg *arg)
 	Client *c, *t;
 
 	for(c = selmon->clients; c && c != prevclient; c = c->next) ;
-	if(c == prevclient) {
+	if (c == prevclient) {
 		focus(prevclient);
 		restack(prevclient->mon);
 	}
@@ -2904,24 +2904,24 @@ stackpos(const Arg *arg) {
 	int n, i;
 	Client *c, *l;
 
-	if(!selmon->clients)
+	if (!selmon->clients)
 		return -1;
 
-	if(arg->i == PREVSEL) {
+	if (arg->i == PREVSEL) {
 		for(l = selmon->stack; l && (!ISVISIBLE(l) || l == selmon->sel); l = l->snext);
-		if(!l)
+		if (!l)
 			return -1;
 		for(i = 0, c = selmon->clients; c != l; i += ISVISIBLE(c) ? 1 : 0, c = c->next);
 		return i;
 	}
-	else if(ISINC(arg->i)) {
-		if(!selmon->sel)
+	else if (ISINC(arg->i)) {
+		if (!selmon->sel)
 			return -1;
 		for(i = 0, c = selmon->clients; c != selmon->sel; i += ISVISIBLE(c) ? 1 : 0, c = c->next);
 		for(n = i; c; n += ISVISIBLE(c) ? 1 : 0, c = c->next);
 		return MOD(i + GETINC(arg->i), n);
 	}
-	else if(arg->i < 0) {
+	else if (arg->i < 0) {
 		for(i = 0, c = selmon->clients; c; i += ISVISIBLE(c) ? 1 : 0, c = c->next);
 		return MAX(i + arg->i, 0);
 	}
@@ -3095,7 +3095,7 @@ togglefloating(const Arg *arg)
 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
-	if(selmon->sel->isfloating)
+	if (selmon->sel->isfloating)
 		XSetWindowBorder(dpy, selmon->sel->win, scheme[SchemeSel][ColFloat].pixel);
 	else
 		XSetWindowBorder(dpy, selmon->sel->win, scheme[SchemeSel][ColBorder].pixel);
@@ -3135,7 +3135,7 @@ togglealwaysontop(const Arg *arg)
 	if (selmon->sel->isfullscreen)
 		return;
 
-	if(selmon->sel->isalwaysontop){
+	if (selmon->sel->isalwaysontop){
 		selmon->sel->isalwaysontop = 0;
 	} else {
 		/* disable others */
@@ -3204,7 +3204,7 @@ togglecanfocusfloating(const Arg *arg)
 void
 togglefullscr(const Arg *arg)
 {
-  if(selmon->sel)
+  if (selmon->sel)
     setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 }
 
@@ -3371,13 +3371,13 @@ unmanage(Client *c, int destroyed)
 		XUngrabServer(dpy);
 	}
 
-  if(scratchpad_last_showed_1 == c) {
+  if (scratchpad_last_showed_1 == c) {
     scratchpad_last_showed_1 = NULL;
   }
-  if(scratchpad_last_showed_2 == c) {
+  if (scratchpad_last_showed_2 == c) {
     scratchpad_last_showed_2 = NULL;
   }
-  if(scratchpad_last_showed_3 == c) {
+  if (scratchpad_last_showed_3 == c) {
     scratchpad_last_showed_3 = NULL;
   }
 
@@ -4069,7 +4069,7 @@ main(int argc, char *argv[])
 	scan();
   runAutostart();
 	run();
-	if(restart) execvp(argv[0], argv);
+	if (restart) execvp(argv[0], argv);
 	cleanup();
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
