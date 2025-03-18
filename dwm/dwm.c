@@ -2259,7 +2259,7 @@ run(void)
 void
 runAutostart(void)
 {
-  system("sleep 3 && killall -q dwmblocks; dwmblocks &");
+  system("killall -q dwmblocks; dwmblocks &");
 }
 
 void
