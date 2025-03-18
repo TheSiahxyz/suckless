@@ -450,7 +450,6 @@ unsigned int tagw[LENGTH(tags)];
 struct NumTags { char limitexceeded[LENGTH(tags) > 28 ? -1 : 1]; };
 
 /* function implementations */
-
 static void
 alttab(const Arg *arg) {
 
@@ -2099,6 +2098,7 @@ void
 quit(const Arg *arg)
 {
 	if (arg->i) restart = 1;
+
 	running = 0;
 }
 
@@ -2259,7 +2259,7 @@ run(void)
 void
 runAutostart(void)
 {
-  system("killall -q dwmblocks; dwmblocks &");
+  system("killall -q -9 dwmblocks; dwmblocks &");
 }
 
 void
