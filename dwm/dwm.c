@@ -2259,7 +2259,7 @@ run(void)
 void
 runAutostart(void)
 {
-  system("killall -q -9 dwmblocks; dwmblocks &");
+  system("kill $(pidof dwmblocks); killall -q dwmblocks; dwmblocks &");
 }
 
 void
