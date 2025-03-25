@@ -221,8 +221,8 @@ static const char *layoutmenu_cmd = "layoutmenu";
 static const Arg tagexec[] = {
   { .v = termcmd },	                                                  // 1
   { .v = (const char *[]){ BROWSER, NULL } },                         // 2
-	SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+20 dwmblocks"),          // 3
-	SHCMD(TERMINAL " -e newsboat ; pkill -RTMIN+19 dwmblocks"),	        // 4
+	SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks"),          // 3
+	SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks"),	        // 4
 	{ .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } },       // 5
 	{ .v = (const char *[]){ "torwrap", NULL } },                       // 6
 	{ .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } }, // 7
