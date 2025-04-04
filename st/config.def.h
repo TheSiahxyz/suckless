@@ -358,8 +358,8 @@ static Shortcut shortcuts[] = {
   // TRAVERSALS
   { ALTKEY,               XK_y,           kscrollup,      {.i =  1} },
   { ALTKEY,               XK_e,           kscrolldown,    {.i =  1} },
-  { ALTSHIFT,             XK_u,           kscrollup,      {.i = -1} },
-  { ALTSHIFT,             XK_d,           kscrolldown,    {.i = -1} },
+  { ALTKEY,               XK_u,           kscrollup,      {.i = -1} },
+  { ALTKEY,               XK_d,           kscrolldown,    {.i = -1} },
   { ALTKEY,               XK_Page_Up,     kscrollup,      {.i =  1} },
   { ALTKEY,               XK_Page_Down,   kscrolldown,    {.i =  1} },
   { ALTSHIFT,             XK_Page_Up,     kscrollup,      {.i = -1} },
