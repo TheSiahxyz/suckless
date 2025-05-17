@@ -11,7 +11,7 @@ index 1c0b587..8595a71 100644
 +        { ALTMOD,                       KEY,      focusnthmon,    {.i  = TAG } }, \
 +        { ALTMOD|ShiftMask,             KEY,      tagnthmon,      {.i  = TAG } },
 +
- 
+
  /* helper for spawning shell commands in the pre dwm-5.0 fashion */
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 diff --git a/dwm.c b/dwm.c
@@ -45,7 +45,7 @@ index b0b3466..96fa0bd 100644
 @@ -693,6 +696,18 @@ dirtomon(int dir)
  	return m;
  }
- 
+
 +Monitor *
 +numtomon(int num)
 +{
@@ -64,7 +64,7 @@ index b0b3466..96fa0bd 100644
 @@ -830,6 +845,21 @@ focusmon(const Arg *arg)
  	focus(NULL);
  }
- 
+
 +void
 +focusnthmon(const Arg *arg)
 +{
@@ -86,7 +86,7 @@ index b0b3466..96fa0bd 100644
 @@ -1671,6 +1701,14 @@ tagmon(const Arg *arg)
  	sendmon(selmon->sel, dirtomon(arg->i));
  }
- 
+
 +void
 +tagnthmon(const Arg *arg)
 +{
