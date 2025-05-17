@@ -1131,7 +1131,7 @@ drawbar(Monitor *m)
 		return;
 
 	/* draw status first so it can be overdrawn by tags later */
-	if ((m == selmon && selmon->showstatus) || (statusall && selmon->showstatus)) { /* status is only drawn on selected monitor */
+	if ((m == &mons[mainmon] && selmon->showstatus) || (statusall && selmon->showstatus)) { /* status is only drawn on selected monitor */
 		char *text, *s, ch;
     if (m == selmon)
       drw_setscheme(drw, scheme[SchemeStatusSel]);

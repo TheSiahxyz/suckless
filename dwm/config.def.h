@@ -15,6 +15,7 @@ static const double activeopacity       = 1.0f;     /* Window opacity when it's 
 static const double inactiveopacity     = 1.0f;     /* Window opacity when it's inactive (0 <= opacity <= 1) */
 static const int allowkill              = 1;        /* allow killing clients by default? */
 static       int alt_tab_direction      = 1;        /* 1 means cycle forward */
+static const int mainmon                = 0;        /* xsetroot will only change the bar on this monitor */
 static       int showbar                = 1;        /* 0 means no bar */
 static const int showfloating           = 1;        /* 0 means no floating indicator */
 static const int showlayout             = 1;        /* 0 means no layout indicator */
