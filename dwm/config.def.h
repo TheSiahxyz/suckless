@@ -421,14 +421,15 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{0, XF86XK_TouchpadToggle}},                     spawn,                  SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") }),
 
   // MUSIC CONTROLS
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_a}},             spawn,                  SHCMD("mpc single on; mpc random on; mpc repeat on; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0,           XK_d}},             spawn,                  SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_d}},             spawn,                  {.v = (const char *[]){ "dmenudelmusic", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_m},{0,           XK_m}},             spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+23 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask,   XK_m}},             spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_o}},             spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_o}},             spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0,           XK_p}},             spawn,                  SHCMD("mpc pause; sleep 1 && pauseallmpv") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_r}},             spawn,                  SHCMD("mpc single off; mpc random on; mpc repeat on") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_s}},             spawn,                  SHCMD("mpc single on; mpc random on; mpc repeat on") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_r}},             spawn,                  SHCMD("mpc single off; mpc random on; mpc repeat on; mpc consume off") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0,           XK_s}},             spawn,                  SHCMD("mpc single on; mpc random off; mpc repeat on; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0,           XK_t}},             spawn,                  SHCMD("mpc toggle") }),
   &((Keychord){2, {{WINKEY, XK_m},{0,           XK_x}},             spawn,                  SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") }),
   &((Keychord){2, {{WINKEY, XK_m},{0,           XK_comma}},         spawn,                  {.v = (const char *[]){ "mpc", "prev", NULL } } }),
