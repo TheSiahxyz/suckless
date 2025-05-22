@@ -1554,8 +1554,10 @@ grabkeys(void)
 							 keychords[i]->keys[currentkey].mod | modifiers[c],
 							 root, True,
 							 GrabModeAsync, GrabModeAsync);
-          if (currentkey > 0)
-            XGrabKey(dpy, XKeysymToKeycode(dpy, XK_Escape), AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
+
+    if (currentkey > 0)
+      XGrabKey(dpy, XKeysymToKeycode(dpy, XK_Escape), AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
+
 		XFree(syms);
 	}
 }
@@ -2324,7 +2326,7 @@ scratchpad_hide(const Arg *arg)
 static void
 scratchpad_remove()
 {
-  if (selmon->sel && (scratchpad_last_showed_1 != NULL || scratchpad_last_showed_2 != NULL ||scratchpad_last_showed_3 != NULL) && (selmon->sel == scratchpad_last_showed_1 || selmon->sel == scratchpad_last_showed_2 || selmon->sel == scratchpad_last_showed_3))  {
+  if (selmon->sel && (scratchpad_last_showed_1 != NULL || scratchpad_last_showed_2 != NULL || scratchpad_last_showed_3 != NULL) && (selmon->sel == scratchpad_last_showed_1 || selmon->sel == scratchpad_last_showed_2 || selmon->sel == scratchpad_last_showed_3)) {
     if (scratchpad_last_showed_1 == selmon->sel) {
       scratchpad_last_showed_1 = NULL;
       scratchpad_hide_flag--;
