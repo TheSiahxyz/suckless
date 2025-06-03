@@ -334,8 +334,8 @@ static Shortcut shortcuts[] = {
 	{ ALTKEY,               XK_c,           clipcopy,       {.i =  0} },
   { ALTSHIFT,             XK_C,           externalpipe,   {.v = copyurlcmd } },
   { ALTKEY,               XK_o,           externalpipe,   {.v = copyoutput } },
-	{ ALTSHIFT,             XK_L,           copyurl,        {.i =  0} },
-	{ ALTKEY,               XK_l,           copyurl,        {.i =  1} },
+	{ ALTSHIFT,             XK_R,           copyurl,        {.i =  0} },
+	{ ALTKEY,               XK_r,           copyurl,        {.i =  1} },
 
   // FONTS
 	{ ALTSHIFT,             XK_F,           cyclefonts,     {}        },
