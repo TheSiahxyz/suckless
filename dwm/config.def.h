@@ -143,14 +143,17 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class        instance     title           tags mask  allowkill  focusopacity    unfocusopacity   isfloating  isterminal  noswallow  monitor  resizehints  border width */
-	{ "Gimp",       NULL,        NULL,           1 << 7,     1,         1.0,           inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
-	{ TERMCLASS,    NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
-	{ BROWSERCLASS, NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
-	{ "kakaotalk",  NULL,        NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
-	{ NULL,		      "spterm",		 NULL,		       SPTAG(0),	 1,         activeopacity, inactiveopacity,	 1,          0,          0,        -1,       1,          -1 },
-	{ NULL,		      "spfm",		   NULL,		       SPTAG(1),	 1,         activeopacity, inactiveopacity,	 1,          0,          0,        -1,       1,          -1 },
-	{ NULL,		      "keepassxc", NULL,		       SPTAG(2),	 1,         activeopacity, inactiveopacity,	 0,          0,          0,        -1,       1,          -1 },
-	{ NULL,         NULL,        "Event Tester", 0,          1,         activeopacity, inactiveopacity,  0,          0,          1,        -1,       1,          -1 }, /* xev */
+  { "Gimp",       NULL,        NULL,           1 << 7,     1,         1.0,           inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
+  { TERMCLASS,    NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
+  { BROWSERCLASS, NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
+  { "kakaotalk",  NULL,        NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
+  { TERMCLASS,    "floatterm", NULL,           0,          1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       0,           0 },
+  { TERMCLASS,    "bg",        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
+  { NULL,         "spterm",    NULL,           SPTAG(0),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
+  { NULL,         "splf",      NULL,           SPTAG(1),   1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
+  { NULL,         "spcal",     NULL,           SPTAG(2),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
+  { NULL,         "keepassxc", NULL,           SPTAG(3),   1,         activeopacity, inactiveopacity,  0,          0,          0,        -1,       1,          -1 },
+  { NULL,         NULL,        "Event Tester", 0,          1,         activeopacity, inactiveopacity,  0,          0,          1,        -1,       1,          -1 }, /* xev */
 };
 
 /* layout(s) */
