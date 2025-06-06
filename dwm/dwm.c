@@ -182,6 +182,7 @@ struct Monitor {
 	Monitor *next;
 	Window barwin;
 	const Layout *lt[2];
+	unsigned int alttag;
 	int ltcur; /* current layout */
 	Pertag *pertag;
 };
@@ -258,6 +259,7 @@ static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
+static void keyrelease(XEvent *e);
 static void killthis(Client *c);
 static void killclient(const Arg *arg);
 static void layoutmenu(const Arg *arg);
@@ -323,6 +325,7 @@ static void tagmon(const Arg *arg);
 static void tagnthmon(const Arg *arg);
 static void toggleall(const Arg *arg);
 static void toggleallowkill(const Arg *arg);
+static void togglealttag(const Arg *arg);
 static void togglealwaysontop(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglebartags(const Arg *arg);
@@ -397,6 +400,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[Expose] = expose,
 	[FocusIn] = focusin,
 	[KeyPress] = keypress,
+	[KeyRelease] = keyrelease,
 	[MappingNotify] = mappingnotify,
 	[MapRequest] = maprequest,
 	[MotionNotify] = motionnotify,
@@ -408,6 +412,7 @@ static int restart = 0;
 static int running = 1;
 static Cur *cursor[CurLast];
 static Clr **scheme;
+static Clr **tagscheme;
 static Display *dpy;
 static Drw *drw;
 static Monitor *mons, *selmon;
@@ -1119,7 +1124,7 @@ numtomon(int num)
 void
 drawbar(Monitor *m)
 {
-	int x, w, tw = 0;
+	int x, w, wdelta, tw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -1182,11 +1187,12 @@ drawbar(Monitor *m)
         snprintf(tagdisp, 64, etagf, tags[i]);
       masterclientontag[i] = tagdisp;
       tagw[i] = w = TEXTW(masterclientontag[i]);
+      wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i]) - 2) / 2 : 0;
       if (m == selmon)
-        drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
+      	drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i] : scheme[SchemeNorm]));
       else
         drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeTagsNorm]);
-      drw_text(drw, x, 0, w, bh, lrpad / 2, masterclientontag[i], urg & 1 << i);
+      drw_text(drw, x, 0, w,(selmon->alttag ? bh + 2 : bh), wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : masterclientontag[i]), urg & 1 << i);
       x += w;
 		}
   }
@@ -1642,6 +1648,25 @@ killthis(Client *c) {
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
 	}
+}
+
+void
+keyrelease(XEvent *e)
+{
+	unsigned int i;
+	KeySym keysym;
+	XKeyEvent *ev;
+
+	ev = &e->xkey;
+	keysym = XKeycodeToKeysym(dpy, (KeyCode)ev->keycode, 0);
+
+    for (i = 0; i < LENGTH(keychords); i++)
+        if (momentaryalttags
+        && keychords[i]->func && keychords[i]->func == togglealttag
+        && selmon->alttag
+        && (keysym == keychords[i]->keys[currentkey].keysym
+        || CLEANMASK(keychords[i]->keys[currentkey].mod) == CLEANMASK(ev->state)))
+            keychords[i]->func(&(keychords[i]->arg));
 }
 
 void
@@ -2704,9 +2729,14 @@ setup(void)
 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
 	/* init appearance */
+	if (LENGTH(tags) > LENGTH(tagsel))
+		die("too few color schemes for the tags");
 	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
 	for (i = 0; i < LENGTH(colors); i++)
 		scheme[i] = drw_scm_create(drw, colors[i], alphas[i], 5);
+	tagscheme = ecalloc(LENGTH(tagsel), sizeof(Clr *));
+	for (i = 0; i < LENGTH(tagsel); i++)
+		tagscheme[i] = drw_scm_create(drw, tagsel[i], tagalpha, 2);
 	/* init bars */
 	updatebars();
 	updatestatus();
@@ -3015,6 +3045,13 @@ toggleall(const Arg *arg)
 		focus(NULL);
 		arrange(m);
 	}
+}
+
+void
+togglealttag(const Arg *arg)
+{
+	selmon->alttag = !selmon->alttag;
+	drawbar(selmon);
 }
 
 void

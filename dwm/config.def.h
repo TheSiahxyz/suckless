@@ -118,6 +118,21 @@ static Sp scratchpads[] = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tagsalt[] = { "", "", "", "", "󱘶", "󰧮", "󱇤", "", "󰙯" };
+static       char *tagsel[][2] = {
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+	{ "#f8f8f2", "#005577" },
+};
+
+static const unsigned int tagalpha[] = { OPAQUE, baralpha };
+static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 static const char ptagf[] = "%s. %s";	/* format of a tag label */
 static const char etagf[] = "%s";	/* format of an empty tag */
 static const int taglbl   = 0;		/* 1 means enable tag label */
@@ -586,6 +601,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_p}},                       togglescratch,          {.ui = 1 } }), // calculator //
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_q}},                       toggleallowkill,        {0} }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
+	&((Keychord){2, {{WINKEY, XK_t},{0, XK_t}},                       togglealttag,           {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_apostrophe}},              togglemark,             {0} }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_space}},	                  togglealwaysontop,      {0} }),
 	&((Keychord){2, {{WINKEY, XK_t},{0, XK_Tab}},                     toggleall,              {0} }),
