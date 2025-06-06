@@ -590,7 +590,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_space}},               focusmaster,            {0} }),
 
   // TOGGLES
-	&((Keychord){2, {{WINKEY, XK_space},{0, XK_f}},                   togglefullscr,          {0} }),
+	&((Keychord){1, {{WINMOD2, XK_f}},                                togglefullscr,          {0} }),
   &((Keychord){2, {{WINKEY, XK_s},{0, XK_m}},                       scratchpad_show,        {.i = 1} }),
   &((Keychord){2, {{WINKEY, XK_s},{0, XK_comma}},                   scratchpad_show,        {.i = 2} }),
   &((Keychord){2, {{WINKEY, XK_s},{0, XK_period}},                  scratchpad_show,        {.i = 3} }),
