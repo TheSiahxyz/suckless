@@ -74,79 +74,80 @@ static       char selstatusfgcolor[]    = "#eeeeee";
 static       char seltagbgcolor[]       = "#005577";
 static       char seltagfgcolor[]       = "#ffffff";
 static       char *colors[][5]          = {
-	/*                     fg                 bg                 border           float           mark          */
-	[SchemeNorm]       = { normfgcolor,       normbgcolor,       normbordercolor, normfloatcolor, normmarkcolor },
-	[SchemeSel]        = { selfgcolor,        selbgcolor,        selbordercolor,  selfloatcolor,  selmarkcolor  },
+  /*                     fg                 bg                 border           float           mark          */
+  [SchemeNorm]       = { normfgcolor,       normbgcolor,       normbordercolor, normfloatcolor, normmarkcolor },
+  [SchemeSel]        = { selfgcolor,        selbgcolor,        selbordercolor,  selfloatcolor,  selmarkcolor  },
   [SchemeInv]        = { normbgcolor,       normfgcolor,       normbordercolor, normfloatcolor, normmarkcolor },
-	[SchemeStatusNorm] = { normstatusfgcolor, normstatusbgcolor, normbordercolor, normfloatcolor, normmarkcolor },  // Statusbar right unselected {text,background,not used but cannot be empty}
-	[SchemeStatusSel]  = { selstatusfgcolor,  selstatusbgcolor,  selbordercolor,  selfloatcolor,  selmarkcolor },   // Statusbar right selected {text,background,not used but cannot be empty}
-	[SchemeTagsNorm]   = { normtagfgcolor,    normtagbgcolor,    normbordercolor, normfloatcolor, normmarkcolor },  // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeTagsSel]    = { seltagfgcolor,     seltagbgcolor,     selbordercolor,  selfloatcolor,  selmarkcolor  },  // Tagbar left selected {text,background,not used but cannot be empty}
-	[SchemeInfoNorm]   = { norminfofgcolor,   norminfobgcolor,   normbordercolor, normfloatcolor, normmarkcolor },  // infobar middle  unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]    = { selinfofgcolor,    selinfobgcolor,    selbordercolor,  selfloatcolor,  selmarkcolor  },  // infobar middle  selected {text,background,not used but cannot be empty}
+  [SchemeStatusNorm] = { normstatusfgcolor, normstatusbgcolor, normbordercolor, normfloatcolor, normmarkcolor },  // Statusbar right unselected {text,background,not used but cannot be empty}
+  [SchemeStatusSel]  = { selstatusfgcolor,  selstatusbgcolor,  selbordercolor,  selfloatcolor,  selmarkcolor },   // Statusbar right selected {text,background,not used but cannot be empty}
+  [SchemeTagsNorm]   = { normtagfgcolor,    normtagbgcolor,    normbordercolor, normfloatcolor, normmarkcolor },  // Tagbar left unselected {text,background,not used but cannot be empty}
+  [SchemeTagsSel]    = { seltagfgcolor,     seltagbgcolor,     selbordercolor,  selfloatcolor,  selmarkcolor  },  // Tagbar left selected {text,background,not used but cannot be empty}
+  [SchemeInfoNorm]   = { norminfofgcolor,   norminfobgcolor,   normbordercolor, normfloatcolor, normmarkcolor },  // infobar middle  unselected {text,background,not used but cannot be empty}
+  [SchemeInfoSel]    = { selinfofgcolor,    selinfobgcolor,    selbordercolor,  selfloatcolor,  selmarkcolor  },  // infobar middle  selected {text,background,not used but cannot be empty}
 };
 static const unsigned int alphas[][5]      = {
   /*                     fg      bg        border       float       mark     */
   [SchemeNorm]       = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
-	[SchemeSel]        = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
-	[SchemeInv]        = { CLEAR,  CLEAR,    CLEAR,       CLEAR,      CLEAR     },
-	[SchemeStatusNorm] = { OPAQUE, CLEAR,    CLEAR,       CLEAR,      CLEAR     },
-	[SchemeStatusSel]  = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
-	[SchemeTagsNorm]   = { OPAQUE, CLEAR,    CLEAR,       CLEAR,      CLEAR     },
-	[SchemeTagsSel]    = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
-	[SchemeInfoNorm]   = { OPAQUE, CLEAR,    CLEAR,       CLEAR,      CLEAR     },
-	[SchemeInfoSel]    = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
+  [SchemeSel]        = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
+  [SchemeInv]        = { CLEAR,  CLEAR,    CLEAR,       CLEAR,      CLEAR     },
+  [SchemeStatusNorm] = { OPAQUE, CLEAR,    CLEAR,       CLEAR,      CLEAR     },
+  [SchemeStatusSel]  = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
+  [SchemeTagsNorm]   = { OPAQUE, CLEAR,    CLEAR,       CLEAR,      CLEAR     },
+  [SchemeTagsSel]    = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
+  [SchemeInfoNorm]   = { OPAQUE, CLEAR,    CLEAR,       CLEAR,      CLEAR     },
+  [SchemeInfoSel]    = { OPAQUE, baralpha, borderalpha, floatalpha, markalpha },
 };
 static const XPoint stickyicon[] = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
-static const XPoint stickyiconbb = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
+static const XPoint stickyiconbb = {4,8}; /* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 typedef struct {
-	const char *name;
-	const void *cmd;
+  const char *name;
+  const void *cmd;
 } Sp;
 const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = { TERMINAL, "-n", "splf", "-g", "144x41", "-e", "lf", NULL };
 const char *spcmd3[] = { TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 const char *spcmd4[] = { "keepassxc", NULL };
 static Sp scratchpads[] = {
-	/* name          cmd  */
-	{"spterm",      spcmd1},
-	{"splf",        spcmd2},
-	{"spcalc",      spcmd3},
-	{"keepassxc",   spcmd4},
+  /* name          cmd  */
+  {"spterm",      spcmd1},
+  {"splf",        spcmd2},
+  {"spcalc",      spcmd3},
+  {"keepassxc",   spcmd4},
 };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const char *tagsalt[] = { "", "", "", "󱘶", "", "󰧮", "󱇤", "", "󰙯" };
 static       char *tagsel[][2] = {
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
-	{ "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
+  { "#f8f8f2", "#005577" },
 };
 
 static const unsigned int tagalpha[] = { OPAQUE, baralpha };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
-static const char ptagf[] = "%s. %s";	/* format of a tag label */
-static const char etagf[] = "%s";	/* format of an empty tag */
-static const int taglbl   = 0;		/* 1 means enable tag label */
-static const int lcaselbl = 0;		/* 1 means make tag label lowercase */
+static const char ptagf[] = "%s. %s"; /* format of a tag label */
+static const char etagf[] = "%s"; /* format of an empty tag */
+static const int taglbl   = 0;    /* 1 means enable tag label */
+static const int lcaselbl = 0;    /* 1 means make tag label lowercase */
 static const Rule rules[] = {
-	/* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	 */
-	/* class        instance     title           tags mask  allowkill  focusopacity    unfocusopacity   isfloating  isterminal  noswallow  monitor  resizehints  border width */
+  /* xprop(1):
+  * WM_CLASS(STRING) = instance, class
+  * WM_NAME(STRING) = title
+  */
+  /* class        instance     title           tags mask  allowkill  focusopacity    unfocusopacity   isfloating  isterminal  noswallow  monitor  resizehints  border width */
   { "Gimp",       NULL,        NULL,           1 << 7,     1,         1.0,           inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
   { TERMCLASS,    NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
   { BROWSERCLASS, NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
   { "kakaotalk",  NULL,        NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
+  { "mpv",        "mpvk",      NULL,           1 << 2,     1,         activeopacity, inactiveopacity,  0,          1,         -1,        -1,       0,           0 },
   { TERMCLASS,    "floatterm", NULL,           0,          1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       0,           0 },
   { TERMCLASS,    "bg",        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
   { NULL,         "spterm",    NULL,           SPTAG(0),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
@@ -169,7 +170,7 @@ static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen win
 #include "vanitygaps.c"
 
 static const Layout layouts[] = {
-	/* symbol     arrange function */
+  /* symbol     arrange function */
   { "[]=",    tile },                     /* 0: Default: Master on left, slaves on right */
   { "[M]",    monocle },                  /* 1: All windows on top of eachother */
   { "|||",    col },                      /* 2: Column */
@@ -203,24 +204,24 @@ static const Layout layouts[] = {
 #define ULTRAMODALL (WINKEY | ALTKEY | ControlMask)
 #define EXTRAMOD    (ControlMask | ShiftMask)
 #define TAGKEYS(KEY,TAG)                                                    \
-	&((Keychord){1, {{WINKEY,     KEY}},  view,         {.ui = 1 << TAG} }),  \
-	&((Keychord){1, {{WINMOD,     KEY}},  tag,          {.ui = 1 << TAG} }),  \
+  &((Keychord){1, {{WINKEY,     KEY}},  view,         {.ui = 1 << TAG} }),  \
+  &((Keychord){1, {{WINMOD,     KEY}},  tag,          {.ui = 1 << TAG} }),  \
   &((Keychord){1, {{WINMOD2,    KEY}},  toggleview,   {.ui = 1 << TAG} }),  \
-	&((Keychord){1, {{WINMODALL,  KEY}},  tagandview,   {.ui = 1 << TAG} }),  \
+  &((Keychord){1, {{WINMODALL,  KEY}},  tagandview,   {.ui = 1 << TAG} }),  \
   &((Keychord){1, {{ALTKEY,     KEY}},  focusnthmon,  {.i  = TAG } }),      \
   &((Keychord){1, {{ALTMOD,     KEY}},  tagnthmon,    {.i  = TAG } }),      \
   &((Keychord){1, {{ALTMOD2,    KEY}},  toggletag,    {.ui = 1 << TAG} }),  \
-	&((Keychord){1, {{ULTRAKEY,   KEY}},  nview,        {.ui = 1 << TAG} }),  \
-	&((Keychord){1, {{ULTRAMOD,   KEY}},  viewall,      {.ui = 1 << TAG} }),  \
+  &((Keychord){1, {{ULTRAKEY,   KEY}},  nview,        {.ui = 1 << TAG} }),  \
+  &((Keychord){1, {{ULTRAMOD,   KEY}},  viewall,      {.ui = 1 << TAG} }),  \
   &((Keychord){1, {{ULTRAMOD2,  KEY}},  ntoggleview,  {.ui = 1 << TAG} }),
 #define STACKKEYS(MOD,ACTION)                                                                   \
-	&((Keychord){1, {{MOD, XK_j}},                            ACTION##stack,  {.i = INC(+1) } }), \
-	&((Keychord){1, {{MOD, XK_k}},                            ACTION##stack,  {.i = INC(-1) } }), \
-	&((Keychord){1, {{MOD, XK_Tab}},                          ACTION##stack,  {.i = PREVSEL } }), \
-	&((Keychord){2, {{MOD, XK_BackSpace},{0, XK_BackSpace}},  ACTION##stack,  {.i = 0 } }),       \
-	&((Keychord){2, {{MOD, XK_BackSpace},{0, XK_a}},          ACTION##stack,  {.i = 1 } }),       \
-	&((Keychord){2, {{MOD, XK_BackSpace},{0, XK_z}},          ACTION##stack,  {.i = 2 } }),       \
-	&((Keychord){2, {{MOD, XK_BackSpace},{0, XK_x}},          ACTION##stack,  {.i = -1 } }),
+  &((Keychord){1, {{MOD, XK_j}},                            ACTION##stack,  {.i = INC(+1) } }), \
+  &((Keychord){1, {{MOD, XK_k}},                            ACTION##stack,  {.i = INC(-1) } }), \
+  &((Keychord){1, {{MOD, XK_Tab}},                          ACTION##stack,  {.i = PREVSEL } }), \
+  &((Keychord){2, {{MOD, XK_BackSpace},{0, XK_BackSpace}},  ACTION##stack,  {.i = 0 } }),       \
+  &((Keychord){2, {{MOD, XK_BackSpace},{0, XK_a}},          ACTION##stack,  {.i = 1 } }),       \
+  &((Keychord){2, {{MOD, XK_BackSpace},{0, XK_z}},          ACTION##stack,  {.i = 2 } }),       \
+  &((Keychord){2, {{MOD, XK_BackSpace},{0, XK_x}},          ACTION##stack,  {.i = -1 } }),
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -234,15 +235,15 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *layoutmenu_cmd = "layoutmenu";
 static const Arg tagexec[] = {
-  { .v = termcmd },	                                                  // 1
+  { .v = termcmd },                                                   // 1
   { .v = (const char *[]){ BROWSER, NULL } },                         // 2
-	SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks"),          // 3
-	SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks"),	        // 4
-	{ .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } },       // 5
-	{ .v = (const char *[]){ "torwrap", NULL } },                       // 6
-	{ .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } }, // 7
-	{ .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } },          // 8
-	{ .v = (const char *[]){ "kakaotalk", NULL } }	                    // 9
+  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks"),           // 3
+  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks"),          // 4
+  { .v = (const char *[]){ TERMINAL, "-e", "ncmpcpp", NULL } },       // 5
+  { .v = (const char *[]){ "torwrap", NULL } },                       // 6
+  { .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } }, // 7
+  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } },          // 8
+  { .v = (const char *[]){ "kakaotalk", NULL } }                      // 9
 };
 
 /* gestures
@@ -253,7 +254,7 @@ static const Arg tagexec[] = {
  * ud means up and down
  */
 static Gesture gestures[] = {
-	{ "u",  spawn, { .v = termcmd } },
+  { "u",  spawn, { .v = termcmd } },
   { "d",  spawn, { .v = (const char *[]){ BROWSER, NULL } } },
   { "l",  spawn, SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks; rmdir ~/.abook 2>/dev/null") },
   { "r",  spawn, SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks") },
@@ -263,146 +264,146 @@ static Gesture gestures[] = {
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-	{ "borderpx",          	INTEGER, &borderpx            },
-	{ "dmenufont",          STRING,  &dmenufont           },
-	{ "font",               STRING,  &font                },
-	{ "mfact",      	 	    FLOAT,   &mfact               },
-	{ "nmaster",          	INTEGER, &nmaster             },
-	{ "normbgcolor",        STRING,  &normbgcolor         },
-	{ "normbordercolor",    STRING,  &normbordercolor     },
-	{ "normfgcolor",        STRING,  &normfgcolor         },
-	{ "normfloatcolor",     STRING,  &normfloatcolor      },
-	{ "normmarkcolor",      STRING,  &normmarkcolor       },
-	{ "normstatusbgcolor",  STRING,  &normstatusbgcolor   },
-	{ "normstatusfgcolor",  STRING,  &normstatusfgcolor   },
-	{ "normtagbgcolor",     STRING,  &normtagbgcolor      },
-	{ "normtagfgcolor",     STRING,  &normtagfgcolor      },
-	{ "norminfobgcolor",    STRING,  &norminfobgcolor     },
-	{ "norminfofgcolor",    STRING,  &norminfofgcolor     },
-	{ "resizehints",       	INTEGER, &resizehints         },
-	{ "selbgcolor",         STRING,  &selbgcolor          },
-	{ "selbordercolor",     STRING,  &selbordercolor      },
-	{ "selfgcolor",         STRING,  &selfgcolor          },
-	{ "selfloatcolor",      STRING,  &selfloatcolor       },
-	{ "selmarkcolor",       STRING,  &selmarkcolor        },
-	{ "seltagbgcolor",      STRING,  &seltagbgcolor       },
-	{ "seltagfgcolor",      STRING,  &seltagfgcolor       },
-	{ "selinfobgcolor",     STRING,  &selinfobgcolor      },
-	{ "selinfofgcolor",     STRING,  &selinfofgcolor      },
-	{ "showbar",          	INTEGER, &showbar             },
-	{ "snap",          		  INTEGER, &snap                },
-	{ "topbar",          	  INTEGER, &topbar              },
+  { "borderpx",           INTEGER, &borderpx            },
+  { "dmenufont",          STRING,  &dmenufont           },
+  { "font",               STRING,  &font                },
+  { "mfact",              FLOAT,   &mfact               },
+  { "nmaster",            INTEGER, &nmaster             },
+  { "normbgcolor",        STRING,  &normbgcolor         },
+  { "normbordercolor",    STRING,  &normbordercolor     },
+  { "normfgcolor",        STRING,  &normfgcolor         },
+  { "normfloatcolor",     STRING,  &normfloatcolor      },
+  { "normmarkcolor",      STRING,  &normmarkcolor       },
+  { "normstatusbgcolor",  STRING,  &normstatusbgcolor   },
+  { "normstatusfgcolor",  STRING,  &normstatusfgcolor   },
+  { "normtagbgcolor",     STRING,  &normtagbgcolor      },
+  { "normtagfgcolor",     STRING,  &normtagfgcolor      },
+  { "norminfobgcolor",    STRING,  &norminfobgcolor     },
+  { "norminfofgcolor",    STRING,  &norminfofgcolor     },
+  { "resizehints",        INTEGER, &resizehints         },
+  { "selbgcolor",         STRING,  &selbgcolor          },
+  { "selbordercolor",     STRING,  &selbordercolor      },
+  { "selfgcolor",         STRING,  &selfgcolor          },
+  { "selfloatcolor",      STRING,  &selfloatcolor       },
+  { "selmarkcolor",       STRING,  &selmarkcolor        },
+  { "seltagbgcolor",      STRING,  &seltagbgcolor       },
+  { "seltagfgcolor",      STRING,  &seltagfgcolor       },
+  { "selinfobgcolor",     STRING,  &selinfobgcolor      },
+  { "selinfofgcolor",     STRING,  &selinfofgcolor      },
+  { "showbar",            INTEGER, &showbar             },
+  { "snap",               INTEGER, &snap                },
+  { "topbar",             INTEGER, &topbar              },
 };
 
 static Keychord *keychords[] = {
   /*           Num  Keys                                            Function                argument */
   // STACKKEYS
-	STACKKEYS(        WINKEY,                                         focus)
-	STACKKEYS(        WINMOD,                                         push)
+  STACKKEYS(        WINKEY,                                         focus)
+  STACKKEYS(        WINMOD,                                         push)
 
   // TAGKEYS
-	TAGKEYS(          XK_1,                                                                   0)
-	TAGKEYS(          XK_2,                                                                   1)
-	TAGKEYS(          XK_3,                                                                   2)
-	TAGKEYS(          XK_4,                                                                   3)
-	TAGKEYS(          XK_5,                                                                   4)
-	TAGKEYS(          XK_6,                                                                   5)
-	TAGKEYS(          XK_7,                                                                   6)
-	TAGKEYS(          XK_8,                                                                   7)
-	TAGKEYS(          XK_9,                                                                   8)
+  TAGKEYS(          XK_1,                                                                   0)
+  TAGKEYS(          XK_2,                                                                   1)
+  TAGKEYS(          XK_3,                                                                   2)
+  TAGKEYS(          XK_4,                                                                   3)
+  TAGKEYS(          XK_5,                                                                   4)
+  TAGKEYS(          XK_6,                                                                   5)
+  TAGKEYS(          XK_7,                                                                   6)
+  TAGKEYS(          XK_8,                                                                   7)
+  TAGKEYS(          XK_9,                                                                   8)
 
   // APPEARANCE
   &((Keychord){1, {{WINKEY, XK_a}},                                 changefocusopacity,     {.f = +0.025}}),
   &((Keychord){1, {{WINKEY, XK_s}},                                 changefocusopacity,     {.f = -0.025}}),
   &((Keychord){1, {{WINMOD, XK_a}},                                 changeunfocusopacity,   {.f = +0.025}}),
   &((Keychord){1, {{WINMOD, XK_s}},                                 changeunfocusopacity,   {.f = -0.025}}),
-	&((Keychord){1, {{WINKEY, XK_o}}, 	                              setborderpx,            {.i = -1 } }),
-	&((Keychord){1, {{WINMOD, XK_o}}, 		                            setborderpx,            {.i = +1 } }),
-	&((Keychord){1, {{WINMOD2, XK_o}}, 	                              setborderpx,            {.i = 0 } }),
-	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_a}},              togglebartags,          {0} }),
-	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_b}},              togglebar,              {0} }),
+  &((Keychord){1, {{WINKEY, XK_o}},                                 setborderpx,            {.i = -1 } }),
+  &((Keychord){1, {{WINMOD, XK_o}},                                 setborderpx,            {.i = +1 } }),
+  &((Keychord){1, {{WINMOD2, XK_o}},                                setborderpx,            {.i = 0 } }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_a}},              togglebartags,          {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_b}},              togglebar,              {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{ShiftMask, XK_b}},      togglebar,              {.i = 1} }),
   &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_o}},              toggleborder,           {0} }),
-	&((Keychord){3, {{WINKEY,	XK_t},{0,XK_b},{0, XK_f}},              togglebarfloat,         {0} }),
-	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_g}},              togglegaps,             {0} }),
-	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{ControlMask, XK_g}},    defaultgaps,            {0} }),
-	&((Keychord){3, {{WINKEY,	XK_t},{0,XK_b},{0, XK_l}},              togglebarlt,            {0} }),
-	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_s}},              togglebarstatus,        {0} }),
-	&((Keychord){3, {{WINKEY,	XK_t},{0,XK_b},{0, XK_t}},              togglebartitle,         {0} }),
-	&((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{ControlMask, XK_t}},    toggletopbar,           {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_f}},              togglebarfloat,         {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_g}},              togglegaps,             {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{ControlMask, XK_g}},    defaultgaps,            {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_l}},              togglebarlt,            {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_s}},              togglebarstatus,        {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{0, XK_t}},              togglebartitle,         {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0,XK_b},{ControlMask, XK_t}},    toggletopbar,           {0} }),
 
   // FLOATING POSITIONS
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_c}},                       movecenter,             {0} }),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_m}},                       explace,                {.ui = EX_SW }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_comma}},                   explace,                {.ui = EX_S  }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_period}},                  explace,                {.ui = EX_SE }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_j}},                       explace,                {.ui = EX_W  }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_k}},                       explace,                {.ui = EX_C  }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_l}},                       explace,                {.ui = EX_E  }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_u}},                       explace,                {.ui = EX_NW }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_i}},                       explace,                {.ui = EX_N  }}),
-	&((Keychord){2, {{WINKEY, XK_f},{0, XK_o}},                       explace,                {.ui = EX_NE }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_c}},                       movecenter,             {0} }),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_m}},                       explace,                {.ui = EX_SW }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_comma}},                   explace,                {.ui = EX_S  }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_period}},                  explace,                {.ui = EX_SE }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_j}},                       explace,                {.ui = EX_W  }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_k}},                       explace,                {.ui = EX_C  }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_l}},                       explace,                {.ui = EX_E  }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_u}},                       explace,                {.ui = EX_NW }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_i}},                       explace,                {.ui = EX_N  }}),
+  &((Keychord){2, {{WINKEY, XK_f},{0, XK_o}},                       explace,                {.ui = EX_NE }}),
 
   // FLOATING SIZES
-	&((Keychord){1, {{ALTKEY, XK_KP_Down}},                           exresize,               {.v = (int []){   0,  25 }}}),
-	&((Keychord){1, {{ALTKEY, XK_KP_Left}},                           exresize,               {.v = (int []){ -25,   0 }}}),
-	&((Keychord){1, {{ALTKEY, XK_KP_Begin}},                          exresize,               {.v = (int []){  25,  25 }}}),
-	&((Keychord){1, {{ALTMOD, XK_KP_Begin}},                          exresize,               {.v = (int []){ -25, -25 }}}),
-	&((Keychord){1, {{ALTKEY, XK_KP_Right}},                          exresize,               {.v = (int []){  25,   0 }}}),
+  &((Keychord){1, {{ALTKEY, XK_KP_Down}},                           exresize,               {.v = (int []){   0,  25 }}}),
+  &((Keychord){1, {{ALTKEY, XK_KP_Left}},                           exresize,               {.v = (int []){ -25,   0 }}}),
+  &((Keychord){1, {{ALTKEY, XK_KP_Begin}},                          exresize,               {.v = (int []){  25,  25 }}}),
+  &((Keychord){1, {{ALTMOD, XK_KP_Begin}},                          exresize,               {.v = (int []){ -25, -25 }}}),
+  &((Keychord){1, {{ALTKEY, XK_KP_Right}},                          exresize,               {.v = (int []){  25,   0 }}}),
   &((Keychord){1, {{ALTKEY, XK_KP_Up}},                             exresize,               {.v = (int []){   0, -25 }}}),
   &((Keychord){1, {{ALTMOD2, XK_KP_End}},                           toggleverticalexpand,   {.i =  0} }),
   &((Keychord){1, {{ALTMOD2, XK_KP_Down}},                          toggleverticalexpand,   {.i = -1} }),
   &((Keychord){1, {{ALTMOD2, XK_KP_Next}},                          togglehorizontalexpand, {.i =  0} }),
   &((Keychord){1, {{ALTMOD2, XK_KP_Left}},                          togglehorizontalexpand, {.i = -1} }),
-	&((Keychord){1, {{ALTMOD2, XK_KP_Begin}},                         togglemaximize,         {.i =  0} }),
+  &((Keychord){1, {{ALTMOD2, XK_KP_Begin}},                         togglemaximize,         {.i =  0} }),
   &((Keychord){1, {{ALTMOD2, XK_KP_Right}},                         togglehorizontalexpand, {.i = +1} }),
   &((Keychord){1, {{ALTMOD2, XK_KP_Home}},                          togglemaximize,         {.i = +1} }),
   &((Keychord){1, {{ALTMOD2, XK_KP_Up}},                            toggleverticalexpand,   {.i = +1} }),
-	&((Keychord){1, {{ALTMOD2, XK_KP_Prior}},                         togglemaximize,         {.i = -1} }),
+  &((Keychord){1, {{ALTMOD2, XK_KP_Prior}},                         togglemaximize,         {.i = -1} }),
 
   // LAYOUTS
-	&((Keychord){1, {{WINMOD, XK_h}},                                 layoutscroll,           {.i = -1 } }),
-	&((Keychord){1, {{WINMOD, XK_l}},                                 layoutscroll,           {.i = +1 } }),
+  &((Keychord){1, {{WINMOD, XK_h}},                                 layoutscroll,           {.i = -1 } }),
+  &((Keychord){1, {{WINMOD, XK_l}},                                 layoutscroll,           {.i = +1 } }),
   &((Keychord){2, {{WINMOD2, XK_l},{0, XK_r}},                      resetlayout,            {0} }),
-	&((Keychord){2, {{WINMOD2, XK_l},{0, XK_n}},                      resetnmaster,           {0} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_0}},             setlayout,              {0} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_1}},             setlayout,              {.v = &layouts[0]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_2}},             setlayout,              {.v = &layouts[1]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_3}},             setlayout,              {.v = &layouts[2]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_4}},             setlayout,              {.v = &layouts[3]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_5}},             setlayout,              {.v = &layouts[4]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_6}},             setlayout,              {.v = &layouts[5]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_7}},             setlayout,              {.v = &layouts[6]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_8}},             setlayout,              {.v = &layouts[7]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_9}},             setlayout,              {.v = &layouts[8]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_0}},             setlayout,              {.v = &layouts[9]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_1}},             setlayout,              {.v = &layouts[10]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_2}},             setlayout,              {.v = &layouts[11]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_3}},             setlayout,              {.v = &layouts[12]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_4}},             setlayout,              {.v = &layouts[13]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_5}},             setlayout,              {.v = &layouts[14]} }),
-	&((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_6}},             setlayout,              {.v = &layouts[15]} }),
+  &((Keychord){2, {{WINMOD2, XK_l},{0, XK_n}},                      resetnmaster,           {0} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_0}},             setlayout,              {0} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_1}},             setlayout,              {.v = &layouts[0]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_2}},             setlayout,              {.v = &layouts[1]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_3}},             setlayout,              {.v = &layouts[2]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_4}},             setlayout,              {.v = &layouts[3]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_5}},             setlayout,              {.v = &layouts[4]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_6}},             setlayout,              {.v = &layouts[5]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_7}},             setlayout,              {.v = &layouts[6]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_8}},             setlayout,              {.v = &layouts[7]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_0},{0,XK_9}},             setlayout,              {.v = &layouts[8]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_0}},             setlayout,              {.v = &layouts[9]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_1}},             setlayout,              {.v = &layouts[10]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_2}},             setlayout,              {.v = &layouts[11]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_3}},             setlayout,              {.v = &layouts[12]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_4}},             setlayout,              {.v = &layouts[13]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_5}},             setlayout,              {.v = &layouts[14]} }),
+  &((Keychord){3, {{WINMOD2, XK_l},{0, XK_1},{0,XK_6}},             setlayout,              {.v = &layouts[15]} }),
 
   // LAYOUT SIZES
-	&((Keychord){1, {{WINKEY, XK_KP_Insert}},                         setcfact,               {.f =  0.00} }),
-	&((Keychord){1, {{WINKEY, XK_KP_End}},                            incrgaps,               {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Insert}},                         setcfact,               {.f =  0.00} }),
+  &((Keychord){1, {{WINKEY, XK_KP_End}},                            incrgaps,               {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_End}},                           incrgaps,               {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Down}},                           incrigaps,              {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Down}},                           incrigaps,              {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Down}},                          incrigaps,              {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Next}},                           incrogaps,              {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Next}},                           incrogaps,              {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Next}},                          incrogaps,              {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Left}},                           incrihgaps,             {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Left}},                           incrihgaps,             {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Left}},                          incrihgaps,             {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Begin}},                          incrivgaps,             {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Begin}},                          incrivgaps,             {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Begin}},                         incrivgaps,             {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Right}},                          incrohgaps,             {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Right}},                          incrohgaps,             {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Right}},                         incrohgaps,             {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Home}},                           incrovgaps,             {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Home}},                           incrovgaps,             {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Home}},                          incrovgaps,             {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_KP_Up}},                             incnmaster,             {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_KP_Up}},                             incnmaster,             {.i = -1 } }),
   &((Keychord){1, {{WINMOD2, XK_KP_Up}},                            incnmaster,             {.i = +1 } }),
-	&((Keychord){1, {{WINKEY, XK_h}},                                 setmfact,               {.f = -0.05} }),
-	&((Keychord){1, {{WINKEY, XK_l}},                                 setmfact,               {.f = +0.05} }),
+  &((Keychord){1, {{WINKEY, XK_h}},                                 setmfact,               {.f = -0.05} }),
+  &((Keychord){1, {{WINKEY, XK_l}},                                 setmfact,               {.f = +0.05} }),
 
   // MEDIA CONTROLS
   &((Keychord){1, {{0, NoSymbol}},                                  spawn,                  {.v = termcmd } }),
@@ -425,9 +426,9 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{0, XF86XK_Launch1}},                            spawn,                  {.v = (const char *[]){ "xset", "dpms", "force", "off", NULL } } }),
   &((Keychord){1, {{0, XF86XK_Mail}},                               spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+20 dwmblocks") }),
   &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  SHCMD("pkexec brillo -U 5 -q; kill -43 $(pidof dwmblocks)") }),
-  /* &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},	                spawn,                	{.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } }), */
+  /* &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  {.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } }), */
   &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  SHCMD("pkexec brillo -A 5 -q; kill -43 $(pidof dwmblocks)") }),
-  /* &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},	                  spawn,                  {.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }), */
+  /* &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  {.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }), */
   &((Keychord){1, {{0, XF86XK_MyComputer}},                         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", "/", NULL } } }),
   &((Keychord){1, {{0, XF86XK_PowerOff}},                           spawn,                  {.v = (const char*[]){ "sysact", NULL } } }),
   &((Keychord){1, {{0, XF86XK_RotateWindows}},                      spawn,                  {.v = (const char *[]){ "tablet", NULL } } }),
@@ -542,12 +543,12 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ShiftMask, XK_F12}},                            spawn,                  SHCMD("remaps") }),
 
   // SYSTEMS
-	&((Keychord){1, {{WINKEY, XK_g}},                                 gesture,                {0} }),
+  &((Keychord){1, {{WINKEY, XK_g}},                                 gesture,                {0} }),
   &((Keychord){1, {{WINKEY, XK_q}},                                 killclient,             {0} }), // kill only current client
   &((Keychord){1, {{WINMOD, XK_q}},                                 killclient,             {.ui = 1 } }), // kill other clients in the same tag
   &((Keychord){1, {{WINMOD2, XK_q}},                                killclient,             {.ui = 2 } }), // kill all clients in the same tag
   &((Keychord){1, {{WINKEY, XK_d}},                                 spawn,                  {.v = dmenucmd } }),
-	&((Keychord){1, {{WINKEY, XK_Return}},                            spawn,                  {.v = termcmd } }),
+  &((Keychord){1, {{WINKEY, XK_Return}},                            spawn,                  {.v = termcmd } }),
   &((Keychord){1, {{WINMOD, XK_Return}},                            spawn,                  {.v = (const char *[]){ "sd", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_BackSpace}},           spawn,                  {.v = (const char *[]){ "slock", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{ShiftMask, XK_BackSpace}},   spawn,                  {.v = (const char *[]){ "sysact", NULL } } }),
@@ -560,58 +561,57 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ULTRAMOD, XK_minus}},                           spawn,                  SHCMD("monitorbright -dec 5; kill -42 $(pidof dwmblocks)") }),
   &((Keychord){1, {{ULTRAMOD, XK_equal}},                           spawn,                  SHCMD("monitorbright -inc 5; kill -42 $(pidof dwmblocks)") }),
   &((Keychord){1, {{0, XK_Alt_R}},                                  spawn,                  SHCMD("fcitx5-remote -t && kill -44 $(pidof dwmblocks)") }),
-	/* &((Keychord){1, {{WINMOD, XK_q}},                                 quit,                   {0} }), */
-	&((Keychord){1, {{ControlMask, XK_F5}},                           quit,                   {1} }),
+  /* &((Keychord){1, {{WINMOD, XK_q}},                                 quit,                   {0} }), */
+  &((Keychord){1, {{ControlMask, XK_F5}},                           quit,                   {1} }),
   &((Keychord){1, {{EXTRAMOD, XK_F5}},                              spawn,                  SHCMD("killall -q dwmblocks; setsid -f dwmblocks") }),
 
   // TRAVERSALS
-	&((Keychord){1, {{WINMOD2, XK_z}},                                zoom,                   {0} }),
-	&((Keychord){1, {{WINKEY, XK_grave}},                             view,                   {0} }),
-	&((Keychord){1, {{WINKEY, XK_0}},                                 view,                   {.ui = ~0 } }),
-	&((Keychord){1, {{WINMOD, XK_0}},                                 tag,                    {.ui = ~0 } }),
-	&((Keychord){1, {{WINKEY, XK_Left}},                              focusmon,               {.i = -1 } }),
-	&((Keychord){1, {{WINKEY, XK_Right}},                             focusmon,               {.i = +1 } }),
-	&((Keychord){1, {{WINMOD2, XK_Left}},                             tagmon,                 {.i = -1 } }),
-	&((Keychord){1, {{WINMOD2, XK_Right}},                            tagmon,                 {.i = +1 } }),
-	&((Keychord){1, {{WINMOD,	XK_Left}},                              shiftswaptags,          {.i = -1 } }),
-	&((Keychord){1, {{WINMOD,	XK_Right}},                             shiftswaptags,          {.i = +1 } }),
-	&((Keychord){1, {{WINMODALL, XK_Left}},                           shiftboth,              {.i = -1 } }),
-	&((Keychord){1, {{WINMODALL, XK_Right}},                          shiftboth,              {.i = +1 } }),
+  &((Keychord){1, {{WINMOD2, XK_z}},                                zoom,                   {0} }),
+  &((Keychord){1, {{WINKEY, XK_grave}},                             view,                   {0} }),
+  &((Keychord){1, {{WINKEY, XK_0}},                                 view,                   {.ui = ~0 } }),
+  &((Keychord){1, {{WINMOD, XK_0}},                                 tag,                    {.ui = ~0 } }),
+  &((Keychord){1, {{WINKEY, XK_Left}},                              focusmon,               {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_Right}},                             focusmon,               {.i = +1 } }),
+  &((Keychord){1, {{WINMOD2, XK_Left}},                             tagmon,                 {.i = -1 } }),
+  &((Keychord){1, {{WINMOD2, XK_Right}},                            tagmon,                 {.i = +1 } }),
+  &((Keychord){1, {{WINMOD, XK_Left}},                              shiftswaptags,          {.i = -1 } }),
+  &((Keychord){1, {{WINMOD, XK_Right}},                             shiftswaptags,          {.i = +1 } }),
+  &((Keychord){1, {{WINMODALL, XK_Left}},                           shiftboth,              {.i = -1 } }),
+  &((Keychord){1, {{WINMODALL, XK_Right}},                          shiftboth,              {.i = +1 } }),
   &((Keychord){1, {{ALTKEY, XK_Tab}},                               swapfocus,              {0} }),
-	&((Keychord){1, {{ALTMOD2, XK_Tab}},                              swapfocus,              {0} }),
+  &((Keychord){1, {{ALTMOD2, XK_Tab}},                              swapfocus,              {0} }),
   &((Keychord){1, {{ALTMOD, XK_Tab}},                               swapclient,             {0} }),
-	&((Keychord){1, {{ALTMODALL, XK_Tab}},                            alttab,                 {0} }),
-	&((Keychord){2, {{WINKEY, XK_v},{0, XK_h}},	                      shiftview,              {.i = -1 } }),
-	&((Keychord){2, {{WINKEY, XK_v},{0, XK_l}},	                      shiftview,              {.i = +1 } }),
-	&((Keychord){2, {{WINKEY, XK_v},{0, XK_j}},                       shiftviewclients,       {.i = +1 } }),
-	&((Keychord){2, {{WINKEY,	XK_v},{0, XK_k}},                       shiftviewclients,       {.i = -1 } }),
-	&((Keychord){2, {{WINKEY, XK_v},{0, XK_w}},                       winview,                {0} }),
-	&((Keychord){2, {{WINKEY, XK_v},{0, XK_w}},                       winview,                {0} }),
+  &((Keychord){1, {{ALTMODALL, XK_Tab}},                            alttab,                 {0} }),
+  &((Keychord){1, {{WINKEY, XK_bracketleft}},                       shiftview,              {.i = -1 } }),
+  &((Keychord){1, {{WINKEY, XK_bracketright}},                      shiftview,              {.i = +1 } }),
+  &((Keychord){1, {{WINMOD, XK_bracketleft}},                       shiftviewclients,       {.i = -1 } }),
+  &((Keychord){1, {{WINMOD, XK_bracketright}},                      shiftviewclients,       {.i = +1 } }),
+  &((Keychord){1, {{WINKEY, XK_z}},                                 winview,                {0} }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_space}},               focusmaster,            {0} }),
 
   // TOGGLES
-	&((Keychord){1, {{WINMOD2, XK_f}},                                togglefullscr,          {0} }),
+  &((Keychord){1, {{WINMOD2, XK_f}},                                togglefullscr,          {0} }),
   &((Keychord){2, {{WINKEY, XK_s},{0, XK_m}},                       scratchpad_show,        {.i = 1} }),
   &((Keychord){2, {{WINKEY, XK_s},{0, XK_comma}},                   scratchpad_show,        {.i = 2} }),
   &((Keychord){2, {{WINKEY, XK_s},{0, XK_period}},                  scratchpad_show,        {.i = 3} }),
   &((Keychord){2, {{WINKEY, XK_s},{ShiftMask, XK_m}},               scratchpad_hide,        {.i = 1} }),
   &((Keychord){2, {{WINKEY, XK_s},{ShiftMask, XK_comma}},           scratchpad_hide,        {.i = 2} }),
   &((Keychord){2, {{WINKEY, XK_s},{ShiftMask, XK_period}},          scratchpad_hide,        {.i = 3} }),
-	&((Keychord){2, {{WINKEY, XK_s},{0, XK_x}},                       scratchpad_remove,      {0} }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_f}},                       togglefloating,         {0} }),
+  &((Keychord){2, {{WINKEY, XK_s},{0, XK_x}},                       scratchpad_remove,      {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_f}},                       togglefloating,         {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{ControlMask, XK_f}},             togglecanfocusfloating, {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; kill -40 $(pidof dwmblocks)") }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_p}},                       togglescratch,          {.ui = 1 } }), // calculator //
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_q}},                       toggleallowkill,        {0} }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_t}},                       togglealttag,           {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_t}},                       togglealttag,           {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_apostrophe}},              togglemark,             {0} }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_space}},	                  togglealwaysontop,      {0} }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_Tab}},                     toggleall,              {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_space}},                   togglealwaysontop,      {0} }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_Tab}},                     toggleall,              {0} }),
   &((Keychord){1, {{WINMOD2, XK_Return}},                           togglescratch,          {.ui = 0 } }), // terminal //
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_1}},  	                    togglescratch,          {.ui = 0 } }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_2}},	                      togglescratch,          {.ui = 1 } }),
-	&((Keychord){2, {{WINKEY, XK_t},{0, XK_3}},	                      togglescratch,          {.ui = 2 } }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_1}},                       togglescratch,          {.ui = 0 } }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_2}},                       togglescratch,          {.ui = 1 } }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_3}},                       togglescratch,          {.ui = 2 } }),
 
   // SUCKLESS CONFIGS
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_p}},             spawn,                  SHCMD(TERMINAL " -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") }),
@@ -625,20 +625,20 @@ static Keychord *keychords[] = {
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkClientWin,         WINKEY,         Button1,        movemouse,      {0} },
+  /* click                event mask      button          function        argument */
+  { ClkClientWin,         WINKEY,         Button1,        movemouse,      {0} },
   { ClkClientWin,         WINMOD,         Button1,        killclient,     {0} },
   { ClkClientWin,         WINMOD2,        Button1,        killclient,     {.ui = 2 } },
   { ClkClientWin,         WINKEY,         Button2,        defaultgaps,    {0} },
-	{ ClkClientWin,         WINMOD,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         WINKEY,         Button3,        resizemouse,    {0} },
+  { ClkClientWin,         WINMOD,         Button2,        togglefloating, {0} },
+  { ClkClientWin,         WINKEY,         Button3,        resizemouse,    {0} },
   { ClkClientWin,         WINMOD,         Button3,        gesture,        {0} },
   { ClkClientWin,         WINKEY,         Button4,        incrgaps,       {.i = -1 } },
   { ClkClientWin,         WINKEY,         Button5,        incrgaps,       {.i = +1 } },
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        layoutmenu,     {0} },
-	{ ClkMonNum,            0,              Button4,        focusmon,       {.i = -1} },
-	{ ClkMonNum,            0,              Button5,        focusmon,       {.i = +1} },
+  { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+  { ClkLtSymbol,          0,              Button3,        layoutmenu,     {0} },
+  { ClkMonNum,            0,              Button4,        focusmon,       {.i = -1} },
+  { ClkMonNum,            0,              Button5,        focusmon,       {.i = +1} },
   { ClkRootWin,           0,              Button2,        togglebar,      {0} },
   { ClkRootWin,           WINKEY,         Button2,        togglebar,      {.i = 1 } },
   { ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
@@ -661,15 +661,15 @@ static const Button buttons[] = {
   { ClkStatusText,        WINMOD2,        Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
   { ClkStatusText,        WINKEY,         Button3,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") },
   { ClkStatusText,        WINMOD,         Button3,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            WINKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            ULTRAKEY,       Button1,        nview,          {0} },
-	{ ClkTagBar,            0,              Button2,        spawntag,       {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            WINKEY,         Button3,        toggletag,      {0} },
-	{ ClkTagBar,            ULTRAKEY,       Button3,        ntoggleview,    {0} },
+  { ClkTagBar,            0,              Button1,        view,           {0} },
+  { ClkTagBar,            WINKEY,         Button1,        tag,            {0} },
+  { ClkTagBar,            ULTRAKEY,       Button1,        nview,          {0} },
+  { ClkTagBar,            0,              Button2,        spawntag,       {0} },
+  { ClkTagBar,            0,              Button3,        toggleview,     {0} },
+  { ClkTagBar,            WINKEY,         Button3,        toggletag,      {0} },
+  { ClkTagBar,            ULTRAKEY,       Button3,        ntoggleview,    {0} },
   { ClkTagBar,            0,              Button4,        shiftview,      {.i = 1 } },
   { ClkTagBar,            0,              Button5,        shiftview,      {.i = -1 } },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+  { ClkWinTitle,          0,              Button2,        zoom,           {0} },
 };
 
