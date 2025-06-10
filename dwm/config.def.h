@@ -145,8 +145,6 @@ static const Rule rules[] = {
    * WM_NAME(STRING) = title
    */
   /* class        instance     title           tags mask  allowkill  focusopacity    unfocusopacity   isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { TERMCLASS,    "floatterm", NULL,           0,          1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       0,           0 },
-  { TERMCLASS,    NULL,        NULL,           1 << 0,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
   { BROWSER,      "Navigator", NULL,           1 << 1,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
   { "mpv",        "mpvk",      NULL,           1 << 2,     1,         activeopacity, inactiveopacity,  0,          1,         -1,        -1,       0,           0 },
   { "Gimp",       NULL,        NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
@@ -158,6 +156,8 @@ static const Rule rules[] = {
   { NULL,         "splf",      NULL,           SPTAG(1),   1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
   { NULL,         "spcal",     NULL,           SPTAG(2),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
   { NULL,         "keepassxc", NULL,           SPTAG(3),   1,         activeopacity, inactiveopacity,  0,          0,          0,        -1,       1,          -1 },
+  { TERMCLASS,    NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
+  { TERMCLASS,    "floatterm", NULL,           0,          1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       0,           0 },
   { NULL,         NULL,        "Event Tester", 0,          1,         activeopacity, inactiveopacity,  0,          0,          1,        -1,       1,          -1 }, /* xev */
 };
 
