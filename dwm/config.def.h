@@ -2,7 +2,6 @@
 
 /* Default settings; can be overriden by command line. */
 #define BROWSER                         "firefox"
-#define BROWSERCLASS                    "Firefox"
 #define CLEAR                           0x00U
 #define GAP                             8
 #define PADDING                         0
@@ -139,17 +138,22 @@ static const int taglbl   = 0;    /* 1 means enable tag label */
 static const int lcaselbl = 0;    /* 1 means make tag label lowercase */
 static const Rule rules[] = {
   /* xprop(1):
-  * WM_CLASS(STRING) = instance, class
-  * WM_NAME(STRING) = title
-  */
+   * xprop | awk '
+   *  /^WM_CLASS/{sub(/.* =/, "instance:"); sub(/,/, "\nclass:"); print}
+   *  /^WM_NAME/{sub(/.* =/, "title:"); print}'
+   * WM_CLASS(STRING) = instance, class
+   * WM_NAME(STRING) = title
+   */
   /* class        instance     title           tags mask  allowkill  focusopacity    unfocusopacity   isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { "Gimp",       NULL,        NULL,           1 << 7,     1,         1.0,           inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
-  { TERMCLASS,    NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
-  { BROWSERCLASS, NULL,        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
-  { "kakaotalk",  NULL,        NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
-  { "mpv",        "mpvk",      NULL,           1 << 2,     1,         activeopacity, inactiveopacity,  0,          1,         -1,        -1,       0,           0 },
   { TERMCLASS,    "floatterm", NULL,           0,          1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       0,           0 },
-  { TERMCLASS,    "bg",        NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
+  { TERMCLASS,    NULL,        NULL,           1 << 0,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
+  { BROWSER,      "Navigator", NULL,           1 << 1,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
+  { "mpv",        "mpvk",      NULL,           1 << 2,     1,         activeopacity, inactiveopacity,  0,          1,         -1,        -1,       0,           0 },
+  { "Gimp",       NULL,        NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
+  { TERMCLASS,    "bg",        NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
+  { "obs",        "obs",       NULL,           1 << 7,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
+  { "discord",    "discord",   NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
+  { "kakaotalk",  NULL,        NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
   { NULL,         "spterm",    NULL,           SPTAG(0),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
   { NULL,         "splf",      NULL,           SPTAG(1),   1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
   { NULL,         "spcal",     NULL,           SPTAG(2),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
