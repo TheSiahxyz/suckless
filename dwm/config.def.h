@@ -54,7 +54,7 @@ static       char normbgcolor[]         = "#222222";
 static       char normbordercolor[]     = "#444444";
 static       char normfgcolor[]         = "#bbbbbb";
 static       char normfloatcolor[]      = "#330000";
-static       char normmarkcolor[]       = "#b16286";
+static       char normmarkcolor[]       = "#550000";
 static       char norminfobgcolor[]     = "#222222";
 static       char norminfofgcolor[]     = "#f8f8f2";
 static       char normstatusbgcolor[]   = "#222222";
@@ -65,7 +65,7 @@ static       char selbgcolor[]          = "#005577";
 static       char selbordercolor[]      = "#770000";
 static       char selfgcolor[]          = "#eeeeee";
 static       char selfloatcolor[]       = "#770000";
-static       char selmarkcolor[]        = "#770000";
+static       char selmarkcolor[]        = "#aa0000";
 static       char selinfobgcolor[]      = "#005577";
 static       char selinfofgcolor[]      = "#eeeeee";
 static       char selstatusbgcolor[]    = "#222222";
@@ -582,9 +582,9 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD, XK_Right}},                             shiftswaptags,          {.i = +1 } }),
   &((Keychord){1, {{WINMODALL, XK_Left}},                           shiftboth,              {.i = -1 } }),
   &((Keychord){1, {{WINMODALL, XK_Right}},                          shiftboth,              {.i = +1 } }),
-  &((Keychord){1, {{ALTKEY, XK_Tab}},                               swapfocus,              {0} }),
-  &((Keychord){1, {{ALTMOD2, XK_Tab}},                              swapfocus,              {0} }),
-  &((Keychord){1, {{ALTMOD, XK_Tab}},                               swapclient,             {0} }),
+  &((Keychord){1, {{ALTKEY, XK_Tab}},                               view,                   {0} }),
+  &((Keychord){1, {{ALTMOD, XK_Tab}},                               swapfocus,              {0} }),
+  &((Keychord){1, {{ALTMOD2, XK_Tab}},                              swapclient,             {0} }),
   &((Keychord){1, {{ALTMODALL, XK_Tab}},                            alttab,                 {0} }),
   &((Keychord){1, {{WINKEY, XK_bracketleft}},                       shiftview,              {.i = -1 } }),
   &((Keychord){1, {{WINKEY, XK_bracketright}},                      shiftview,              {.i = +1 } }),

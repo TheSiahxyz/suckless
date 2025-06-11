@@ -73,11 +73,10 @@
 #define TAGMASK     			      ((1 << NUMTAGS) - 1)
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
 #define TRUNC(X,A,B)            (MAX((A), MIN((X), (B))))
-#define ColFloat                3
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeInv, SchemeSel, SchemeStatusSel, SchemeStatusNorm, SchemeTagsSel, SchemeTagsNorm, SchemeInfoSel, SchemeInfoNorm }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeInv, SchemeStatusNorm, SchemeStatusSel, SchemeTagsNorm, SchemeTagsSel, SchemeInfoNorm, SchemeInfoSel }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetWMSticky, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetWMWindowsOpacity, NetClientInfo, NetLast }; /* EWMH atoms */
@@ -2860,37 +2859,46 @@ setclienttagprop(Client *c)
 void
 swapclient(const Arg *arg)
 {
-	Client *s, *m, t;
+  if (!selmon || !selmon->sel || !mons->next)
+    return;
 
-	if (!mark || !selmon->sel || mark == selmon->sel
-	    || !selmon->lt[selmon->sellt]->arrange)
-		return;
-	s = selmon->sel;
-	m = mark;
-	t = *s;
-	strcpy(s->name, m->name);
-	s->win = m->win;
-	s->x = m->x;
-	s->y = m->y;
-	s->w = m->w;
-	s->h = m->h;
+  Monitor *m1 = selmon;
+  Monitor *m2 = dirtomon(+1);
 
-	m->win = t.win;
-	strcpy(m->name, t.name);
-	m->x = t.x;
-	m->y = t.y;
-	m->w = t.w;
-	m->h = t.h;
+  Client *c1 = m1->sel;
+  Client *c2 = m2->sel;
 
-	selmon->sel = m;
-	mark = s;
-	focus(s);
-	setmark(m);
+  if (!c2) {
+    detach(c1);
+    detachstack(c1);
+    c1->mon = m2;
+    attach(c1);
+    attachstack(c1);
+    focus(c1);
+    selmon = m2;
+    arrange(m1);
+    arrange(m2);
+    return;
+  }
 
-	arrange(s->mon);
-	if (s->mon != m->mon) {
-		arrange(m->mon);
-	}
+  detach(c1);
+  detachstack(c1);
+  detach(c2);
+  detachstack(c2);
+
+  c1->mon = m2;
+  attach(c1);
+  attachstack(c1);
+  focus(c1);
+
+  c2->mon = m1;
+  attach(c2);
+  attachstack(c2);
+  focus(c2);
+
+  selmon = m1;
+  arrange(m1);
+  arrange(m2);
 }
 
 void
