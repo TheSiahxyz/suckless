@@ -26,7 +26,7 @@
   X("", "sb-repos", 60, 18)           \
   X("", "sb-tasks", 60, 17)           \
   X("", "sb-packages", 0, 16)         \
-  X("", "sb-forecast", 10800, 15)     \
+  X("", "sb-forecast", 3600, 15)      \
   X("", "sb-cpu", 60, 14)             \
   X("", "sb-memory", 60, 12)          \
   X("", "sb-disk", 10800, 11)         \
@@ -34,7 +34,7 @@
   X("", "sb-bghitness", 0, 9)         \
   X("", "sb-brightness", 0, 8)        \
   X("", "sb-internet", 5, 7)          \
-  X("", "sb-mic", 0, 6)				        \
+  X("", "sb-mic", 0, 6)               \
   X("", "sb-volume", 0, 5)            \
   X("", "sb-battery", 5, 4)           \
   X("", "sb-clock", 60, 3)            \
