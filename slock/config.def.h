@@ -29,16 +29,16 @@ static const int logow = 12;
 static const int logoh = 6;
 
 static XRectangle rectangles[9] = {
-	/* x    y       w       h */
-	{ 0,    3,      1,      3 },
-	{ 1,    3,      2,      1 },
-	{ 0,    5,      8,      1 },
-	{ 3,    0,      1,      5 },
-	{ 5,    3,      1,      2 },
-	{ 7,    3,      1,      2 },
-	{ 8,    3,      4,      1 },
-	{ 9,    4,      1,      2 },
-	{ 11,   4,      1,      2 },
+  /* x    y       w       h */
+  { 0,    3,      1,      3 },
+  { 1,    3,      2,      1 },
+  { 0,    5,      8,      1 },
+  { 3,    0,      1,      5 },
+  { 5,    3,      1,      2 },
+  { 7,    3,      1,      2 },
+  { 8,    3,      4,      1 },
+  { 9,    4,      1,      2 },
+  { 11,   4,      1,      2 },
 };
 
 /* Enable blur */
@@ -78,22 +78,22 @@ static const char *font_name = "monospace:size=18:bold";
 #define entrylen 3
 
 static const secretpass scom[entrylen] = {
-/*	 Password				command */
-	{ "reboot",       "loginctl reboot -i" },
-	{ "shutdown",     "loginctl poweroff -i" },
-	{ "suspend",      "loginctl suspend -i" },
+  /*  Password          command */
+  { "reboot",       "loginctl reboot -i" },
+  { "shutdown",     "loginctl poweroff -i" },
+  { "suspend",      "loginctl suspend -i" },
 } ;
 
 static const Passthrough passthroughs[] = {
-	/* Modifier   Key */
-	{ 0,          XF86XK_AudioRaiseVolume },
-	{ 0,          XF86XK_AudioLowerVolume },
-	{ 0,          XF86XK_AudioMute },
-	{ 0,          XF86XK_AudioPause },
-	{ 0,          XF86XK_AudioStop },
-	{ 0,          XF86XK_AudioNext },
-	{ 0,          XF86XK_AudioPrev },
-	{ 0,          XF86XK_MonBrightnessUp },
-	{ 0,          XF86XK_MonBrightnessDown },
+  /* Modifier   Key */
+  { 0,          XF86XK_AudioRaiseVolume },
+  { 0,          XF86XK_AudioLowerVolume },
+  { 0,          XF86XK_AudioMute },
+  { 0,          XF86XK_AudioPause },
+  { 0,          XF86XK_AudioStop },
+  { 0,          XF86XK_AudioNext },
+  { 0,          XF86XK_AudioPrev },
+  { 0,          XF86XK_MonBrightnessUp },
+  { 0,          XF86XK_MonBrightnessDown },
 };
 

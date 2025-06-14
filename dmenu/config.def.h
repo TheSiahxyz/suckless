@@ -24,7 +24,7 @@ static unsigned int border_width    = 0;
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines           = 0;
 static unsigned int maxhist         = 64;
-static int histnodup                = 1;	      /* if 0, record repeated histories */
+static int histnodup                = 1;        /* if 0, record repeated histories */
 
 /* -h option; minimum height of a menu line */
 static unsigned int lineheight      = 0;
@@ -35,10 +35,10 @@ static unsigned int min_lineheight  = 8;
  * accessed with the global_esc keysym + mod mask
  */
 static unsigned int vi_mode         = 1;
-static unsigned int start_mode      = 0;			  /* mode to use when -vi is passed. 0 = insert mode, 1 = normal mode */
-static Key global_esc = { XK_Escape, 0};	      /* escape key when vi mode is not enabled explicitly */
+static unsigned int start_mode      = 0;        /* mode to use when -vi is passed. 0 = insert mode, 1 = normal mode */
+static Key global_esc = { XK_Escape, 0};        /* escape key when vi mode is not enabled explicitly */
 static Key quit_keys[] = {
-	/* keysym	modifier */
+  /* keysym   modifier */
   { XK_q,         0 },
   { XK_Escape,    0 }
 };
@@ -46,8 +46,8 @@ static Key quit_keys[] = {
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static char font[] = "monospace:size=10";
 static const char *fonts[] = {
-	font,
-	"monospace:size=10",
+  font,
+  "monospace:size=10",
 };
 
 static char normfgcolor[] = "#bbbbbb";
@@ -66,41 +66,41 @@ static char cursorfgcolor[]  = "#222222";
 static char cursorbgcolor[]  = "#bbbbbb";
 
 static char *colors[SchemeLast][2] = {
-	/*     fg                         bg       */
-	[SchemeNorm]          = { normfgcolor, normbgcolor },
-	[SchemeSel]           = { selfgcolor,  selbgcolor  },
-	[SchemeOut]           = { outfgcolor, outbgcolor },
-	[SchemeSelHighlight]  = { selhlfgcolor, selhlbgcolor },
-	[SchemeNormHighlight] = { normhlfgcolor, normhlbgcolor },
-	[SchemeCaret]         = { caretfgcolor, caretbgcolor },
-	[SchemeCursor]        = { cursorfgcolor, cursorbgcolor},
+  /*     fg                         bg       */
+  [SchemeNorm]          = { normfgcolor, normbgcolor },
+  [SchemeSel]           = { selfgcolor,  selbgcolor  },
+  [SchemeOut]           = { outfgcolor, outbgcolor },
+  [SchemeSelHighlight]  = { selhlfgcolor, selhlbgcolor },
+  [SchemeNormHighlight] = { normhlfgcolor, normhlbgcolor },
+  [SchemeCaret]         = { caretfgcolor, caretbgcolor },
+  [SchemeCursor]        = { cursorfgcolor, cursorbgcolor},
 };
 
 static const unsigned int alphas[SchemeLast][2] = {
-	[SchemeNorm]  = { OPAQUE, alpha },
-	[SchemeSel]   = { OPAQUE, alpha },
-	[SchemeOut]   = { OPAQUE, alpha },
+  [SchemeNorm]  = { OPAQUE, alpha },
+  [SchemeSel]   = { OPAQUE, alpha },
+  [SchemeOut]   = { OPAQUE, alpha },
 };
 
 /*
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-	{ "font",           STRING,   &font },
-	{ "normfgcolor",    STRING,   &normfgcolor },
-	{ "normbgcolor",    STRING,   &normbgcolor },
-	{ "selfgcolor",     STRING,   &selfgcolor },
-	{ "selbgcolor",     STRING,   &selbgcolor },
-	{ "outfgcolor",     STRING,   &outfgcolor },
-	{ "outbgcolor",     STRING,   &outbgcolor },
-	{ "selhlfgcolor",   STRING,   &selhlfgcolor },
-	{ "selhlbgcolor",   STRING,   &selhlbgcolor },
-	{ "normhlfgcolor",  STRING,   &normhlfgcolor },
-	{ "normhlbgcolor",  STRING,   &normhlbgcolor },
-	{ "caretfgcolor",   STRING,   &caretfgcolor },
-	{ "caretbgcolor",   STRING,   &caretbgcolor },
-	{ "cursorfgcolor",  STRING,   &cursorfgcolor },
-	{ "cursorbgcolor",  STRING,   &cursorbgcolor },
-	{ "prompt",         STRING,   &prompt },
+  { "font",           STRING,   &font },
+  { "normfgcolor",    STRING,   &normfgcolor },
+  { "normbgcolor",    STRING,   &normbgcolor },
+  { "selfgcolor",     STRING,   &selfgcolor },
+  { "selbgcolor",     STRING,   &selbgcolor },
+  { "outfgcolor",     STRING,   &outfgcolor },
+  { "outbgcolor",     STRING,   &outbgcolor },
+  { "selhlfgcolor",   STRING,   &selhlfgcolor },
+  { "selhlbgcolor",   STRING,   &selhlbgcolor },
+  { "normhlfgcolor",  STRING,   &normhlfgcolor },
+  { "normhlbgcolor",  STRING,   &normhlbgcolor },
+  { "caretfgcolor",   STRING,   &caretfgcolor },
+  { "caretbgcolor",   STRING,   &caretbgcolor },
+  { "cursorfgcolor",  STRING,   &cursorfgcolor },
+  { "cursorbgcolor",  STRING,   &cursorbgcolor },
+  { "prompt",         STRING,   &prompt },
 };
 
