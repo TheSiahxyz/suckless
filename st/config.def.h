@@ -292,13 +292,13 @@ static MouseShortcut mshortcuts[] = {
 
 /* Internal keyboard shortcuts. */
 #define ALTKEY    Mod1Mask
-#define ALTCTRL   (Mod1Mask|ControlMask)
-#define ALTSHIFT  (Mod1Mask|ShiftMask)
-#define ALTULTRA  (Mod1Mask|ControlMask|ShiftMask)
+#define ALTMOD    (ALTKEY|ShiftMask)
+#define ALTMOD2   (ALTKEY|ControlMask)
+#define ALTULTRA  (ALTKEY|ControlMask|ShiftMask)
 #define WINKEY    Mod4Mask
-#define WINCTRL   (Mod4Mask|ControlMask)
-#define WISHIFT   (Mod4Mask|ShiftMask)
-#define WINULTRA  (Mod$Mask|ControlMask|ShiftMask)
+#define WINMOD    (WINKEY|ShiftMask)
+#define WINMOD2   (WINKEY|ControlMask)
+#define WINULTRA  (WINKEY|ControlMask|ShiftMask)
 #define EXTRAMOD  (ControlMask|ShiftMask)
 
 static char *openurlcmd[] = { "/bin/sh", "-c", "st-urlhandler -o", "externalpipe", NULL };
@@ -307,44 +307,44 @@ static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NUL
 
 static Shortcut shortcuts[] = {
   /* mask                 keysym          function        argument */
-  // APPEAREANCES
-  { ALTKEY,               XK_a,           chgalpha,       {.f = +0.05} }, /* Decrease opacity */
-  { ALTKEY,               XK_s,           chgalpha,       {.f = -0.05} }, /* Increase opacity */
-  { ALTKEY,               XK_equal,       chgalpha,       {.f =  0} },    /* Reset opacity */
-  { ALTSHIFT,             XK_J,           zoom,           {.f = -1} },
-  { ALTSHIFT,             XK_K,           zoom,           {.f = +1} },
-  { ALTSHIFT,             XK_plus,        zoomreset,      {.f =  0} },
-  { ALTSHIFT,             XK_Next,        zoom,           {.f = -1} },
-  { ALTSHIFT,             XK_Prior,       zoom,           {.f = +1} },
-  { ALTSHIFT,             XK_Home,        zoomreset,      {.f =  0} },
+  // APPEARANCES
+  { ALTKEY,               XK_a,           chgalpha,       {.f = +0.05} },
+  { ALTKEY,               XK_s,           chgalpha,       {.f = -0.05} },
+  { ALTKEY,               XK_equal,       chgalpha,       {.f =  0} },
+  { ALTMOD,               XK_J,           zoom,           {.f = -1} },
+  { ALTMOD,               XK_K,           zoom,           {.f = +1} },
+  { ALTMOD,               XK_plus,        zoomreset,      {.f =  0} },
+  { ALTMOD,               XK_Next,        zoom,           {.f = -1} },
+  { ALTMOD,               XK_Prior,       zoom,           {.f = +1} },
+  { ALTMOD,               XK_Home,        zoomreset,      {.f =  0} },
   { ALTKEY,               XK_f,           fullscreen,     {.i =  0} },
   { XK_NO_MOD,            XK_F11,         fullscreen,     {.i =  0} },
 
   // AUTOCOMPLETE
-  { ALTCTRL,              XK_slash,       autocomplete,   {.i = ACMPL_WORD        } },
-  { ALTCTRL,              XK_period,      autocomplete,   {.i = ACMPL_FUZZY_WORD  } },
-  { ALTCTRL,              XK_comma,       autocomplete,   {.i = ACMPL_FUZZY       } },
-  { ALTCTRL,              XK_apostrophe,  autocomplete,   {.i = ACMPL_SUFFIX      } },
-  { ALTCTRL,              XK_semicolon,   autocomplete,   {.i = ACMPL_SURROUND    } },
-  { ALTCTRL,              XK_bracketright,autocomplete,   {.i = ACMPL_WWORD       } },
-  { ALTCTRL,              XK_bracketleft, autocomplete,   {.i = ACMPL_FUZZY_WWORD } },
-  { ALTCTRL,              XK_equal,       autocomplete,   {.i = ACMPL_UNDO        } },
+  { ALTMOD2,              XK_slash,       autocomplete,   {.i = ACMPL_WORD        } },
+  { ALTMOD2,              XK_period,      autocomplete,   {.i = ACMPL_FUZZY_WORD  } },
+  { ALTMOD2,              XK_comma,       autocomplete,   {.i = ACMPL_FUZZY       } },
+  { ALTMOD2,              XK_apostrophe,  autocomplete,   {.i = ACMPL_SUFFIX      } },
+  { ALTMOD2,              XK_semicolon,   autocomplete,   {.i = ACMPL_SURROUND    } },
+  { ALTMOD2,              XK_bracketright,autocomplete,   {.i = ACMPL_WWORD       } },
+  { ALTMOD2,              XK_bracketleft, autocomplete,   {.i = ACMPL_FUZZY_WWORD } },
+  { ALTMOD2,              XK_equal,       autocomplete,   {.i = ACMPL_UNDO        } },
 
   // COPIES
   { ALTKEY,               XK_c,           clipcopy,       {.i =  0} },
-  { ALTSHIFT,             XK_C,           externalpipe,   {.v = copyurlcmd } },
+  { ALTMOD,               XK_C,           externalpipe,   {.v = copyurlcmd } },
   { ALTKEY,               XK_o,           externalpipe,   {.v = copyoutput } },
-  { ALTSHIFT,             XK_R,           copyurl,        {.i =  0} },
+  { ALTMOD,               XK_R,           copyurl,        {.i =  0} },
   { ALTKEY,               XK_r,           copyurl,        {.i =  1} },
 
   // FONTS
-  { ALTSHIFT,             XK_F,           cyclefonts,     {}        },
+  { ALTMOD,               XK_F,           cyclefonts,     {}        },
 
   // PASTES
   { ALTKEY,               XK_v,           clippaste,      {.i =  0} },
-  { ALTSHIFT,             XK_V,           selpaste,       {.i =  0} },
+  { ALTMOD,               XK_V,           selpaste,       {.i =  0} },
   { ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
-  { ALTCTRL,              XK_v,           opencopied,     {.v = "xdg-open"} },
+  { ALTMOD2,              XK_v,           opencopied,     {.v = "xdg-open"} },
   { ALTKEY,               XK_o,           externalpipe,   {.v = openurlcmd } },
 
   // PRINTERS
@@ -362,8 +362,8 @@ static Shortcut shortcuts[] = {
   { ALTKEY,               XK_d,           kscrolldown,    {.i = -1} },
   { ALTKEY,               XK_Page_Up,     kscrollup,      {.i =  1} },
   { ALTKEY,               XK_Page_Down,   kscrolldown,    {.i =  1} },
-  { ALTSHIFT,             XK_Page_Up,     kscrollup,      {.i = -1} },
-  { ALTSHIFT,             XK_Page_Down,   kscrolldown,    {.i = -1} },
+  { ALTMOD,               XK_Page_Up,     kscrollup,      {.i = -1} },
+  { ALTMOD,               XK_Page_Down,   kscrolldown,    {.i = -1} },
 
   // EXTRAS
   { EXTRAMOD,             XK_I,           iso14755,       {.i =  0} },
