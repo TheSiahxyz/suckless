@@ -316,7 +316,7 @@ static Keychord *keychords[] = {
   TAGKEYS(          XK_8,                                                                   7)
   TAGKEYS(          XK_9,                                                                   8)
 
-  // APPEARANCE
+  // APPEARANCES
   &((Keychord){1, {{WINKEY, XK_a}},                                 changefocusopacity,     {.f = +0.025}}),
   &((Keychord){1, {{WINKEY, XK_s}},                                 changefocusopacity,     {.f = -0.025}}),
   &((Keychord){1, {{WINMOD, XK_a}},                                 changeunfocusopacity,   {.f = +0.025}}),

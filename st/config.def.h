@@ -301,6 +301,7 @@ static MouseShortcut mshortcuts[] = {
 #define WINULTRA  (WINKEY|ControlMask|ShiftMask)
 #define EXTRAMOD  (ControlMask|ShiftMask)
 
+#define OPENER    "xdg-open"
 static char *openurlcmd[] = { "/bin/sh", "-c", "st-urlhandler -o", "externalpipe", NULL };
 static char *copyurlcmd[] = { "/bin/sh", "-c", "st-urlhandler -c", "externalpipe", NULL };
 static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NULL };
@@ -344,7 +345,7 @@ static Shortcut shortcuts[] = {
   { ALTKEY,               XK_v,           clippaste,      {.i =  0} },
   { ALTMOD,               XK_V,           selpaste,       {.i =  0} },
   { ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
-  { ALTMOD2,              XK_v,           opencopied,     {.v = "xdg-open"} },
+  { ALTMOD2,              XK_v,           opencopied,     {.v = OPENER} },
   { ALTKEY,               XK_o,           externalpipe,   {.v = openurlcmd } },
 
   // PRINTERS

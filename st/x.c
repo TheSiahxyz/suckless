@@ -2208,7 +2208,7 @@ kpress(XEvent *ev)
 	if (!(
 		len == 0 &&
 		e -> state & ~ignoremod		// ACMPL_ISSUE: I'm not sure that this is the right way
-				| ALTCTRL == ALTCTRL
+				| ALTMOD2 == ALTMOD2
 	))
 		autocomplete ((const Arg []) { ACMPL_DEACTIVATE });
 
