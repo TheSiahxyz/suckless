@@ -327,14 +327,14 @@ static Keychord *keychords[] = {
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_a}},             togglebartags,          {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_b}},             togglebar,              {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{ShiftMask, XK_b}},     togglebar,              {.i = 1} }),
-  &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_o}},             toggleborder,           {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_d}},             defaultgaps,            {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_f}},             togglebarfloat,         {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_g}},             togglegaps,             {0} }),
-  &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{ControlMask, XK_g}},   defaultgaps,            {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_l}},             togglebarlt,            {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_o}},             toggleborder,           {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_s}},             togglebarstatus,        {0} }),
   &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{0, XK_t}},             togglebartitle,         {0} }),
-  &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{ControlMask, XK_t}},   toggletopbar,           {0} }),
+  &((Keychord){3, {{WINKEY, XK_t},{0, XK_b},{ShiftMask, XK_t}},     toggletopbar,           {0} }),
 
   // FLOATING POSITIONS
   &((Keychord){2, {{WINKEY, XK_f},{0, XK_c}},                       movecenter,             {0} }),
