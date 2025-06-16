@@ -116,7 +116,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "󱔗", "", "", "󰭹" };
+static const char *tags[] = { "", "", "", "", "", "󱔗", "", "", "󰭹" };
 static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static       char *tagsel[][2] = {
   { "#f8f8f2", "#005577" },
