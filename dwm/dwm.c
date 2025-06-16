@@ -1186,7 +1186,7 @@ drawbar(Monitor *m)
         snprintf(tagdisp, 64, etagf, tags[i]);
       masterclientontag[i] = tagdisp;
       tagw[i] = w = TEXTW(masterclientontag[i]);
-      wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i]) - 2) / 2 : 0;
+      wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
       if (m == selmon)
       	drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i] : scheme[SchemeNorm]));
       else
