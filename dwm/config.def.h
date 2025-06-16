@@ -151,7 +151,6 @@ static const Rule rules[] = {
   { TERMCLASS,      "ncmpcpp",      NULL,           1 << 3,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
   { TERMCLASS,      "suckless",     NULL,           1 << 4,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
   { "libreoffice",  "libreoffice",  NULL,           1 << 5,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { TERMCLASS,      "neomutt",      NULL,           1 << 5,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
   { "Gimp",         NULL,           NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
   { TERMCLASS,      "bg",           NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
   { "obs",          "obs",          NULL,           1 << 7,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
@@ -479,7 +478,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ULTRAMOD, XK_o}},                               spawn,                  { .v = (const char *[]){ "xdotmouse", "m", NULL } } }),
 
   // PROGRAMS
-  &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERMINAL " -n neomutt -e neomutt; pkill -RTMIN+20 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
+  &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
   &((Keychord){1, {{WINKEY, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, NULL } } }),
   &((Keychord){1, {{WINMOD, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, "--target", "private-window", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_k}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "kakaotalk", NULL } } }),
