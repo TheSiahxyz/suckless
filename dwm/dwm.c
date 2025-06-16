@@ -1191,7 +1191,7 @@ drawbar(Monitor *m)
       	drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i] : scheme[SchemeNorm]));
       else
         drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeTagsNorm]);
-      drw_text(drw, x, 0, w,(selmon->alttag ? bh + 2 : bh), wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : masterclientontag[i]), urg & 1 << i);
+      drw_text(drw, x, 0, w,(selmon->alttag ? bh : bh + 2), wdelta - 2 + lrpad / 2, (selmon->alttag ? tagsalt[i] : masterclientontag[i]), urg & 1 << i);
       x += w;
 		}
   }
