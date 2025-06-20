@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* Default settings; can be overriden by command line. */
-#define BROWSER                         "firefox"
+#define BROWSER                         "librewolf"
 #define CLEAR                           0x00U
 #define GAP                             8
 #define PADDING                         0
