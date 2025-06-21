@@ -496,6 +496,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_n}},                   spawn,                  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_p}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_t}},                   spawn,                  {.v = (const char *[]){ "torwrap", NULL } } }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_m}},         spawn,                  {.v = (const char *[]){ "virt-manager", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_w}},         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
 
