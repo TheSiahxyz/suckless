@@ -116,7 +116,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "󱔗", "", "", "󰭹" };
+static const char *tags[] = { "", "", "", "", "󱔗", "", "", "", "󰭹" };
 static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static       char *tagsel[][2] = {
   { "#f8f8f2", "#005577" },
@@ -148,9 +148,8 @@ static const Rule rules[] = {
   { BROWSER,        "Navigator",    NULL,           1 << 1,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
   { "mpv",          "mpvk",         NULL,           1 << 2,     1,         activeopacity, inactiveopacity,  0,          1,         -1,        -1,       0,           0 },
   { TERMCLASS,      "ncmpcpp",      NULL,           1 << 3,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { TERMCLASS,      "suckless",     NULL,           1 << 4,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { TERMCLASS,      "pulsemixer",   NULL,           1 << 4,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { "libreoffice",  "libreoffice",  NULL,           1 << 5,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
+  { "libreoffice",  "libreoffice",  NULL,           1 << 4,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
+  { "Virt-manager", "virt-manager", NULL,           1 << 5,     1,         activeopacity, inactiveopacity,  0,          0,          0,        -1,       1,          -1 },
   { "Gimp",         NULL,           NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
   { TERMCLASS,      "bg",           NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
   { "obs",          "obs",          NULL,           1 << 7,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
