@@ -356,7 +356,7 @@ static Shortcut shortcuts[] = {
   { ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 
   // TERMINAL
-  { ALTKEY,               XK_Return,      newterm,        {.i =  0} },
+  { ALTMOD,               XK_Return,      newterm,        {.i =  0} },
 
   // TRAVERSALS
   { ALTKEY,               XK_y,           kscrollup,      {.i =  1} },

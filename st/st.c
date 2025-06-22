@@ -1251,7 +1251,8 @@ newterm(const Arg* a)
 			_exit(0);
 		}
 	default:
-		wait(NULL);
+    // it causes freezing for the parents.
+		// wait(NULL);
 	}
 }
 
