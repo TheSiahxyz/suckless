@@ -154,7 +154,7 @@ static const Rule rules[] = {
   { TERMCLASS,      "bg",           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "obs",          "obs",          NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
   { "discord",      "discord",      NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { "kakaotalk",    NULL,           NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "kakaotalk.exe","kakaotalk.exe",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
   { TERMCLASS,      "spterm",       NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "splf",         NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "spcalc",       NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
