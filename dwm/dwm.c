@@ -575,8 +575,9 @@ applyrules(Client *c)
 		XFree(ch.res_class);
 	if (ch.res_name)
 		XFree(ch.res_name);
-  if (c->tags != SCRATCHPAD_MASK_1 && c->tags != SCRATCHPAD_MASK_2 && c->tags != SCRATCHPAD_MASK_3)
+  if (c->tags != SCRATCHPAD_MASK_1 && c->tags != SCRATCHPAD_MASK_2 && c->tags != SCRATCHPAD_MASK_3) {
     c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : (c->mon->tagset[c->mon->seltags] & ~SPTAGMASK);
+  }
 }
 
 int
@@ -1771,10 +1772,10 @@ manage(Window w, XWindowAttributes *wa)
 	c->expandmask = 0;
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
-	if (c->isfloating)
+	if (c->isfloating) {
 		XRaiseWindow(dpy, c->win);
-	if (c->isfloating)
 		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColFloat].pixel);
+  };
 	attach(c);
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
@@ -2354,12 +2355,15 @@ scratchpad_remove()
     if (scratchpad_last_showed_1 == selmon->sel) {
       scratchpad_last_showed_1 = NULL;
       scratchpad_hide_flag--;
+      selmon->sel->isfloating = 0;
     } else if (scratchpad_last_showed_2 == selmon->sel) {
       scratchpad_last_showed_2 = NULL;
       scratchpad_hide_flag--;
+      selmon->sel->isfloating = 0;
     } else if (scratchpad_last_showed_3 == selmon->sel) {
       scratchpad_last_showed_3 = NULL;
       scratchpad_hide_flag--;
+      selmon->sel->isfloating = 0;
     }
   }
 }

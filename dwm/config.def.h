@@ -106,13 +106,13 @@ typedef struct {
 const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = { TERMINAL, "-n", "splf", "-g", "144x41", "-e", "lf", NULL };
 const char *spcmd3[] = { TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
-const char *spcmd4[] = { "keepassxc", NULL };
+const char *spcmd4[] = { TERMINAL, "-n", "vimwikitodo", "-f", "monospace:size=12", "-g", "35x15", "-e", "vimwikitodo", NULL };
 static Sp scratchpads[] = {
   /* name          cmd  */
   {"spterm",      spcmd1},
   {"splf",        spcmd2},
   {"spcalc",      spcmd3},
-  {"keepassxc",   spcmd4},
+  {"vimwikitodo", spcmd4},
 };
 
 /* tagging */
@@ -144,24 +144,24 @@ static const Rule rules[] = {
    * WM_CLASS(STRING) = instance, class
    * WM_NAME(STRING) = title
    */
-  /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity   isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { BROWSER,        "Navigator",    NULL,           1 << 1,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       1,          -1 },
-  { "libreoffice",  "libreoffice",  NULL,           1 << 2,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { "mpv",          "mpvk",         NULL,           1 << 3,     1,         activeopacity, inactiveopacity,  0,          1,         -1,        -1,       0,           0 },
-  { TERMCLASS,      "ncmpcpp",      NULL,           1 << 4,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { "Virt-manager", "virt-manager", NULL,           1 << 5,     1,         activeopacity, inactiveopacity,  0,          0,          0,        -1,       1,          -1 },
-  { "Gimp",         NULL,           NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
-  { TERMCLASS,      "bg",           NULL,           1 << 6,     1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       1,          -1 },
-  { "obs",          "obs",          NULL,           1 << 7,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
-  { "discord",      "discord",      NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
-  { "kakaotalk",    NULL,           NULL,           1 << 8,     1,         activeopacity, inactiveopacity,  0,          0,         -1,        -1,       0,           0 },
-  { NULL,           "spterm",       NULL,           SPTAG(0),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
-  { NULL,           "splf",         NULL,           SPTAG(1),   1,         activeopacity, inactiveopacity,  1,          0,          0,        -1,       1,          -1 },
-  { NULL,           "spcal",        NULL,           SPTAG(2),   1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       1,          -1 },
-  { NULL,           "keepassxc",    NULL,           SPTAG(3),   1,         activeopacity, inactiveopacity,  0,          0,          0,        -1,       1,          -1 },
-  { TERMCLASS,      NULL,           NULL,           0,          1,         activeopacity, inactiveopacity,  0,          1,          0,        -1,       0,          -1 },
-  { TERMCLASS,      "floatterm",    NULL,           0,          1,         activeopacity, inactiveopacity,  1,          1,          0,        -1,       0,           0 },
-  { NULL,           NULL,           "Event Tester", 0,          1,         activeopacity, inactiveopacity,  0,          0,          1,        -1,       1,          -1 }, /* xev */
+  /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
+  { BROWSER,        "Navigator",    NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
+  { "libreoffice",  "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "mpv",          "mpvk",         NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       1,            0 },
+  { TERMCLASS,      "ncmpcpp",      NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "Virt-manager", "virt-manager", NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "Gimp",         NULL,           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  1,          0,          0,        -1,       1,           -1 },
+  { TERMCLASS,      "bg",           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "obs",          "obs",          NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "discord",      "discord",      NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "kakaotalk",    NULL,           NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { TERMCLASS,      "spterm",       NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      "splf",         NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      "spcalc",       NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      "vimwikitodo",  NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      TERMINAL,       NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      "floatterm",    NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0 },
+  { NULL,           NULL,           "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -600,27 +600,27 @@ static Keychord *keychords[] = {
 
   // TOGGLES
   &((Keychord){1, {{WINMOD2, XK_f}},                                togglefullscr,          {0} }),
-  &((Keychord){2, {{WINKEY, XK_s},{0, XK_m}},                       scratchpad_show,        {.i = 1} }),
-  &((Keychord){2, {{WINKEY, XK_s},{0, XK_comma}},                   scratchpad_show,        {.i = 2} }),
-  &((Keychord){2, {{WINKEY, XK_s},{0, XK_period}},                  scratchpad_show,        {.i = 3} }),
-  &((Keychord){2, {{WINKEY, XK_s},{ShiftMask, XK_m}},               scratchpad_hide,        {.i = 1} }),
-  &((Keychord){2, {{WINKEY, XK_s},{ShiftMask, XK_comma}},           scratchpad_hide,        {.i = 2} }),
-  &((Keychord){2, {{WINKEY, XK_s},{ShiftMask, XK_period}},          scratchpad_hide,        {.i = 3} }),
-  &((Keychord){2, {{WINKEY, XK_s},{0, XK_x}},                       scratchpad_remove,      {0} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{0, XK_x}},                      scratchpad_remove,      {0} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{0, XK_1}},                      scratchpad_show,        {.i = 1} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{0, XK_2}},                      scratchpad_show,        {.i = 2} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{0, XK_3}},                      scratchpad_show,        {.i = 3} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{ShiftMask, XK_1}},              scratchpad_hide,        {.i = 1} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{ShiftMask, XK_2}},              scratchpad_hide,        {.i = 2} }),
+  &((Keychord){2, {{WINMOD2, XK_s},{ShiftMask, XK_3}},              scratchpad_hide,        {.i = 3} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_f}},                       togglefloating,         {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{ControlMask, XK_f}},             togglecanfocusfloating, {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; kill -40 $(pidof dwmblocks)") }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_p}},                       togglescratch,          {.ui = 1 } }), // calculator //
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_q}},                       toggleallowkill,        {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_t}},                       togglealttag,           {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_apostrophe}},              togglemark,             {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_space}},                   togglealwaysontop,      {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_Tab}},                     toggleall,              {0} }),
-  &((Keychord){1, {{WINMOD2, XK_Return}},                           togglescratch,          {.ui = 0 } }), // terminal //
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_1}},                       togglescratch,          {.ui = 0 } }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_2}},                       togglescratch,          {.ui = 1 } }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_3}},                       togglescratch,          {.ui = 2 } }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_1}},                       togglescratch,          {.ui = 0 } }),  // terminal //
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_2}},                       togglescratch,          {.ui = 1 } }),  // lf //
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_3}},                       togglescratch,          {.ui = 2 } }),  // calculator //
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_4}},                       togglescratch,          {.ui = 3 } }),  // todo //
+  &((Keychord){1, {{WINMOD2, XK_Return}},                           togglescratch,          {.ui = 0 } }),  // terminal //
 
   // SUCKLESS CONFIGS
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_p}},             spawn,                  SHCMD(TERMINAL " -n suckless -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") }),
