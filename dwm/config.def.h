@@ -145,13 +145,13 @@ static const Rule rules[] = {
    * WM_NAME(STRING) = title
    */
   /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { TERMCLASS,      TERMINAL,       TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      TERMINAL,       NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { BROWSER,        "Navigator",    NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
-  { "libreoffice",  "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { NULL,           "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
   { "mpv",          "mpvk",         NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
   { TERMCLASS,      "ncmpcpp",      NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "Virt-manager", "virt-manager", NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "Gimp",         NULL,           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  1,          0,          0,        -1,       1,           -1 },
+  { "Gimp",         NULL,           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
   { TERMCLASS,      "bg",           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "obs",          "obs",          NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
   { "discord",      "discord",      NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
