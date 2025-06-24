@@ -44,5 +44,12 @@ like this in your .xinitrc:
 
 Configuration
 -------------
-The configuration of dwm is done by creating a custom config.h
+The configuration of dwm is done by creating a custom config.def.h
 and (re)compiling the source code.
+
+In applyrules function, the comparing method for class, name, and title
+is changed from strstr to strcmp:
+
+    if ((!r->title || strcmp(c->name, r->title) == 0)
+    && (!r->class || strcmp(class, r->class) == 0)
+    && (!r->instance || strcmp(instance,r->instance) == 0))
