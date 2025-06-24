@@ -145,7 +145,7 @@ static const Rule rules[] = {
    * WM_NAME(STRING) = title
    */
   /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { TERMCLASS,      TERMINAL,       NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,      TERMINAL,       TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { BROWSER,        "Navigator",    NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
   { "libreoffice",  "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "mpv",          "mpvk",         NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
@@ -161,6 +161,7 @@ static const Rule rules[] = {
   { TERMCLASS,      "spcalc",       NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "vimwikitodo",  NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "floatterm",    NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0 },
+  { TERMCLASS,      "stig",         NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          1,        -1,       0,           -1 },
   { NULL,           NULL,           "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1 }, /* xev */
 };
 
