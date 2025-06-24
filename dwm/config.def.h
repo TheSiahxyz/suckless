@@ -628,7 +628,7 @@ static Keychord *keychords[] = {
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_d}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") }),
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_m}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") }),
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_l}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") }),
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_t}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_s}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") }),
 };
 
 /* Button definitions */
