@@ -2,7 +2,7 @@ char *externalpipe_sigusr1[] = {"/bin/sh", "-c", "externalpipe_buffer.sh st_stri
 /* See LICENSE file for copyright and license details. */
 
 /*
- * appearance
+ * Appearance
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
@@ -17,7 +17,7 @@ static char *font2[] = {
   "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true",
 };
 
-/* disable bold, italic and roman fonts globally */
+/* Disable bold, italic and roman fonts globally */
 int disablebold = 0;
 int disableitalic = 0;
 int disableroman = 0;
@@ -34,11 +34,11 @@ static int borderpx = 2;
  */
 static char *shell = "/bin/sh";
 char *utmp = NULL;
-/* scroll program: to enable use a string like "scroll" */
+/* Scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
-/* identification sequence returned in DA and DECID */
+/* Identification sequence returned in DA and DECID */
 char *vtiden = "\033[?6c";
 
 /* Kerning / character bounding-box multipliers */
@@ -49,40 +49,40 @@ static short cxoffset = 0;
 static short cyoffset = 0;
 
 /*
- * word delimiter string
+ * Word delimiter string
  *
  * More advanced example: L" `'\"()[]{}"
  */
 wchar_t *worddelimiters = L" `'\"()[]{}";
 
-/* selection timeouts (in milliseconds) */
+/* Selection timeouts (in milliseconds) */
 static unsigned int doubleclicktimeout = 300;
 static unsigned int tripleclicktimeout = 600;
 
-/* alt screens */
+/* Alt screens */
 int allowaltscreen = 1;
 
-/* allow certain non-interactive (insecure) window operations such as:
+/* Allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
 int allowwindowops = 0;
 
 /*
- * draw latency range in ms - from new content/keypress/etc until drawing.
- * within this range, st draws when content stops arriving (idle). mostly it's
+ * Draw latency range in ms - from new content/keypress/etc until drawing.
+ * Within this range, st draws when content stops arriving (idle). Mostly it's
  * near minlatency, but it waits longer for slow updates to avoid partial draw.
- * low minlatency will tear/flicker more, as it can "detect" idle too early.
+ * Low minlatency will tear/flicker more, as it can "detect" idle too early.
  */
 static double minlatency = 8;
 static double maxlatency = 33;
 
 /*
- * blinking timeout (set to 0 to disable blinking) for the terminal blinking
+ * Blinking timeout (set to 0 to disable blinking) for the terminal blinking
  * attribute.
  */
 static unsigned int blinktimeout = 800;
 
 /*
- * thickness of underline and bar cursors
+ * Thickness of underline and bar cursors
  */
 static unsigned int cursorthickness = 2;
 
@@ -95,20 +95,20 @@ static unsigned int cursorthickness = 2;
 const int boxdraw = 1;
 const int boxdraw_bold = 0;
 
-/* braille (U28XX):  1: render as adjacent "pixels",  0: use font */
+/* Braille (U28XX):  1: render as adjacent "pixels",  0: use font */
 const int boxdraw_braille = 0;
 
 /*
- * bell volume. It must be a value between -100 and 100. Use 0 for disabling
+ * Bell volume. It must be a value between -100 and 100. Use 0 for disabling
  * it
  */
 static int bellvolume = 0;
 
-/* default TERM value */
+/* Default TERM value */
 char *termname = "st-256color";
 
 /*
- * spaces per tab
+ * Spaces per tab
  *
  * When you are changing this value, don't forget to adapt the »it« value in
  * the st.info and appropriately install the st.info in the environment where
@@ -124,7 +124,7 @@ char *termname = "st-256color";
  */
 unsigned int tabspaces = 8;
 
-/* bg opacity */
+/* Bg opacity */
 float alpha = 0.8, alphaUnfocused = 0.85;
 
 /* Background opacity */

@@ -9,7 +9,7 @@
 #define TERMINAL                        "st"
 #define TERMCLASS                       "St"
 
-/* appearance */
+/* Appearance */
 static const double activeopacity       = 1.0f;     /* Window opacity when it's focused (0 <= opacity <= 1) */
 static const double inactiveopacity     = 1.0f;     /* Window opacity when it's inactive (0 <= opacity <= 1) */
 static const int allowkill              = 1;        /* allow killing clients by default? */
@@ -115,7 +115,7 @@ static Sp scratchpads[] = {
   {"vimwikitodo", spcmd4},
 };
 
-/* tagging */
+/* Tagging */
 static const char *tags[] = { "", "", "󱔗", "", "", "", "", "", "󰭹" };
 static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static       char *tagsel[][2] = {
@@ -145,6 +145,7 @@ static const Rule rules[] = {
    * WM_NAME(STRING) = title
    */
   /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
+  { TERMCLASS,      TERMINAL,       NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { BROWSER,        "Navigator",    NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
   { "libreoffice",  "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "mpv",          "mpvk",         NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
@@ -159,12 +160,11 @@ static const Rule rules[] = {
   { TERMCLASS,      "splf",         NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "spcalc",       NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "vimwikitodo",  NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
-  { TERMCLASS,      TERMINAL,       NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,      "floatterm",    NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0 },
   { NULL,           NULL,           "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1 }, /* xev */
 };
 
-/* layout(s) */
+/* Layout(s) */
 static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static int nmaster     = 1;    /* number of clients in master area */
 static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
@@ -196,7 +196,7 @@ static const Layout layouts[] = {
   { "><>",    NULL },                     /* 15: no layout function means floating behavior */
 };
 
-/* key definitions */
+/* Key definitions */
 #define WINKEY      Mod4Mask
 #define WINMOD      (WINKEY|ShiftMask)
 #define WINMOD2     (WINKEY|ControlMask)
@@ -230,13 +230,13 @@ static const Layout layouts[] = {
   &((Keychord){2, {{MOD, XK_BackSpace},{0, XK_z}},          ACTION##stack,  {.i = 2 } }),       \
   &((Keychord){2, {{MOD, XK_BackSpace},{0, XK_x}},          ACTION##stack,  {.i = -1 } }),
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
+/* Helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-/* helper for launching gtk application */
+/* Helper for launching gtk application */
 #define GTKCMD(cmd) { .v = (const char*[]){ "/usr/bin/gtk-launch", cmd, NULL } }
 
-/* commands */
+/* Commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
@@ -253,7 +253,7 @@ static const Arg tagexec[] = {
   { .v = (const char *[]){ "kakaotalk", NULL } }                      // 9
 };
 
-/* gestures
+/* Gestures
  * u means up
  * d means down
  * l means left
@@ -303,7 +303,7 @@ ResourcePref resources[] = {
 };
 
 static Keychord *keychords[] = {
-  /*           Num  Keys                                            Function                argument */
+  /*           num  keys                                            function                argument */
   // STACKKEYS
   STACKKEYS(        WINKEY,                                         focus)
   STACKKEYS(        WINMOD,                                         push)
@@ -570,7 +570,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ULTRAMOD, XK_minus}},                           spawn,                  SHCMD("monitorbright -dec 5; kill -42 $(pidof dwmblocks)") }),
   &((Keychord){1, {{ULTRAMOD, XK_equal}},                           spawn,                  SHCMD("monitorbright -inc 5; kill -42 $(pidof dwmblocks)") }),
   &((Keychord){1, {{0, XK_Alt_R}},                                  spawn,                  SHCMD("fcitx5-remote -t && kill -44 $(pidof dwmblocks)") }),
-  /* &((Keychord){1, {{WINMOD, XK_q}},                                 quit,                   {0} }), */
+  &((Keychord){1, {{EXTRAMOD, XK_q}},                               quit,                   {0} }),
   &((Keychord){1, {{ControlMask, XK_F5}},                           quit,                   {1} }),
   &((Keychord){1, {{EXTRAMOD, XK_F5}},                              spawn,                  SHCMD("killall -q dwmblocks; setsid -f dwmblocks") }),
 
@@ -631,8 +631,8 @@ static Keychord *keychords[] = {
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_s}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") }),
 };
 
-/* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+/* Button definitions */
+/* Click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
   /* click                event mask      button          function        argument */
   { ClkClientWin,         WINKEY,         Button1,        movemouse,      {0} },
