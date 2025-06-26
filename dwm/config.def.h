@@ -151,6 +151,7 @@ static const Rule rules[] = {
   { "mpv",          "mpvk",         NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
   { TERMCLASS,      "ncmpcpp",      NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "Virt-manager", "virt-manager", NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "Virt-viewer",  "virt-viewer",  NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
   { "Gimp",         NULL,           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
   { TERMCLASS,      "bg",           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "obs",          "obs",          NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
@@ -497,7 +498,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_n}},                   spawn,                  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_p}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_t}},                   spawn,                  {.v = (const char *[]){ "torwrap", NULL } } }),
-  &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_m}},         spawn,                  {.v = (const char *[]){ "virt-manager", NULL } } }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_m}},         spawn,                  {.v = (const char *[]){ "dmenuvirt", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_w}},         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
 
