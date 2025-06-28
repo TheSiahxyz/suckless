@@ -47,7 +47,6 @@ static Key quit_keys[] = {
 static char font[] = "monospace:size=10";
 static const char *fonts[] = {
   font,
-  "monospace:size=10",
   "JoyPixels:pixelsize=10:antialias=true:autohint=true"
 };
 
