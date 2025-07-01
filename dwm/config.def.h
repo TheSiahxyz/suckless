@@ -324,10 +324,10 @@ static Keychord *keychords[] = {
   TAGKEYS(          XK_9,                                                                   8)
 
   // APPEARANCES
-  &((Keychord){1, {{WINKEY, XK_a}},                                 changefocusopacity,     {.f = +0.025}}),
-  &((Keychord){1, {{WINKEY, XK_s}},                                 changefocusopacity,     {.f = -0.025}}),
-  &((Keychord){1, {{WINMOD, XK_a}},                                 changeunfocusopacity,   {.f = +0.025}}),
-  &((Keychord){1, {{WINMOD, XK_s}},                                 changeunfocusopacity,   {.f = -0.025}}),
+  &((Keychord){1, {{WINKEY, XK_a}},                                 changefocusopacity,     {.f = -0.025}}),
+  &((Keychord){1, {{WINKEY, XK_s}},                                 changefocusopacity,     {.f = +0.025}}),
+  &((Keychord){1, {{WINMOD, XK_a}},                                 changeunfocusopacity,   {.f = -0.025}}),
+  &((Keychord){1, {{WINMOD, XK_s}},                                 changeunfocusopacity,   {.f = +0.025}}),
   &((Keychord){1, {{WINKEY, XK_o}},                                 setborderpx,            {.i = -1 } }),
   &((Keychord){1, {{WINMOD, XK_o}},                                 setborderpx,            {.i = +1 } }),
   &((Keychord){1, {{WINMOD2, XK_o}},                                setborderpx,            {.i = 0 } }),
