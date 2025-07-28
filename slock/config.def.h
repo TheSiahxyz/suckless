@@ -56,7 +56,7 @@ static const char *background_image = "";
 static const char *private_image = "Private/photo/19CDB48F-C92D-437D-A65E-F7DD30F0A05F.png";
 
 /* PAM service that's used for authentication */
-static const char *pam_service = "system-login";
+static const char *pam_service = "system-local-login";
 
 /* Font settings for the time text */
 static const float textsize=64.0;
