@@ -914,6 +914,15 @@ main(int argc, char **argv) {
 	displayData.nscreens=nscreens;
 	displayData.crs=crs;
 	displayData.surfaces=surfaces;
+	
+	/* Draw initial time on all screens */
+	time_t rawtime;
+	time(&rawtime);
+	struct tm tm = *localtime(&rawtime);
+	for (int k = 0; k < nscreens; k++) {
+		refresh(dpy, locks[k]->win, locks[k]->screen, tm, crs[k], surfaces[k]);
+	}
+	
   /*Start the thread that redraws time every 5 seconds*/
 	pthread_create(&thredid, NULL, displayTime, &displayData);
 	/*Wait for the password*/
