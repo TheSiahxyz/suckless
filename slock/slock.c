@@ -337,6 +337,9 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
 	static char tm[64] = "";
 	int xpos,ypos;
   double text_width, text_height;
+	int s_height, message_height, message_lines;
+	XftFont *fontinfo;
+	XGlyphInfo ext_msg;
 
   sprintf(tm,"%02d/%02d/%02d %02d:%02d",time.tm_year+1900,time.tm_mon+1,time.tm_mday,time.tm_hour,time.tm_min);
 	XClearWindow(dpy, win);
@@ -349,9 +352,36 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
   text_width = extents.width;
   text_height = extents.height;
 
-  /* Center text horizontally and vertically based on text center point */
+	/* Calculate message position to place time below it */
+	s_height = DisplayHeight(dpy, screen);
+	
+	/* Get message font to calculate message height */
+	fontinfo = XftFontOpenName(dpy, screen, font_name);
+	if (fontinfo != NULL) {
+		/* Count message lines (same logic as writemessage) */
+		message_lines = 1;
+		for (int i = 0; message[i] != '\0'; i++) {
+			if (message[i] == '\n')
+				message_lines++;
+		}
+		
+		/* Calculate message bottom position (matching writemessage logic) */
+		/* Message starts at: s_height*3/4 - (k*20)/3 where k is line count - 1 */
+		/* Each line is spaced by 20 pixels, last line is at height + 20*(lines-1) */
+		int message_start_y = s_height * 3 / 4 - ((message_lines - 1) * 20) / 3;
+		int last_line_y = message_start_y + 20 * (message_lines - 1);
+		/* Add font height to get bottom of message */
+		message_height = last_line_y + fontinfo->ascent + fontinfo->descent;
+		
+		XftFontClose(dpy, fontinfo);
+	} else {
+		/* Fallback: assume message is at s_height*3/4 with ~20px height */
+		message_height = (s_height * 3 / 4) + 30;
+	}
+
+  /* Center text horizontally, place below message */
   xpos = (DisplayWidth(dpy, screen) / 2) - (text_width / 2) - extents.x_bearing;
-  ypos = (DisplayHeight(dpy, screen) / 2) - (text_height / 2) - extents.y_bearing;
+  ypos = message_height + 40; /* 40px spacing below message */
 	cairo_move_to(cr, xpos, ypos);
 	cairo_show_text(cr, tm);
 	cairo_surface_flush(sfc);
