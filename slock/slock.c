@@ -349,8 +349,9 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
   text_width = extents.width;
   text_height = extents.height;
 
-  xpos = DisplayWidth(dpy, screen) / 4 - text_width / 2;
-  ypos = (DisplayHeight(dpy, screen) + 12 * text_height) / 2;
+  /* Center text horizontally and vertically based on text center point */
+  xpos = (DisplayWidth(dpy, screen) / 2) - (text_width / 2) - extents.x_bearing;
+  ypos = (DisplayHeight(dpy, screen) / 2) - (text_height / 2) - extents.y_bearing;
 	cairo_move_to(cr, xpos, ypos);
 	cairo_show_text(cr, tm);
 	cairo_surface_flush(sfc);
