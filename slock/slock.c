@@ -342,7 +342,6 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
 	XGlyphInfo ext_msg;
 
   sprintf(tm,"%02d/%02d/%02d %02d:%02d",time.tm_year+1900,time.tm_mon+1,time.tm_mday,time.tm_hour,time.tm_min);
-	XClearWindow(dpy, win);
   cairo_set_source_rgb(cr, textcolorred, textcolorgreen, textcolorblue);
 	cairo_select_font_face(cr, textfamily, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
   cairo_set_font_size(cr, textsize);
@@ -382,11 +381,11 @@ refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cair
   /* Center text horizontally, place below message */
   xpos = (DisplayWidth(dpy, screen) / 2) - (text_width / 2) - extents.x_bearing;
   ypos = message_height + 40; /* 40px spacing below message */
+	
+	/* Draw time (background will be restored by drawlogo if needed) */
 	cairo_move_to(cr, xpos, ypos);
 	cairo_show_text(cr, tm);
 	cairo_surface_flush(sfc);
-  writemessage(dpy, win, screen);
-	XFlush(dpy);
 }
 
 static void*
@@ -524,12 +523,14 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 			if (running && oldc != color) {
         pthread_mutex_lock(&mutex); /*Stop the time refresh thread from interfering*/
 				for (screen = 0; screen < nscreens; screen++) {
+					/* Draw background and logo first */
+					drawlogo(dpy, locks[screen], color);
+					/* Then draw message */
+          writemessage(dpy, locks[screen]->win, screen);
+					/* Finally draw time on top to keep it visible */
           time_t rawtime;
           time(&rawtime);
 	        refresh(dpy, locks[screen]->win,locks[screen]->screen, *localtime(&rawtime),crs[screen],surfaces[screen]);
-					/*Redraw the time after screen cleared*/
-					drawlogo(dpy, locks[screen], color);
-          writemessage(dpy, locks[screen]->win, screen);
 				}
         pthread_mutex_unlock(&mutex);
 				oldc = color;
