@@ -25,21 +25,21 @@
   X("", "sb-price usdt Tether ⛺ 26",                   9000,   26)   \
   X("", "sb-price eth Ethereum 🍸 25",                  9000,   25)   \
   X("", "sb-price btc Bitcoin 💰 24",                   9000,   24)   \
-  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      23)   \
-  X("", "sb-music",                                     0,      22)   \
-  X("", "sb-torrent",                                   0,      21)   \
-  X("", "sb-queues",                                    10,     20)   \
-  X("", "sb-mailbox",                                   300,    19)   \
-  X("", "sb-news",                                      0,      18)   \
-  X("", "sb-repos",                                     60,     17)   \
-  X("", "sb-tasks",                                     60,     16)   \
-  X("", "sb-packages",                                  0,      15)   \
-  X("", "sb-forecast",                                  3600,   14)   \
-  X("", "sb-cpu",                                       60,     13)   \
-  X("", "sb-memory",                                    60,     11)   \
-  X("", "sb-disk",                                      10800,  10)   \
-  X("", "sb-keyboard",                                  0,      9)    \
-  X("", "sb-bghitness",                                 0,      8)    \
+  X("", "sb-ticker",                                    0,      23)   \
+  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      22)   \
+  X("", "sb-music",                                     0,      21)   \
+  X("", "sb-torrent",                                   0,      20)   \
+  X("", "sb-queues",                                    10,     19)   \
+  X("", "sb-mailbox",                                   300,    18)   \
+  X("", "sb-news",                                      0,      17)   \
+  X("", "sb-repos",                                     60,     16)   \
+  X("", "sb-tasks",                                     60,     15)   \
+  X("", "sb-packages",                                  0,      14)   \
+  X("", "sb-forecast",                                  3600,   13)   \
+  X("", "sb-cpu",                                       60,     12)   \
+  X("", "sb-memory",                                    60,     10)   \
+  X("", "sb-disk",                                      10800,  9)   \
+  X("", "sb-keyboard",                                  0,      8)    \
   X("", "sb-brightness",                                0,      7)    \
   X("", "sb-internet",                                  5,      6)    \
   X("", "sb-mic",                                       0,      5)    \
@@ -49,7 +49,6 @@
   X("", "sb-ecrypt",                                    0,      1)    \
   X("", "sb-help-icon",                                 0,      0)
 
-  /* X("", "sb-ticker",                                    0,      25)   \ */
   /* X("", "sb-cpubars",                                   15,     12)   \ */
   /* X("", "sb-iplocate",                                  0,      6)    \ */
 

@@ -248,8 +248,8 @@ static const char *layoutmenu_cmd = "layoutmenu";
 static const Arg tagexec[] = {
   { .v = termcmd },                                                   // 1
   { .v = (const char *[]){ BROWSER, NULL } },                         // 2
-  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks"),           // 3
-  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks"),          // 4
+  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+18 dwmblocks"),           // 3
+  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+17 dwmblocks"),          // 4
   SHCMD(TERMINAL " -n ncmpcpp -e ncmpcpp"),                           // 5
   { .v = (const char *[]){ "torwrap", NULL } },                       // 6
   { .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } }, // 7
@@ -267,8 +267,8 @@ static const Arg tagexec[] = {
 static Gesture gestures[] = {
   { "u",  spawn, { .v = termcmd } },
   { "d",  spawn, { .v = (const char *[]){ BROWSER, NULL } } },
-  { "l",  spawn, SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks; rmdir ~/.abook 2>/dev/null") },
-  { "r",  spawn, SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks") },
+  { "l",  spawn, SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+18 dwmblocks; rmdir ~/.abook 2>/dev/null") },
+  { "r",  spawn, SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+17 dwmblocks") },
 };
 
 /*
@@ -418,12 +418,12 @@ static Keychord *keychords[] = {
 
   // MEDIA CONTROLS
   &((Keychord){1, {{0, NoSymbol}},                                  spawn,                  {.v = termcmd } }),
-  &((Keychord){1, {{0, XF86XK_Battery}},                            spawn,                  SHCMD("pkill -RTMIN+4 dwmblocks") }),
+  &((Keychord){1, {{0, XF86XK_Battery}},                            spawn,                  SHCMD("pkill -RTMIN+3 dwmblocks") }),
   &((Keychord){1, {{0, XF86XK_WWW}},                                spawn,                  {.v = (const char *[]){ BROWSER, NULL } } }),
   &((Keychord){1, {{0, XF86XK_DOS}},                                spawn,                  {.v = termcmd } }),
-  &((Keychord){1, {{0, XF86XK_AudioMute}},                          spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{0, XF86XK_AudioRaiseVolume}},                   spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%- && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{0, XF86XK_AudioLowerVolume}},                   spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%+ && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-; kill -39 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XF86XK_AudioMute}},                          spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XF86XK_AudioRaiseVolume}},                   spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%- && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XF86XK_AudioLowerVolume}},                   spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%+ && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-; kill -38 $(pidof dwmblocks)") }),
   &((Keychord){1, {{0, XF86XK_AudioPrev}},                          spawn,                  {.v = (const char *[]){ "mpc", "prev", NULL } } }),
   &((Keychord){1, {{0, XF86XK_AudioNext}},                          spawn,                  {.v = (const char *[]){ "mpc", "next", NULL } } }),
   &((Keychord){1, {{0, XF86XK_AudioPause}},                         spawn,                  {.v = (const char *[]){ "mpc", "pause", NULL } } }),
@@ -435,10 +435,10 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{0, XF86XK_AudioMicMute}},                       spawn,                  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") }),
   &((Keychord){1, {{0, XF86XK_Calculator}},                         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "bc", "-l", NULL } } }),
   &((Keychord){1, {{0, XF86XK_Launch1}},                            spawn,                  {.v = (const char *[]){ "xset", "dpms", "force", "off", NULL } } }),
-  &((Keychord){1, {{0, XF86XK_Mail}},                               spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+20 dwmblocks") }),
-  &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  SHCMD("pkexec brillo -U 5 -q; kill -43 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XF86XK_Mail}},                               spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+18 dwmblocks") }),
+  &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  SHCMD("pkexec brillo -U 5 -q; kill -42 $(pidof dwmblocks)") }),
   /* &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  {.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } }), */
-  &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  SHCMD("pkexec brillo -A 5 -q; kill -43 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  SHCMD("pkexec brillo -A 5 -q; kill -42 $(pidof dwmblocks)") }),
   /* &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  {.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }), */
   &((Keychord){1, {{0, XF86XK_MyComputer}},                         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", "/", NULL } } }),
   &((Keychord){1, {{0, XF86XK_PowerOff}},                           spawn,                  {.v = (const char*[]){ "sysact", NULL } } }),
@@ -452,10 +452,10 @@ static Keychord *keychords[] = {
 
   // MUSIC CONTROLS
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_a}},                       spawn,                  SHCMD("mpc single on; mpc random on; mpc repeat on; mpc consume off") }),
-  &((Keychord){2, {{WINKEY, XK_m},{0, XK_d}},                       spawn,                  SHCMD("mpdmenu && pkill -RTMIN+23 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0, XK_d}},                       spawn,                  SHCMD("mpdmenu && pkill -RTMIN+21 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_d}},               spawn,                  {.v = (const char *[]){ "dmenudelmusic", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{0, XK_m}},                       spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+23 dwmblocks") }),
-  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_m}},               spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -39 $(pidof dwmblocks)") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0, XK_m}},                       spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+21 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_m}},               spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -38 $(pidof dwmblocks)") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_o}},                       spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_p}},                       spawn,                  SHCMD("mpc toggle") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_p}},               spawn,                  SHCMD("mpc pause; sleep 1 && pauseallmpv") }),
@@ -481,7 +481,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ULTRAMOD, XK_o}},                               spawn,                  { .v = (const char *[]){ "xdotmouse", "m", NULL } } }),
 
   // PROGRAMS
-  &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+20 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
+  &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+18 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
   &((Keychord){1, {{WINKEY, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, NULL } } }),
   &((Keychord){1, {{WINMOD, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, "--target", "private-window", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_d}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "discord", NULL } } }),
@@ -497,7 +497,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_l}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{ShiftMask, XK_l}},           spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_m}},                   spawn,                  SHCMD(TERMINAL " -n ncmpcpp -e ncmpcpp") }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_n}},                   spawn,                  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+19 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_n}},                   spawn,                  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+17 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_p}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_t},{0,XK_r}},          spawn,                  {.v = (const char *[]){ "torwrap", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_t},{0,XK_m}},          spawn,                  {.v = (const char *[]){ "teams-for-linux", NULL } } }),
@@ -518,7 +518,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINKEY, XK_p}},                                 spawn,                  {.v = (const char *[]){ "passmenu", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_p}},                                 spawn,                  {.v = (const char *[]){ "passmenu2", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_c}},                       spawn,                  {.v = (const char *[]){ "crontog", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_e}},                       spawn,                  SHCMD("ecrypt; pkill -RTMIN+2 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_e}},                       spawn,                  SHCMD("ecrypt; pkill -RTMIN+1 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_v}},                       spawn,                  {.v = (const char *[]){ "ovpn", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_v},{0, XK_v}},                       spawn,                  {.v = (const char *[]){ "mpvplay", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_b}},                   spawn,                  {.v = (const char *[]){ "dmenubrowse", NULL } } }),
@@ -535,7 +535,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD2, XK_F1}},                               spawn,                  {.v = (const char *[]){ "dmenuman", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F2}},                                spawn,                  {.v = (const char *[]){ "tutorialvids", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F3}},                                spawn,                  {.v = (const char *[]){ "displayselect", NULL } } }),
-  &((Keychord){1, {{WINKEY, XK_F4}},                                spawn,                  SHCMD(TERMINAL " -n pulsemixer -e pulsemixer; kill -39 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINKEY, XK_F4}},                                spawn,                  SHCMD(TERMINAL " -n pulsemixer -e pulsemixer; kill -38 $(pidof dwmblocks)") }),
   &((Keychord){1, {{WINMOD2, XK_F4}},                               spawn,                  {.v = (const char *[]){ "toggleoutput", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_F5}},                                spawn,                  {.v = (const char *[]){ "stw", NULL } } }),
   &((Keychord){1, {{WINMOD2, XK_F5}},                               spawn,                  {.v = (const char *[]){ "rbackup", NULL } } }),
@@ -570,15 +570,15 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD, XK_Return}},                            spawn,                  {.v = (const char *[]){ "sd", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_BackSpace}},           spawn,                  {.v = (const char *[]){ "slock", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{ShiftMask, XK_BackSpace}},   spawn,                  {.v = (const char *[]){ "sysact", NULL } } }),
-  &((Keychord){1, {{WINKEY, XK_minus}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{WINKEY, XK_equal}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{WINMOD, XK_minus}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{WINMOD, XK_equal}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{WINMOD2, XK_minus}},                            spawn,                  SHCMD("pkexec brillo -U 5 -q; kill -43 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{WINMOD2, XK_equal}},                            spawn,                  SHCMD("pkexec brillo -A 5 -q; kill -43 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{ULTRAMOD, XK_minus}},                           spawn,                  SHCMD("monitorbright -dec 5; kill -42 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{ULTRAMOD, XK_equal}},                           spawn,                  SHCMD("monitorbright -inc 5; kill -42 $(pidof dwmblocks)") }),
-  &((Keychord){1, {{0, XK_Alt_R}},                                  spawn,                  SHCMD("fcitx5-remote -t && kill -44 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINKEY, XK_minus}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINKEY, XK_equal}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINMOD, XK_minus}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINMOD, XK_equal}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINMOD2, XK_minus}},                            spawn,                  SHCMD("pkexec brillo -U 5 -q; kill -41 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINMOD2, XK_equal}},                            spawn,                  SHCMD("pkexec brillo -A 5 -q; kill -41 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{ULTRAMOD, XK_minus}},                           spawn,                  SHCMD("monitorbright -dec 5; kill -41 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{ULTRAMOD, XK_equal}},                           spawn,                  SHCMD("monitorbright -inc 5; kill -41 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XK_Alt_R}},                                  spawn,                  SHCMD("fcitx5-remote -t && kill -43 $(pidof dwmblocks)") }),
   &((Keychord){1, {{EXTRAMOD, XK_q}},                               quit,                   {0} }),
   &((Keychord){1, {{ControlMask, XK_F5}},                           quit,                   {1} }),
   &((Keychord){1, {{EXTRAMOD, XK_F5}},                              spawn,                  SHCMD("killall -q dwmblocks; setsid -f dwmblocks") }),
@@ -618,7 +618,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINMOD2, XK_s},{ShiftMask, XK_3}},              scratchpad_hide,        {.i = 3} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_f}},                       togglefloating,         {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{ControlMask, XK_f}},             togglecanfocusfloating, {0} }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; kill -40 $(pidof dwmblocks)") }),
+  &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; kill -39 $(pidof dwmblocks)") }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_q}},                       toggleallowkill,        {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_t}},                       togglealttag,           {0} }),
