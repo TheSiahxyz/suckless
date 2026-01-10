@@ -18,40 +18,40 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
-  X("",   "cat /tmp/recordingicon 2>/dev/null",   0,        24)   \
-  X("",   "sb-music",                             0,        23)   \
-  X("",   "sb-torrent",                           0,        22)   \
-  X("",   "sb-queues",                            10,       21)   \
-  X("",   "sb-mailbox",                           300,      20)   \
-  X("",   "sb-news",                              0,        19)   \
-  X("",   "sb-repos",                             60,       18)   \
-  X("",   "sb-tasks",                             60,       17)   \
-  X("",   "sb-packages",                          0,        16)   \
-  X("",   "sb-forecast",                          3600,     15)   \
-  X("",   "sb-cpu",                               60,       14)   \
-  X("",   "sb-memory",                            60,       12)   \
-  X("",   "sb-disk",                              10800,    11)   \
-  X("",   "sb-keyboard",                          0,        10)   \
-  X("",   "sb-bghitness",                         0,        9)    \
-  X("",   "sb-brightness",                        0,        8)    \
-  X("",   "sb-internet",                          5,        7)    \
-  X("",   "sb-mic",                               0,        6)    \
-  X("",   "sb-volume",                            0,        5)    \
-  X("",   "sb-battery",                           5,        4)    \
-  X("",   "sb-clock",                             60,       3)    \
-  X("",   "sb-ecrypt",                            0,        2)    \
-  X("",   "sb-help-icon",                         0,        1)
+  X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000,   30)   \
+  X("", "sb-price xmr Monero 🔒 29",                    9000,   29)   \
+  X("", "sb-price bnb Binance 🫧 28",                   9000,   28)   \
+  X("", "sb-price xrp XRP 🪓 27",                       9000,   27)   \
+  X("", "sb-price usdt Tether ⛺ 26",                   9000,   26)   \
+  X("", "sb-price eth Ethereum 🍸 25",                  9000,   25)   \
+  X("", "sb-price btc Bitcoin 💰 24",                   9000,   24)   \
+  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      23)   \
+  X("", "sb-music",                                     0,      22)   \
+  X("", "sb-torrent",                                   0,      21)   \
+  X("", "sb-queues",                                    10,     20)   \
+  X("", "sb-mailbox",                                   300,    19)   \
+  X("", "sb-news",                                      0,      18)   \
+  X("", "sb-repos",                                     60,     17)   \
+  X("", "sb-tasks",                                     60,     16)   \
+  X("", "sb-packages",                                  0,      15)   \
+  X("", "sb-forecast",                                  3600,   14)   \
+  X("", "sb-cpu",                                       60,     13)   \
+  X("", "sb-memory",                                    60,     11)   \
+  X("", "sb-disk",                                      10800,  10)   \
+  X("", "sb-keyboard",                                  0,      9)    \
+  X("", "sb-bghitness",                                 0,      8)    \
+  X("", "sb-brightness",                                0,      7)    \
+  X("", "sb-internet",                                  5,      6)    \
+  X("", "sb-mic",                                       0,      5)    \
+  X("", "sb-volume",                                    0,      4)    \
+  X("", "sb-battery",                                   5,      3)    \
+  X("", "sb-clock",                                     60,     2)    \
+  X("", "sb-ecrypt",                                    0,      1)    \
+  X("", "sb-help-icon",                                 0,      0)
 
-  /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000, 31)   \ */
-  /* X("", "sb-price xmr Monero 🔒 29", 9000, 30)                      \ */
-  /* X("", "sb-price bnb Binance 🫧 28", 9000, 29)                     \ */
-  /* X("", "sb-price xrp XRP 🪓 27", 9000, 28)                         \ */
-  /* X("", "sb-price usdt Tether ⛺ 26", 9000, 27)                     \ */
-  /* X("", "sb-price eth Ethereum 🍸 25", 9000, 26)                    \ */
-  /* X("", "sb-price btc Bitcoin 💰 24", 9000, 25)                     \ */
-  /* X("", "sb-ticker", 0, 25)           \ */
-  /* X("", "sb-cpubars", 15, 13)         \ */
-  /* X("", "sb-iplocate", 0, 6)          \ */
+  /* X("", "sb-ticker",                                    0,      25)   \ */
+  /* X("", "sb-cpubars",                                   15,     12)   \ */
+  /* X("", "sb-iplocate",                                  0,      6)    \ */
 
 #endif  // CONFIG_H
 
