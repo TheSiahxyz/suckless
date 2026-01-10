@@ -18,13 +18,13 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
-  X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 9000,   30)   \
-  X("", "sb-price xmr Monero 🔒 29",                    9000,   29)   \
-  X("", "sb-price bnb Binance 🫧 28",                   9000,   28)   \
-  X("", "sb-price xrp XRP 🪓 27",                       9000,   27)   \
-  X("", "sb-price usdt Tether ⛺ 26",                   9000,   26)   \
-  X("", "sb-price eth Ethereum 🍸 25",                  9000,   25)   \
-  X("", "sb-price btc Bitcoin 💰 24",                   9000,   24)   \
+  X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 900,    30)   \
+  X("", "sb-price xmr Monero 🔒 29",                    900,    29)   \
+  X("", "sb-price bnb Binance 🫧 28",                   900,    28)   \
+  X("", "sb-price xrp XRP 🪓 27",                       900,    27)   \
+  X("", "sb-price usdt Tether ⛺ 26",                   900,    26)   \
+  X("", "sb-price eth Ethereum 🍸 25",                  900,    25)   \
+  X("", "sb-price btc Bitcoin 💰 24",                   900,    24)   \
   X("", "sb-ticker",                                    0,      23)   \
   X("", "cat /tmp/recordingicon 2>/dev/null",           0,      22)   \
   X("", "sb-music",                                     0,      21)   \
