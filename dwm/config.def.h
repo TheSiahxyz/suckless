@@ -144,29 +144,32 @@ static const Rule rules[] = {
    * WM_CLASS(STRING) = instance, class
    * WM_NAME(STRING) = title
    */
-  /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { TERMCLASS,      TERMINAL,       TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "Cursor",       "cursor",       NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { BROWSER,        "Navigator",    NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
-  { NULL,           "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "mpv",          "video",        NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
-  { "mpv",          "music",        NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
-  { TERMCLASS,      "ncmpcpp",      NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "Virt-manager", "virt-manager", NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "Virt-viewer",  "virt-viewer",  NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "Gimp",         NULL,           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { TERMCLASS,      "bg",           NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "obs",          "obs",          NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { "mpv",          "webcam",       NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
-  { "discord",      "discord",      NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { "kakaotalk.exe","kakaotalk.exe",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { TERMCLASS,      "spterm",       NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
-  { TERMCLASS,      "splf",         NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
-  { TERMCLASS,      "spcalc",       NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
-  { TERMCLASS,      "vimwikitodo",  NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
-  { TERMCLASS,      "floatterm",    NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0 },
-  { TERMCLASS,      "stig",         NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          1,        -1,       0,           -1 },
-  { NULL,           NULL,           "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1 }, /* xev */
+  /* class              instance          title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
+  { TERMCLASS,          TERMINAL,         TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "Cursor",           "cursor",         NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { BROWSER,            "Navigator",      NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
+  { NULL,               "libreoffice",    NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "mpv",              "video",          NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
+  { "mpv",              "music",          NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
+  { TERMCLASS,          "ncmpcpp",        NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "dbeaver",          "dbeaver",        NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "lazydocker",       "lazydocker",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "Virt-manager",     "virt-manager",   NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "Virt-viewer",      "virt-viewer",    NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "Gimp",             NULL,             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { TERMCLASS,          "bg",             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "obs",              "obs",            NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "mpv",              "webcam",         NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
+  { "discord",          "discord",        NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "kakaotalk.exe",    "kakaotalk.exe",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "teams-for-linux",  "teams-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { TERMCLASS,          "spterm",         NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,          "splf",           NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,          "spcalc",         NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,          "vimwikitodo",    NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,          "floatterm",      NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0 },
+  { TERMCLASS,          "stig",           NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          1,        -1,       0,           -1 },
+  { NULL,               NULL,             "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1 }, /* xev */
 };
 
 /* Layout(s) */
@@ -483,6 +486,7 @@ static Keychord *keychords[] = {
 
   // PROGRAMS
   &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+18 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
+  &((Keychord){1, {{WINMOD, XK_e}},                                 spawn,                  {.v = (const char *[]){ "outlook-for-linux", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, NULL } } }),
   &((Keychord){1, {{WINMOD, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, "--target", "private-window", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_d}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "discord", NULL } } }),
@@ -490,7 +494,9 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_w}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", BROWSER, NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_a}},                   spawn,                  SHCMD(TERMINAL " -e abook -C ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/abookrc --datafile ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/addressbook") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_c}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "calcurse", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_d}},                   spawn,                  {.v = (const char *[]){ "discord", NULL } } }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_b}},         spawn,                  {.v = (const char *[]){ "dbeaver", NULL } } }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_o}},         spawn,                  SHCMD(TERMINAL " -c 'lazydocker' -n 'lazydocker' -e sudo lazydocker") }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_s}},         spawn,                  {.v = (const char *[]){ "discord", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_g}},                   spawn,                  {.v = (const char *[]){ "gimp", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_h}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_i}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nmtui", NULL } } }),
