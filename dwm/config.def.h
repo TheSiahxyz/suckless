@@ -146,6 +146,7 @@ static const Rule rules[] = {
    */
   /* class          instance        title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
   { TERMCLASS,      TERMINAL,       TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { "Cursor",       "cursor",       NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
   { BROWSER,        "Navigator",    NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
   { NULL,           "libreoffice",  NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
   { "mpv",          "video",        NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
@@ -505,6 +506,7 @@ static Keychord *keychords[] = {
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_w}},         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_z}},                   spawn,                  {.v = (const char *[]){ "zoom", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_Return}},              spawn,                  {.v = (const char *[]){ "cursor", NULL } } }),
 
   // SCRIPTS
   &((Keychord){2, {{WINKEY, XK_b},{0, XK_b}},                       spawn,                  {.v = (const char *[]){ "bookmarks", "-b", NULL } } }),
