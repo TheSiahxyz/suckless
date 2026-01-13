@@ -14,7 +14,7 @@ static char *fonts[] = {
 };
 /* Spare fonts */
 static char *font2[] = {
-  "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true",
+  "Noto Color Emoji:pixelsize=14:antialias=true:autohint=true",
 };
 
 /* Disable bold, italic and roman fonts globally */
