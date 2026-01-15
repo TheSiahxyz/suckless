@@ -18,13 +18,6 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
-  X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 900,    30)   \
-  X("", "sb-price xmr Monero 🔒 29",                    900,    29)   \
-  X("", "sb-price bnb Binance 🫧 28",                   900,    28)   \
-  X("", "sb-price xrp XRP 🪓 27",                       900,    27)   \
-  X("", "sb-price usdt Tether ⛺ 26",                   900,    26)   \
-  X("", "sb-price eth Ethereum 🍸 25",                  900,    25)   \
-  X("", "sb-price btc Bitcoin 💰 24",                   900,    24)   \
   X("", "sb-ticker",                                    0,      23)   \
   X("", "cat /tmp/recordingicon 2>/dev/null",           0,      22)   \
   X("", "sb-music",                                     0,      21)   \
@@ -48,11 +41,17 @@
   X("", "sb-clock",                                     60,     2)    \
   X("", "sb-ecrypt",                                    0,      1)    \
   X("", "sb-help-icon",                                 0,      0)
-
-  /* X("", "sb-cpubars",                                   15,     12)   \ */
-  /* X("", "sb-iplocate",                                  0,      6)    \ */
-
 #endif  // CONFIG_H
+
+  /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 900,    30)   \
+  X("", "sb-price xmr Monero 🔒 29",                    900,    29)   \
+  X("", "sb-price bnb Binance 🫧 28",                   900,    28)   \
+  X("", "sb-price xrp XRP 🪓 27",                       900,    27)   \
+  X("", "sb-price usdt Tether ⛺ 26",                   900,    26)   \
+  X("", "sb-price eth Ethereum 🍸 25",                  900,    25)   \
+  X("", "sb-price btc Bitcoin 💰 24",                   900,    24)   \
+  X("", "sb-cpubars",                                   15,     12)   \
+  X("", "sb-iplocate",                                  0,      6)    \ */
 
 // Have dwmblocks automatically recompile and run when you edit this file in
 // vim with the following line in your vimrc/init.vim:
