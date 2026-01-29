@@ -2286,7 +2286,7 @@ run(void)
 void
 runAutostart(void)
 {
-  system("kill $(pidof dwmblocks); killall -q dwmblocks; dwmblocks &");
+  system("killall -9 dwmblocks 2>/dev/null; while pidof dwmblocks >/dev/null 2>&1; do sleep 0.1; done; dwmblocks &");
 }
 
 void
