@@ -31,14 +31,14 @@
   X("", "sb-forecast",                                  3600,   13)   \
   X("", "sb-cpu",                                       60,     12)   \
   X("", "sb-memory",                                    60,     10)   \
-  X("", "sb-disk",                                      10800,  9)   \
+  X("", "sb-disk",                                      10800,  9)    \
   X("", "sb-keyboard",                                  0,      8)    \
   X("", "sb-brightness",                                0,      7)    \
   X("", "sb-internet",                                  5,      6)    \
   X("", "sb-mic",                                       0,      5)    \
   X("", "sb-volume",                                    0,      4)    \
   X("", "sb-battery",                                   5,      3)    \
-  X("", "sb-clock",                                     60,     2)    \
+  X("", "sb-clock",                                     0,      2)    \
   X("", "sb-ecrypt",                                    0,      1)    \
   X("", "sb-help-icon",                                 0,      0)
 #endif  // CONFIG_H
