@@ -474,17 +474,11 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINKEY, XK_period}},                            spawn,                  {.v = (const char *[]){ "mpc", "next", NULL } } }),
   &((Keychord){1, {{ALTKEY, XK_period}},                            spawn,                  {.v = (const char *[]){ "playerctl", "next", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_comma}},                             spawn,                  {.v = (const char *[]){ "mpc", "seek", "-10", NULL } } }),
-  &((Keychord){1, {{ALTKEY, XK_comma}},                             spawn,                  {.v = (const char *[]){ "playerctl", "position", "-10", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_period}},                            spawn,                  {.v = (const char *[]){ "mpc", "seek", "+10", NULL } } }),
-  &((Keychord){1, {{ALTKEY, XK_period}},                            spawn,                  {.v = (const char *[]){ "playerctl", "position", "+10", NULL } } }),
   &((Keychord){1, {{WINMOD2, XK_comma}},                            spawn,                  {.v = (const char *[]){ "mpc", "seek", "-60", NULL } } }),
-  &((Keychord){1, {{ALTMOD2, XK_comma}},                            spawn,                  {.v = (const char *[]){ "playerctl", "position", "-60", NULL } } }),
   &((Keychord){1, {{WINMOD2, XK_period}},                           spawn,                  {.v = (const char *[]){ "mpc", "seek", "+60", NULL } } }),
-  &((Keychord){1, {{ALTMOD2, XK_period}},                           spawn,                  {.v = (const char *[]){ "playerctl", "position", "+60", NULL } } }),
   &((Keychord){1, {{WINMODALL, XK_bracketleft}},                    spawn,                  {.v = (const char *[]){ "mpc", "seek", "0%", NULL } } }),
-  &((Keychord){1, {{ALTMODALL, XK_bracketleft}},                    spawn,                  {.v = (const char *[]){ "playerctl", "position", "0%", NULL } } }),
   &((Keychord){1, {{WINMODALL, XK_bracketright}},                   spawn,                  {.v = (const char *[]){ "mpc", "seek", "90%", NULL } } }),
-  &((Keychord){1, {{ALTMODALL, XK_bracketright}},                   spawn,                  {.v = (const char *[]){ "playerctl", "position", "90%", NULL } } }),
 
   // MOUSE
   &((Keychord){1, {{ULTRAMOD, XK_j}},                               spawn,                  { .v = (const char *[]){ "xdotmouse", "h", NULL } } }),
