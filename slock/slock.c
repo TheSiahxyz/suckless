@@ -104,8 +104,6 @@ struct xrandr {
 
 Imlib_Image image;
 
-Imlib_Image image;
-
 static void
 die(const char *errstr, ...)
 {
@@ -172,11 +170,12 @@ static void
 writemessage(Display *dpy, Window win, int screen)
 {
 	int len, line_len, width, height, s_width, s_height, i, j, k, tab_replace, tab_size;
+	int newlines;
 	XftFont *fontinfo;
 	XftColor xftcolor;
 	XftDraw *xftdraw;
 	XGlyphInfo ext_msg, ext_space;
-	XineramaScreenInfo *xsi;
+
 	xftdraw = XftDrawCreate(dpy, win, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen));
 	fontinfo = XftFontOpenName(dpy, screen, font_name);
 	XftColorAllocName(dpy, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen), text_color, &xftcolor);
@@ -192,66 +191,82 @@ writemessage(Display *dpy, Window win, int screen)
 	XftTextExtentsUtf8(dpy, fontinfo, (XftChar8 *) " ", 1, &ext_space);
 	tab_size = 8 * ext_space.width;
 
-	/*  To prevent "Uninitialized" warnings. */
-	xsi = NULL;
-
-	/*
-	 * Start formatting and drawing text
-	 */
-
 	len = strlen(message);
 
-	/* Max max line length (cut at '\n') */
+	/* Count newlines and find max line length */
 	line_len = 0;
-	k = 0;
+	newlines = 0;
 	for (i = j = 0; i < len; i++) {
 		if (message[i] == '\n') {
 			if (i - j > line_len)
 				line_len = i - j;
-			k++;
+			newlines++;
 			i++;
 			j = i;
 		}
 	}
-	/* If there is only one line */
 	if (line_len == 0)
 		line_len = len;
 
-	if (XineramaIsActive(dpy)) {
-		xsi = XineramaQueryScreens(dpy, &i);
-		s_width = xsi[0].width;
-		s_height = xsi[0].height;
-	} else {
-		s_width = DisplayWidth(dpy, screen);
-		s_height = DisplayHeight(dpy, screen);
-	}
-
 	XftTextExtentsUtf8(dpy, fontinfo, (XftChar8 *)message, line_len, &ext_msg);
-	height = s_height*3/4 - (k*20)/3;
-	width  = (s_width - ext_msg.width)/2;
 
-	/* Look for '\n' and print the text between them. */
-	for (i = j = k = 0; i <= len; i++) {
-		/* i == len is the special case for the last line */
-		if (i == len || message[i] == '\n') {
-			tab_replace = 0;
-			while (message[j] == '\t' && j < i) {
-				tab_replace++;
-				j++;
-			}
-
-			XftDrawStringUtf8(xftdraw, &xftcolor, fontinfo, width + tab_size*tab_replace, height + 20*k, (XftChar8 *)(message + j), i - j);
-			while (i < len && message[i] == '\n') {
-				i++;
-				j = i;
-				k++;
+#ifdef XINERAMA
+	XineramaScreenInfo *xsi = NULL;
+	int n = 0;
+	if (XineramaIsActive(dpy))
+		xsi = XineramaQueryScreens(dpy, &n);
+	if (xsi && n > 0) {
+		int limit = showallmonitors ? n : 1;
+		for (int m = 0; m < limit; m++) {
+			s_width  = xsi[m].width;
+			s_height = xsi[m].height;
+			height = xsi[m].y_org + s_height*3/4 - (newlines*20)/3;
+			width  = xsi[m].x_org + (s_width - ext_msg.width)/2;
+			for (i = j = k = 0; i <= len; i++) {
+				if (i == len || message[i] == '\n') {
+					tab_replace = 0;
+					while (message[j] == '\t' && j < i) {
+						tab_replace++;
+						j++;
+					}
+					XftDrawStringUtf8(xftdraw, &xftcolor, fontinfo,
+						width + tab_size*tab_replace, height + 20*k,
+						(XftChar8 *)(message + j), i - j);
+					while (i < len && message[i] == '\n') {
+						i++;
+						j = i;
+						k++;
+					}
+				}
 			}
 		}
+		XFree(xsi);
+	} else {
+#endif
+		s_width  = DisplayWidth(dpy, screen);
+		s_height = DisplayHeight(dpy, screen);
+		height = s_height*3/4 - (newlines*20)/3;
+		width  = (s_width - ext_msg.width)/2;
+		for (i = j = k = 0; i <= len; i++) {
+			if (i == len || message[i] == '\n') {
+				tab_replace = 0;
+				while (message[j] == '\t' && j < i) {
+					tab_replace++;
+					j++;
+				}
+				XftDrawStringUtf8(xftdraw, &xftcolor, fontinfo,
+					width + tab_size*tab_replace, height + 20*k,
+					(XftChar8 *)(message + j), i - j);
+				while (i < len && message[i] == '\n') {
+					i++;
+					j = i;
+					k++;
+				}
+			}
+		}
+#ifdef XINERAMA
 	}
-
-	/* xsi should not be NULL anyway if Xinerama is active, but to be safe */
-	if (XineramaIsActive(dpy) && xsi != NULL)
-			XFree(xsi);
+#endif
 
 	XftFontClose(dpy, fontinfo);
 	XftColorFree(dpy, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen), &xftcolor);
@@ -321,70 +336,103 @@ resizerectangles(struct lock *lock)
 static void
 drawlogo(Display *dpy, struct lock *lock, int color)
 {
-	/*
-	XSetForeground(dpy, lock->gc, lock->colors[BACKGROUND]);
-	XFillRectangle(dpy, lock->drawable, lock->gc, 0, 0, lock->x, lock->y); */
 	lock->drawable = lock->bgmap;
 	XSetForeground(dpy, lock->gc, lock->colors[color]);
-	XFillRectangles(dpy, lock->drawable, lock->gc, lock->rectangles, LENGTH(rectangles));
+#ifdef XINERAMA
+	XineramaScreenInfo *info;
+	int n;
+	if ((info = XineramaQueryScreens(dpy, &n))) {
+		int limit = showallmonitors ? n : 1;
+		for (int m = 0; m < limit; m++) {
+			lock->xoff = info[m].x_org;
+			lock->yoff = info[m].y_org;
+			lock->mw = info[m].width;
+			lock->mh = info[m].height;
+			resizerectangles(lock);
+			XFillRectangles(dpy, lock->drawable, lock->gc, lock->rectangles, LENGTH(rectangles));
+		}
+		XFree(info);
+	} else {
+#endif
+		XFillRectangles(dpy, lock->drawable, lock->gc, lock->rectangles, LENGTH(rectangles));
+#ifdef XINERAMA
+	}
+#endif
 	XCopyArea(dpy, lock->drawable, lock->win, lock->gc, 0, 0, lock->x, lock->y, 0, 0);
 	XSync(dpy, False);
 }
 
 static void
-refresh(Display *dpy, Window win , int screen, struct tm time, cairo_t* cr, cairo_surface_t* sfc)
-{/*Function that displays given time on the given screen*/
+refresh(Display *dpy, Window win, int screen, struct tm time, cairo_t* cr, cairo_surface_t* sfc)
+{
 	static char tm[64] = "";
-	int xpos,ypos;
-  double text_width, text_height;
-	int s_height, message_height, message_lines;
+	int xpos, ypos;
+	double text_width;
+	int s_width, s_height, message_height, message_lines;
 	XftFont *fontinfo;
-	XGlyphInfo ext_msg;
 
-  sprintf(tm,"%02d/%02d/%02d %02d:%02d",time.tm_year+1900,time.tm_mon+1,time.tm_mday,time.tm_hour,time.tm_min);
-  cairo_set_source_rgb(cr, textcolorred, textcolorgreen, textcolorblue);
+	sprintf(tm, "%02d/%02d/%02d %02d:%02d",
+		time.tm_year+1900, time.tm_mon+1, time.tm_mday,
+		time.tm_hour, time.tm_min);
+	cairo_set_source_rgb(cr, textcolorred, textcolorgreen, textcolorblue);
 	cairo_select_font_face(cr, textfamily, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-  cairo_set_font_size(cr, textsize);
+	cairo_set_font_size(cr, textsize);
 
-  cairo_text_extents_t extents;
-  cairo_text_extents(cr, tm, &extents);
-  text_width = extents.width;
-  text_height = extents.height;
+	cairo_text_extents_t extents;
+	cairo_text_extents(cr, tm, &extents);
+	text_width = extents.width;
 
-	/* Calculate message position to place time below it */
-	s_height = DisplayHeight(dpy, screen);
-	
-	/* Get message font to calculate message height */
-	fontinfo = XftFontOpenName(dpy, screen, font_name);
-	if (fontinfo != NULL) {
-		/* Count message lines (same logic as writemessage) */
-		message_lines = 1;
-		for (int i = 0; message[i] != '\0'; i++) {
-			if (message[i] == '\n')
-				message_lines++;
-		}
-		
-		/* Calculate message bottom position (matching writemessage logic) */
-		/* Message starts at: s_height*3/4 - (k*20)/3 where k is line count - 1 */
-		/* Each line is spaced by 20 pixels, last line is at height + 20*(lines-1) */
-		int message_start_y = s_height * 3 / 4 - ((message_lines - 1) * 20) / 3;
-		int last_line_y = message_start_y + 20 * (message_lines - 1);
-		/* Add font height to get bottom of message */
-		message_height = last_line_y + fontinfo->ascent + fontinfo->descent;
-		
-		XftFontClose(dpy, fontinfo);
-	} else {
-		/* Fallback: assume message is at s_height*3/4 with ~20px height */
-		message_height = (s_height * 3 / 4) + 30;
+	/* Count message lines */
+	message_lines = 1;
+	for (int i = 0; message[i] != '\0'; i++) {
+		if (message[i] == '\n')
+			message_lines++;
 	}
 
-  /* Center text horizontally, place below message */
-  xpos = (DisplayWidth(dpy, screen) / 2) - (text_width / 2) - extents.x_bearing;
-  ypos = message_height + 40; /* 40px spacing below message */
-	
-	/* Draw time (background will be restored by drawlogo if needed) */
-	cairo_move_to(cr, xpos, ypos);
-	cairo_show_text(cr, tm);
+	fontinfo = XftFontOpenName(dpy, screen, font_name);
+
+#ifdef XINERAMA
+	XineramaScreenInfo *xsi = NULL;
+	int n = 0;
+	if (XineramaIsActive(dpy))
+		xsi = XineramaQueryScreens(dpy, &n);
+	if (xsi && n > 0) {
+		int limit = showallmonitors ? n : 1;
+		for (int m = 0; m < limit; m++) {
+			s_width  = xsi[m].width;
+			s_height = xsi[m].height;
+			if (fontinfo != NULL) {
+				int msg_y = xsi[m].y_org + s_height*3/4 - ((message_lines-1)*20)/3;
+				message_height = msg_y + 20*(message_lines-1) + fontinfo->ascent + fontinfo->descent;
+			} else {
+				message_height = xsi[m].y_org + (s_height*3/4) + 30;
+			}
+			xpos = xsi[m].x_org + (s_width/2) - (text_width/2) - extents.x_bearing;
+			ypos = message_height + 40;
+			cairo_move_to(cr, xpos, ypos);
+			cairo_show_text(cr, tm);
+		}
+		XFree(xsi);
+	} else {
+#endif
+		s_width  = DisplayWidth(dpy, screen);
+		s_height = DisplayHeight(dpy, screen);
+		if (fontinfo != NULL) {
+			int msg_y = s_height*3/4 - ((message_lines-1)*20)/3;
+			message_height = msg_y + 20*(message_lines-1) + fontinfo->ascent + fontinfo->descent;
+		} else {
+			message_height = (s_height*3/4) + 30;
+		}
+		xpos = (s_width/2) - (text_width/2) - extents.x_bearing;
+		ypos = message_height + 40;
+		cairo_move_to(cr, xpos, ypos);
+		cairo_show_text(cr, tm);
+#ifdef XINERAMA
+	}
+#endif
+
+	if (fontinfo != NULL)
+		XftFontClose(dpy, fontinfo);
 	cairo_surface_flush(sfc);
 }
 
@@ -588,7 +636,6 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
     imlib_context_set_colormap(DefaultColormap(dpy, lock->screen));
     imlib_context_set_drawable(lock->bgmap);
     imlib_render_image_on_drawable(0, 0);
-    imlib_free_image();
   }
 	for (i = 0; i < NUMCOLS; i++) {
 		XAllocNamedColor(dpy, DefaultColormap(dpy, lock->screen),
@@ -600,10 +647,12 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 	lock->y = DisplayHeight(dpy, lock->screen);
 #ifdef XINERAMA
 	if ((info = XineramaQueryScreens(dpy, &n))) {
-		lock->xoff = info[0].x_org;
-		lock->yoff = info[0].y_org;
-		lock->mw = info[0].width;
-		lock->mh = info[0].height;
+		int idx = (screen < n) ? screen : 0;
+		lock->xoff = info[idx].x_org;
+		lock->yoff = info[idx].y_org;
+		lock->mw = info[idx].width;
+		lock->mh = info[idx].height;
+		XFree(info);
 	} else
 #endif
 	{
@@ -759,7 +808,7 @@ main(int argc, char **argv) {
   strcat(full_background_image, "/");
   strcat(full_background_image, background_image);
 
-  Imlib_Image buffer = imlib_load_image(background_image);
+  Imlib_Image buffer = imlib_load_image(full_background_image);
   if (buffer) {
     /* Load picture */
     imlib_context_set_image(buffer);
@@ -855,6 +904,13 @@ main(int argc, char **argv) {
 		}
 	}
 	XSync(dpy, 0);
+
+	/* image is no longer needed after all bgmaps are set up */
+	if (image) {
+		imlib_context_set_image(image);
+		imlib_free_image();
+		image = NULL;
+	}
 
 	/* did we manage to lock everything? */
 	if (nlocks != nscreens)

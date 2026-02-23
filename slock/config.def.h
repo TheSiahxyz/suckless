@@ -51,6 +51,9 @@ static int privateBlurRadius = 0;
 /* Set pixelation radius */
 static const int pixelSize = 0;
 
+/* Show message/logo/time on all monitors (1) or primary monitor only (0) */
+static const int showallmonitors = 1;
+
 /* Background image path, should be available to the user above */
 static const char *background_image = "";
 static const char *private_image = "Private/photo/19CDB48F-C92D-437D-A65E-F7DD30F0A05F.png";
