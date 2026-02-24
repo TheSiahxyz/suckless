@@ -44,7 +44,7 @@ static XRectangle rectangles[9] = {
 /* Enable blur */
 #define BLUR
 /* Set blur radius */
-static int blurRadius = 5;
+static int blurRadius = 0;
 static int privateBlurRadius = 100;
 /* Enable Pixelation */
 //#define PIXELATION
