@@ -790,9 +790,9 @@ main(int argc, char **argv) {
 
   /* Load picture */
   char* home_path = getenv("HOME");
-  int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Private '", home_path) + 1;
+  int size_needed = snprintf(NULL, 0, "mount | grep -q ' %s/Secret '", home_path) + 1;
   char* command = malloc(size_needed);
-  snprintf(command, size_needed, "mount | grep -q ' %s/Private '", home_path);
+  snprintf(command, size_needed, "mount | grep -q ' %s/Secret '", home_path);
   int result = system(command);
   free(command);
   if (result == 0) {
@@ -970,7 +970,7 @@ main(int argc, char **argv) {
 	displayData.nscreens=nscreens;
 	displayData.crs=crs;
 	displayData.surfaces=surfaces;
-	
+
 	/* Draw initial time on all screens */
 	time_t rawtime;
 	time(&rawtime);
@@ -978,7 +978,7 @@ main(int argc, char **argv) {
 	for (int k = 0; k < nscreens; k++) {
 		refresh(dpy, locks[k]->win, locks[k]->screen, tm, crs[k], surfaces[k]);
 	}
-	
+
   /*Start the thread that redraws time every 5 seconds*/
 	pthread_create(&thredid, NULL, displayTime, &displayData);
 	/*Wait for the password*/
