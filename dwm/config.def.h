@@ -624,6 +624,7 @@ static Keychord *keychords[] = {
 
   // TOGGLES
   &((Keychord){1, {{WINMOD2, XK_f}},                                togglefullscr,          {0} }),
+  &((Keychord){1, {{ALTMOD2, XK_f}},                                togglefloating,         {0} }),
   &((Keychord){2, {{WINMOD2, XK_s},{0, XK_x}},                      scratchpad_remove,      {0} }),
   &((Keychord){2, {{WINMOD2, XK_s},{0, XK_1}},                      scratchpad_show,        {.i = 1} }),
   &((Keychord){2, {{WINMOD2, XK_s},{0, XK_2}},                      scratchpad_show,        {.i = 2} }),
