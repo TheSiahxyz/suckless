@@ -154,7 +154,7 @@ static const Rule rules[] = {
   { "mpv",              "video",          NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0 },
   { "mpv",              "music",          NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0 },
   { TERMCLASS,          "ncmpcpp",        NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1 },
-  { "com.github.th_ch.youtube_music","com.github.th_ch.youtube_music",NULL,1 << 4,1,activeopacity,inactiveopacity,0,          1,          0,         0,       1,           -1 },
+  { "YTMusic",          "yt-music",       NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1 },
   { "DBeaver",          "DBeaver",        NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { "lazydocker",       "lazydocker",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "Virt-viewer",      "virt-viewer",    NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1 },
