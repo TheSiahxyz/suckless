@@ -2,6 +2,7 @@
 
 /* Default settings; can be overriden by command line. */
 #define BROWSER                         "librewolf"
+#define BROWSER2                        "firefox"
 #define CLEAR                           0x00U
 #define GAP                             8
 #define PADDING                         0
@@ -146,24 +147,25 @@ static const Rule rules[] = {
    */
   /* class              instance          title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
   { TERMCLASS,          TERMINAL,         TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "Cursor",           "cursor",         NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { BROWSER,            "Navigator",      NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1 },
-  { NULL,               "libreoffice",    NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "mpv",              "video",          NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
-  { "mpv",              "music",          NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
-  { TERMCLASS,          "ncmpcpp",        NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "com.github.th_ch.youtube_music","com.github.th_ch.youtube_music",NULL,1 << 4,1,activeopacity,inactiveopacity,0,          1,          0,        -1,       1,           -1 },
-  { "DBeaver",          "DBeaver",        NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
+  { "Cursor",           "cursor",         NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
+  { BROWSER,            "Navigator",      NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1 },
+  { BROWSER2,           "Navigator",      NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1 },
+  { NULL,               "libreoffice",    NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1 },
+  { "mpv",              "video",          NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0 },
+  { "mpv",              "music",          NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0 },
+  { TERMCLASS,          "ncmpcpp",        NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1 },
+  { "com.github.th_ch.youtube_music","com.github.th_ch.youtube_music",NULL,1 << 4,1,activeopacity,inactiveopacity,0,          1,          0,         0,       1,           -1 },
+  { "DBeaver",          "DBeaver",        NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { "lazydocker",       "lazydocker",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "Virt-manager",     "virt-manager",   NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "Virt-viewer",      "virt-viewer",    NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { "Gimp",             NULL,             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,        -1,       1,           -1 },
-  { TERMCLASS,          "bg",             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "obs",              "obs",            NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { "mpv",              "webcam",         NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,        -1,       0,            0 },
-  { "discord",          "discord",        NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { "kakaotalk.exe",    "kakaotalk.exe",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
-  { "teams-for-linux",  "teams-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,            0 },
+  { "Virt-viewer",      "virt-viewer",    NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1 },
+  { "Virt-manager",     "virt-manager",   NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
+  { TERMCLASS,          "bg",             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1 },
+  { "Gimp",             NULL,             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
+  { "obs",              "obs",            NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0 },
+  { "mpv",              "webcam",         NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         1,       0,            0 },
+  { "discord",          "discord",        NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0 },
+  { "kakaotalk.exe",    "kakaotalk.exe",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0 },
+  { "teams-for-linux",  "teams-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0 },
   { TERMCLASS,          "spterm",         NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,          "splf",           NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,          "spcalc",         NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
