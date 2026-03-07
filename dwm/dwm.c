@@ -3120,7 +3120,17 @@ togglebarfloat(const Arg *arg)
 void
 toggleborder(const Arg *arg)
 {
-  selmon->sel->bw = (selmon->sel->bw == borderpx ? 0 : borderpx);
+  if (!selmon->sel)
+    return;
+  Client *c = selmon->sel;
+  unsigned int target = c->isfloating ? fborderpx : borderpx;
+  if (c->bw == target) {
+    c->bw = 0;
+    resizeclient(c, c->x, c->y, c->w + 2 * target, c->h + 2 * target);
+  } else {
+    c->bw = target;
+    resizeclient(c, c->x, c->y, c->w - 2 * target, c->h - 2 * target);
+  }
   arrange(selmon);
 }
 
