@@ -545,7 +545,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD, XK_Print}},                             spawn,                  {.v = (const char *[]){ "dmenurecord", NULL } } }),
   &((Keychord){1, {{WINMOD2, XK_Print}},                            spawn,                  {.v = (const char *[]){ "dmenurecord", "kill", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_Scroll_Lock}},                       spawn,                  {.v = (const char *[]){ "remaps", NULL } } }),
-  &((Keychord){1, {{WINMOD2, XK_Scroll_Lock}},                      spawn,                  SHCMD("killall screenkey || screenkey -t 3 -p fixed -s small -g 20%x5%+40%-5% --key-mode keysyms --bak-mode normal --mods-mode normal -f ttf-font-awesome --opacity 0.5 &") }),
+  &((Keychord){1, {{WINMOD2, XK_Scroll_Lock}},                      spawn,                  SHCMD("killall screenkey || screenkey -t 3 -p fixed -s small -g 10%x5%+45%-5% --key-mode keysyms --bak-mode normal --mods-mode normal -f ttf-font-awesome --opacity 0.5 &") }),
   &((Keychord){1, {{WINKEY, XK_F1}},                                spawn,                  SHCMD("groff -mom /usr/local/share/dwm/thesiah.mom -Tpdf | zathura -") }),
   &((Keychord){1, {{WINMOD, XK_F1}},                                spawn,                  SHCMD("nsxiv -ap ${XDG_PICTURES_DIR:-${HOME}/Pictures}/resources") }),
   &((Keychord){1, {{WINMOD2, XK_F1}},                               spawn,                  {.v = (const char *[]){ "dmenuman", NULL } } }),
