@@ -29,7 +29,7 @@
   X("", "sb-tasks",                                     60,     15)   \
   X("", "sb-packages",                                  0,      14)   \
   X("", "sb-forecast",                                  3600,   13)   \
-  X("", "sb-cpu",                                       60,     11)   \
+  X("", "sb-cpu",                                       5,      11)   \
   X("", "sb-memory",                                    60,     10)   \
   X("", "sb-disk /home",                                10800,  9)    \
   X("", "sb-keyboard",                                  0,      8)    \
