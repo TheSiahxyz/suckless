@@ -49,8 +49,8 @@ static       char dmenufont[]           = "monospace:size=12";
 static       char font[]                = "monospace:size=12";
 static const char *fonts[]              = {
   font,
-  "Hack Nerd Font:pixelsize=18:antialias=true:autohint=true",
-  "NotoColorEmoji:pixelsize=18:antialias=true:autohint=true",
+  "Hack Nerd Font:pixelsize=16:antialias=true:autohint=true",
+  "NotoColorEmoji:pixelsize=16:antialias=true:autohint=true",
 };
 static       char normbgcolor[]         = "#222222";
 static       char normbordercolor[]     = "#444444";
