@@ -44,10 +44,10 @@ static Key quit_keys[] = {
 };
 
 /* -fn option overrides fonts[0]; default X11 font or font set */
-static char font[] = "monospace:size=10";
+static char font[] = "monospace:size=12";
 static const char *fonts[] = {
   font,
-  "JoyPixels:pixelsize=10:antialias=true:autohint=true"
+  "JoyPixels:pixelsize=16:antialias=true:autohint=true"
 };
 
 static char normfgcolor[] = "#bbbbbb";
