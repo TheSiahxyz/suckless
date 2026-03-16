@@ -762,8 +762,8 @@ main(int argc, char **argv) {
 		    errno ? strerror(errno) : "user entry not found");
 	duid = pwd->pw_uid;
 	errno = 0;
-	if (!(grp = getgrnam(getenv("USER"))))
-		die("slock: getgrnam %s: %s\n", getenv("USER"),
+	if (!(grp = getgrnam("video")))
+		die("slock: getgrnam %s: %s\n", "video",
 		    errno ? strerror(errno) : "group entry not found");
 	dgid = grp->gr_gid;
 
