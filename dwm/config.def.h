@@ -166,6 +166,7 @@ static const Rule rules[] = {
   { "mpv",              "webcam",         NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         1,       0,            0 },
   { "discord",          "discord",        NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0 },
   { "kakaotalk.exe",    "kakaotalk.exe",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0 },
+  { "outlook-for-linux","outlook-for-linux",NULL,         1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0 },
   { "teams-for-linux",  "teams-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0 },
   { TERMCLASS,          "spterm",         NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
   { TERMCLASS,          "splf",           NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1 },
