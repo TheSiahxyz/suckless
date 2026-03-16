@@ -45,12 +45,12 @@ static       unsigned int snap          = 32;       /* snap pixel */
 static const unsigned int stairpx       = 20;       /* depth of the stairs layout */
 static const unsigned int tabModKey     = 0x40;
 static const unsigned int tabCycleKey   = 0x17;
-static       char dmenufont[]           = "monospace:size=14";
-static       char font[]                = "monospace:size=14";
+static       char dmenufont[]           = "monospace:size=12";
+static       char font[]                = "monospace:size=12";
 static const char *fonts[]              = {
   font,
-  "Hack Nerd Font:pixelsize=10:antialias=true:autohint=true",
-  "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true",
+  "Hack Nerd Font:pixelsize=12:antialias=true:autohint=true",
+  "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true",
 };
 static       char normbgcolor[]         = "#222222";
 static       char normbordercolor[]     = "#444444";
