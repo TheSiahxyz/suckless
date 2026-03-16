@@ -23,7 +23,7 @@ static const int controlkeyclear = 0;
 static const int monitortime = 300;
 
 /* Insert grid pattern with scale 1:1, the size can be changed with logosize */
-static const int logosize = 75;
+static const int logosize = 0;
 /* Grid width and height for right center alignment */
 static const int logow = 12;
 static const int logoh = 6;
