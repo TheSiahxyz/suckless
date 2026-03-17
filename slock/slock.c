@@ -220,7 +220,7 @@ writemessage(Display *dpy, Window win, int screen)
 		for (int m = 0; m < limit; m++) {
 			s_width  = xsi[m].width;
 			s_height = xsi[m].height;
-			height = xsi[m].y_org + s_height*3/4 - (newlines*20)/3;
+			height = xsi[m].y_org + s_height*4/5 - (newlines*20)/3;
 			width  = xsi[m].x_org + (s_width - ext_msg.width)/2;
 			for (i = j = k = 0; i <= len; i++) {
 				if (i == len || message[i] == '\n') {
@@ -245,7 +245,7 @@ writemessage(Display *dpy, Window win, int screen)
 #endif
 		s_width  = DisplayWidth(dpy, screen);
 		s_height = DisplayHeight(dpy, screen);
-		height = s_height*3/4 - (newlines*20)/3;
+		height = s_height*4/5 - (newlines*20)/3;
 		width  = (s_width - ext_msg.width)/2;
 		for (i = j = k = 0; i <= len; i++) {
 			if (i == len || message[i] == '\n') {
@@ -402,10 +402,10 @@ refresh(Display *dpy, Window win, int screen, struct tm time, cairo_t* cr, cairo
 			s_width  = xsi[m].width;
 			s_height = xsi[m].height;
 			if (fontinfo != NULL) {
-				int msg_y = xsi[m].y_org + s_height*3/4 - ((message_lines-1)*20)/3;
+				int msg_y = xsi[m].y_org + s_height*4/5 - ((message_lines-1)*20)/3;
 				message_height = msg_y + 20*(message_lines-1) + fontinfo->ascent + fontinfo->descent;
 			} else {
-				message_height = xsi[m].y_org + (s_height*3/4) + 30;
+				message_height = xsi[m].y_org + (s_height*4/5) + 30;
 			}
 			xpos = xsi[m].x_org + (s_width/2) - (text_width/2) - extents.x_bearing;
 			ypos = message_height + 40;
@@ -418,10 +418,10 @@ refresh(Display *dpy, Window win, int screen, struct tm time, cairo_t* cr, cairo
 		s_width  = DisplayWidth(dpy, screen);
 		s_height = DisplayHeight(dpy, screen);
 		if (fontinfo != NULL) {
-			int msg_y = s_height*3/4 - ((message_lines-1)*20)/3;
+			int msg_y = s_height*4/5 - ((message_lines-1)*20)/3;
 			message_height = msg_y + 20*(message_lines-1) + fontinfo->ascent + fontinfo->descent;
 		} else {
-			message_height = (s_height*3/4) + 30;
+			message_height = (s_height*4/5) + 30;
 		}
 		xpos = (s_width/2) - (text_width/2) - extents.x_bearing;
 		ypos = message_height + 40;
