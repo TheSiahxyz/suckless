@@ -409,6 +409,11 @@ refresh(Display *dpy, Window win, int screen, struct tm time, cairo_t* cr, cairo
 			}
 			xpos = xsi[m].x_org + (s_width/2) - (text_width/2) - extents.x_bearing;
 			ypos = message_height + 40;
+			int clear_y = ypos - (int)textsize - 5;
+			if (clear_y < 0) clear_y = 0;
+			int clear_h = (int)textsize + 15;
+			XClearArea(dpy, win, xsi[m].x_org, clear_y, xsi[m].width, clear_h, False);
+			cairo_surface_mark_dirty_rectangle(sfc, xsi[m].x_org, clear_y, xsi[m].width, clear_h);
 			cairo_move_to(cr, xpos, ypos);
 			cairo_show_text(cr, tm);
 		}
@@ -425,6 +430,11 @@ refresh(Display *dpy, Window win, int screen, struct tm time, cairo_t* cr, cairo
 		}
 		xpos = (s_width/2) - (text_width/2) - extents.x_bearing;
 		ypos = message_height + 40;
+		int clear_y = ypos - (int)textsize - 5;
+		if (clear_y < 0) clear_y = 0;
+		int clear_h = (int)textsize + 15;
+		XClearArea(dpy, win, 0, clear_y, s_width, clear_h, False);
+		cairo_surface_mark_dirty_rectangle(sfc, 0, clear_y, s_width, clear_h);
 		cairo_move_to(cr, xpos, ypos);
 		cairo_show_text(cr, tm);
 #ifdef XINERAMA
