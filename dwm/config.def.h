@@ -473,7 +473,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_r}},                       spawn,                  SHCMD("mpc single off; mpc random on; mpc repeat on; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_s}},                       spawn,                  SHCMD("mpc single on; mpc random off; mpc repeat on; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_x}},                       spawn,                  SHCMD("mpc stop; sleep 1 && mpc repeat off && mpc random off && mpc single off && mpc consume off && mpc clear") }),
-  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_x}},               spawn,                  {.v = (const char *[]){ "playerctl", "stop", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_x}},               spawn,                  SHCMD("playerctl stop; pkill -f pear-desktop") }),
   &((Keychord){1, {{WINKEY, XK_comma}},                             spawn,                  {.v = (const char *[]){ "mpc", "prev", NULL } } }),
   &((Keychord){1, {{ALTKEY, XK_comma}},                             spawn,                  {.v = (const char *[]){ "playerctl", "previous", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_period}},                            spawn,                  {.v = (const char *[]){ "mpc", "next", NULL } } }),
