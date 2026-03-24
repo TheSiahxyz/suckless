@@ -18,20 +18,18 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
-  X("", "sb-ticker",                                    0,      23)   \
-  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      22)   \
-  X("", "sb-music",                                     0,      21)   \
-  X("", "sb-torrent",                                   0,      20)   \
-  X("", "sb-queues",                                    10,     19)   \
-  X("", "sb-mailbox",                                   300,    18)   \
-  X("", "sb-news",                                      0,      17)   \
-  X("", "sb-repos",                                     60,     16)   \
-  X("", "sb-tasks",                                     60,     15)   \
-  X("", "sb-packages",                                  0,      14)   \
-  X("", "sb-forecast",                                  3600,   13)   \
-  X("", "sb-cpu",                                       5,      11)   \
-  X("", "sb-memory",                                    60,     10)   \
-  X("", "sb-disk /home",                                10800,  9)    \
+  X("", "sb-ticker",                                    0,      20)   \
+  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      19)   \
+  X("", "sb-music",                                     0,      18)   \
+  X("", "sb-torrent",                                   0,      17)   \
+  X("", "sb-queues",                                    10,     16)   \
+  X("", "sb-mailbox",                                   300,    15)   \
+  X("", "sb-news",                                      0,      14)   \
+  X("", "sb-repos",                                     60,     13)   \
+  X("", "sb-tasks",                                     60,     12)   \
+  X("", "sb-packages",                                  0,      11)   \
+  X("", "sb-forecast",                                  3600,   10)   \
+  X("", "sb-system /home",                              5,      9)    \
   X("", "sb-keyboard",                                  0,      8)    \
   X("", "sb-brightness",                                0,      7)    \
   X("", "sb-internet",                                  5,      6)    \
@@ -43,14 +41,13 @@
   X("", "sb-help-icon",                                 0,      0)
 #endif  // CONFIG_H
 
-  /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 900,    30)   \
-  X("", "sb-price xmr Monero 🔒 29",                    900,    29)   \
-  X("", "sb-price bnb Binance 🫧 28",                   900,    28)   \
-  X("", "sb-price xrp XRP 🪓 27",                       900,    27)   \
-  X("", "sb-price usdt Tether ⛺ 26",                   900,    26)   \
-  X("", "sb-price eth Ethereum 🍸 25",                  900,    25)   \
-  X("", "sb-price btc Bitcoin 💰 24",                   900,    24)   \
-  X("", "sb-cpubars",                                   15,     12)   \
+  /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 900,    27)   \
+  X("", "sb-price xmr Monero 🔒 29",                    900,    26)   \
+  X("", "sb-price bnb Binance 🫧 28",                   900,    25)   \
+  X("", "sb-price xrp XRP 🪓 27",                       900,    24)   \
+  X("", "sb-price usdt Tether ⛺ 26",                   900,    23)   \
+  X("", "sb-price eth Ethereum 🍸 25",                  900,    22)   \
+  X("", "sb-price btc Bitcoin 💰 24",                   900,    21)   \
   X("", "sb-iplocate",                                  0,      6)    \ */
 
 // Have dwmblocks automatically recompile and run when you edit this file in
