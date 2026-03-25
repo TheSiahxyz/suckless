@@ -18,6 +18,7 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
+  X("", "sb-ylog",                                      1800,   21)   \
   X("", "sb-ticker",                                    0,      20)   \
   X("", "cat /tmp/recordingicon 2>/dev/null",           0,      19)   \
   X("", "sb-music",                                     0,      18)   \
@@ -47,8 +48,7 @@
   X("", "sb-price xrp XRP 🪓 27",                       900,    24)   \
   X("", "sb-price usdt Tether ⛺ 26",                   900,    23)   \
   X("", "sb-price eth Ethereum 🍸 25",                  900,    22)   \
-  X("", "sb-price btc Bitcoin 💰 24",                   900,    21)   \
-  X("", "sb-iplocate",                                  0,      6)    \ */
+  X("", "sb-price btc Bitcoin 💰 24",                   900,    21)   \ */
 
 // Have dwmblocks automatically recompile and run when you edit this file in
 // vim with the following line in your vimrc/init.vim:
