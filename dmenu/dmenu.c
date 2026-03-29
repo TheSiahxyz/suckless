@@ -275,7 +275,7 @@ drawhighlights(struct item *item, int x, int y, int maxw)
 	for (i = 0, highlight = item->text; *highlight && text[i];) {
 		hlen = utf8charlen(highlight);
 		tlen = utf8charlen(&text[i]);
-		if (hlen == tlen && !fstrncmp(highlight, &text[i], 1)) {
+		if (hlen == tlen && !fstrncmp(highlight, &text[i], hlen)) {
 			/* get indentation */
 			c = *highlight;
 			*highlight = '\0';
