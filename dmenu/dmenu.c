@@ -20,6 +20,8 @@
 #include <X11/extensions/Xrender.h>
 #include <X11/Xft/Xft.h>
 
+#include <hangul.h>
+
 #include "drw.h"
 #include "util.h"
 
@@ -66,6 +68,59 @@ static Atom clip, utf8;
 static Display *dpy;
 static Window root, parentwin, win;
 static XIC xic;
+
+static HangulInputContext *hic;
+static int hangul_mode = 0;
+
+static int
+ucs4_to_utf8(ucschar c, char *buf)
+{
+	if (c < 0x80) {
+		buf[0] = c;
+		return 1;
+	} else if (c < 0x800) {
+		buf[0] = 0xC0 | (c >> 6);
+		buf[1] = 0x80 | (c & 0x3F);
+		return 2;
+	} else if (c < 0x10000) {
+		buf[0] = 0xE0 | (c >> 12);
+		buf[1] = 0x80 | ((c >> 6) & 0x3F);
+		buf[2] = 0x80 | (c & 0x3F);
+		return 3;
+	} else {
+		buf[0] = 0xF0 | (c >> 18);
+		buf[1] = 0x80 | ((c >> 12) & 0x3F);
+		buf[2] = 0x80 | ((c >> 6) & 0x3F);
+		buf[3] = 0x80 | (c & 0x3F);
+		return 4;
+	}
+}
+
+static int
+ucs4str_to_utf8(const ucschar *ucs, char *buf, int bufsize)
+{
+	int total = 0;
+	while (*ucs && total < bufsize - 4) {
+		total += ucs4_to_utf8(*ucs, buf + total);
+		ucs++;
+	}
+	buf[total] = '\0';
+	return total;
+}
+
+static void insert(const char *str, ssize_t n);
+static void drawmenu(void);
+
+static void
+hangul_commit(void)
+{
+	const ucschar *commit = hangul_ic_get_commit_string(hic);
+	if (commit && *commit) {
+		char utf8[64];
+		int len = ucs4str_to_utf8(commit, utf8, sizeof utf8);
+		insert(utf8, len);
+	}
+}
 
 static Drw *drw;
 static Clr *scheme[SchemeLast];
@@ -192,11 +247,24 @@ cistrstr(const char *h, const char *n)
 	return NULL;
 }
 
+/* return byte length of utf8 character */
+static int
+utf8charlen(const char *s)
+{
+	unsigned char c = *s;
+	if (c < 0x80) return 1;
+	if ((c & 0xE0) == 0xC0) return 2;
+	if ((c & 0xF0) == 0xE0) return 3;
+	if ((c & 0xF8) == 0xF0) return 4;
+	return 1;
+}
+
 static void
 drawhighlights(struct item *item, int x, int y, int maxw)
 {
 	int i, indent;
 	char c, *highlight;
+	int hlen, tlen;
 
 	if (!(strlen(item->text) && strlen(text)))
 		return;
@@ -205,7 +273,9 @@ drawhighlights(struct item *item, int x, int y, int maxw)
 	                   ? SchemeSelHighlight
 	                   : SchemeNormHighlight]);
 	for (i = 0, highlight = item->text; *highlight && text[i];) {
-		if (!fstrncmp(highlight, &text[i], 1)) {
+		hlen = utf8charlen(highlight);
+		tlen = utf8charlen(&text[i]);
+		if (hlen == tlen && !fstrncmp(highlight, &text[i], 1)) {
 			/* get indentation */
 			c = *highlight;
 			*highlight = '\0';
@@ -213,8 +283,8 @@ drawhighlights(struct item *item, int x, int y, int maxw)
 			*highlight = c;
 
 			/* highlight character */
-			c = highlight[1];
-			highlight[1] = '\0';
+			c = highlight[hlen];
+			highlight[hlen] = '\0';
 			drw_text(
 				drw,
 				x + indent - (lrpad / 2.),
@@ -222,10 +292,10 @@ drawhighlights(struct item *item, int x, int y, int maxw)
 				MIN(maxw - indent, TEXTW(highlight) - lrpad),
 				bh, 0, highlight, 0
 			);
-			highlight[1] = c;
-			++i;
+			highlight[hlen] = c;
+			i += tlen;
 		}
-		++highlight;
+		highlight += hlen;
 	}
 }
 
@@ -272,14 +342,32 @@ drawmenu(void)
 	/* draw input field */
 	w = (lines > 0 || !matches) ? mw - x : inputw;
 	drw_setscheme(drw, scheme[SchemeNorm]);
+
+	/* build display string with hangul preedit */
+	char disptext[BUFSIZ * 2];
+	char preedit_utf8[64] = "";
+	int preedit_len = 0;
+	if (hangul_mode && hic && !hangul_ic_is_empty(hic)) {
+		const ucschar *preedit = hangul_ic_get_preedit_string(hic);
+		if (preedit && *preedit)
+			preedit_len = ucs4str_to_utf8(preedit, preedit_utf8, sizeof preedit_utf8);
+	}
+	if (preedit_len > 0) {
+		memcpy(disptext, text, cursor);
+		memcpy(disptext + cursor, preedit_utf8, preedit_len);
+		strcpy(disptext + cursor + preedit_len, text + cursor);
+	} else {
+		strcpy(disptext, text);
+	}
+
 	if (passwd) {
 	        censort = ecalloc(1, sizeof(text));
 		memset(censort, '.', strlen(text));
 		drw_text(drw, x, 0, w, bh, lrpad / 2, censort, 0);
 		free(censort);
-	} else drw_text(drw, x, 0, w, bh, lrpad / 2, text, 0);
+	} else drw_text(drw, x, 0, w, bh, lrpad / 2, disptext, 0);
 
-	curpos = TEXTW(text) - TEXTW(&text[cursor]);
+	curpos = TEXTW(disptext) - TEXTW(disptext + cursor + preedit_len);
 	curpos += lrpad / 2 - 1;
 	if (using_vi_mode && text[0] != '\0') {
 		drw_setscheme(drw, scheme[SchemeCursor]);
@@ -899,6 +987,57 @@ keypress(XKeyEvent *ev)
 		break;
 	}
 
+	/* hangul/english toggle */
+	if (ksym == XK_Alt_R || ksym == XK_Hangul) {
+		if (hangul_mode) {
+			const ucschar *flush = hangul_ic_flush(hic);
+			if (flush && *flush) {
+				char utf8[64];
+				int l = ucs4str_to_utf8(flush, utf8, sizeof utf8);
+				insert(utf8, l);
+			}
+		}
+		hangul_mode = !hangul_mode;
+		drawmenu();
+		return;
+	}
+
+	/* hangul input processing */
+	if (hangul_mode && !(ev->state & ControlMask) && !(ev->state & Mod1Mask)) {
+		if (ksym == XK_BackSpace) {
+			if (!hangul_ic_is_empty(hic)) {
+				hangul_ic_backspace(hic);
+				drawmenu();
+				return;
+			}
+			/* fall through to normal backspace if hic is empty */
+		} else if (ksym >= XK_exclam && ksym <= XK_asciitilde) {
+			int ascii = (int)ksym;
+			hangul_ic_process(hic, ascii);
+			hangul_commit();
+			drawmenu();
+			return;
+		} else if (ksym == XK_Return || ksym == XK_KP_Enter ||
+		           ksym == XK_Escape || ksym == XK_Tab) {
+			/* flush preedit before these keys */
+			const ucschar *flush = hangul_ic_flush(hic);
+			if (flush && *flush) {
+				char utf8[64];
+				int l = ucs4str_to_utf8(flush, utf8, sizeof utf8);
+				insert(utf8, l);
+			}
+			/* fall through to normal handling */
+		} else if (ksym == XK_space) {
+			const ucschar *flush = hangul_ic_flush(hic);
+			if (flush && *flush) {
+				char utf8[64];
+				int l = ucs4str_to_utf8(flush, utf8, sizeof utf8);
+				insert(utf8, l);
+			}
+			/* fall through to insert space */
+		}
+	}
+
 	if (using_vi_mode) {
 		vi_keypress(ksym, ev);
 		return;
@@ -910,6 +1049,7 @@ keypress(XKeyEvent *ev)
 			cursor = nextrune(-1);
 		goto draw;
 	}
+
 
 	if (ev->state & ControlMask) {
 		switch(ksym) {
@@ -1643,9 +1783,13 @@ main(int argc, char *argv[])
 			readstdin(stdin);
 		grabkeyboard();
 	}
+	hic = hangul_ic_new("2");
+	hangul_ic_set_output_mode(hic, HANGUL_OUTPUT_SYLLABLE);
+
 	setup();
 	run();
 
+	hangul_ic_delete(hic);
 	return 1; /* unreachable */
 }
 
