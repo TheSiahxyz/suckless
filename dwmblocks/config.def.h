@@ -18,7 +18,7 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
-  X("", "sb-ylog",                                      1800,   21)   \
+  X("", "sb-ylog",                                      900,    21)   \
   X("", "sb-ticker",                                    0,      20)   \
   X("", "cat /tmp/recordingicon 2>/dev/null",           0,      19)   \
   X("", "sb-music",                                     0,      18)   \
