@@ -674,6 +674,7 @@ static const Button buttons[] = {
   { ClkClientWin,         WINKEY,         Button4,        incrgaps,       {.i = -1 } },
   { ClkClientWin,         WINKEY,         Button5,        incrgaps,       {.i = +1 } },
   { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+  { ClkLtSymbol,          0,              Button2,        setlayout,      {.v = &layouts[15]} },
   { ClkLtSymbol,          0,              Button3,        layoutmenu,     {0} },
   { ClkMonNum,            0,              Button4,        focusmon,       {.i = -1} },
   { ClkMonNum,            0,              Button5,        focusmon,       {.i = +1} },
