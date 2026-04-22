@@ -1,4 +1,5 @@
 .de LI
+.PP
 .LIST
 .SHIFT_LIST 10p
 ..
