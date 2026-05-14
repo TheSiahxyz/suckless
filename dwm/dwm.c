@@ -3215,14 +3215,14 @@ togglealwaysontop(const Arg *arg)
 void
 resetcanfocusfloating()
 {
-	unsigned int i, n;
+	unsigned int n;
 	Client *c;
 
 	for (n = 0, c = selmon->clients; c; c = c->next, n++);
 	if (n == 0)
 		return;
 
-	for (i = 0, c = selmon->clients; c; c = c->next, i++)
+	for (c = selmon->clients; c; c = c->next)
     if (c->isfloating)
       c->cantfocus = 0;
 

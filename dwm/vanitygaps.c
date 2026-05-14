@@ -425,7 +425,7 @@ centeredfloatingmaster(Monitor *m)
 
 void
 col(Monitor *m) {
-  unsigned int i, n;
+  unsigned int n;
   int oh, ov, ih, iv, x, y, w, h;
   Client *c;
 
@@ -438,7 +438,7 @@ col(Monitor *m) {
   w = (m->ww - 2 * ov - (n - 1) * ih) / n; // Width for each client
   h = m->wh - 2 * oh; // Full height minus vertical outer gaps
 
-  for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+  for (c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
     resize(c, x, y, w - (2 * c->bw), h - (2 * c->bw), 0); // Resize and position client
     x += w + ih; // Move x to the start of the next client, including inner gap
   }
