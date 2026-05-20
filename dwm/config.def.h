@@ -707,8 +707,8 @@ static const Button buttons[] = {
   { ClkTagBar,            0,              Button3,        toggleview,     {0} },
   { ClkTagBar,            WINKEY,         Button3,        toggletag,      {0} },
   { ClkTagBar,            ULTRAKEY,       Button3,        ntoggleview,    {0} },
-  { ClkTagBar,            0,              Button4,        shiftview,      {.i = 1 } },
-  { ClkTagBar,            0,              Button5,        shiftview,      {.i = -1 } },
+  { ClkTagBar,            0,              Button4,        shiftview,      {.i = -1 } },
+  { ClkTagBar,            0,              Button5,        shiftview,      {.i = 1 } },
   { ClkWinTitle,          0,              Button2,        zoom,           {0} },
 };
 
