@@ -45,7 +45,7 @@ static XRectangle rectangles[9] = {
 #define BLUR
 /* Set blur radius */
 static int blurRadius = 0;
-static int privateBlurRadius = 100;
+static int privateBlurRadius = 0;
 /* Enable Pixelation */
 //#define PIXELATION
 /* Set pixelation radius */
@@ -56,7 +56,7 @@ static const int showallmonitors = 1;
 
 /* Background image path, should be available to the user above */
 static const char *background_image = "";
-static const char *private_image = "Secret/private.png";
+static const char *private_image = "Secret/private-bg.png";
 
 /* PAM service that's used for authentication */
 static const char *pam_service = "system-local-login";
