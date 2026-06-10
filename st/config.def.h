@@ -334,7 +334,7 @@ static Shortcut shortcuts[] = {
   { ALTMOD,               XK_Next,        zoom,           {.f = -1} },
   { ALTMOD,               XK_Prior,       zoom,           {.f = +1} },
   { ALTMOD,               XK_Home,        zoomreset,      {.f =  0} },
-  { ALTMOD,               XK_End,         refreshxrandr,  {.i =  0} },
+  { ALTKEY,               XK_F3,          refreshxrandr,  {.i =  0} },
   { ALTKEY,               XK_f,           fullscreen,     {.i =  0} },
   { XK_NO_MOD,            XK_F11,         fullscreen,     {.i =  0} },
 
