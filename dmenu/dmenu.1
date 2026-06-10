@@ -4,6 +4,9 @@ dmenu \- dynamic menu
 .SH SYNOPSIS
 .B dmenu
 .RB [ \-bFfisvP ]
+.RB [ \-vi ]
+.RB [ \-bw
+.IR width ]
 .RB [ \-l
 .IR lines ]
 .RB [ \-h
@@ -75,6 +78,12 @@ dmenu matches menu items case sensitively.
 .TP
 .B \-P
 dmenu will not directly display the keyboard input, but instead replace it with dots. All data from stdin will be ignored.
+.TP
+.B \-vi
+enables vi-style keybindings, starting in normal mode.
+.TP
+.BI \-bw " width"
+defines the border width of the menu window, in pixels.
 .TP
 .BI \-l " lines"
 dmenu lists items vertically, with the given number of lines.
