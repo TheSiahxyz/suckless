@@ -1113,6 +1113,7 @@ xloadfonts(const char *fontstr, double fontsize)
 		die("can't open font %s\n", fontstr);
 
 	if (fontsize > 1) {
+		fontsize = roundf(fontsize); /* snap DPI/zoom sizes to integer px for crisp rendering */
 		FcPatternDel(pattern, FC_PIXEL_SIZE);
 		FcPatternDel(pattern, FC_SIZE);
 		FcPatternAddDouble(pattern, FC_PIXEL_SIZE, (double)fontsize);
