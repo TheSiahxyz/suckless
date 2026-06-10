@@ -13,6 +13,8 @@
 /* Appearance */
 static const double activeopacity       = 1.0f;     /* Window opacity when it's focused (0 <= opacity <= 1) */
 static const double inactiveopacity     = 1.0f;     /* Window opacity when it's inactive (0 <= opacity <= 1) */
+static const int scalepreview           = 4;        /* preview scaling (display w and h / scalepreview) */
+static const int previewbar             = 1;        /* show the bar in the preview window */
 static const int allowkill              = 1;        /* allow killing clients by default? */
 static       int alt_tab_direction      = 1;        /* 1 means cycle forward */
 static const int mainmon                = 0;        /* xsetroot will only change the bar on this monitor */

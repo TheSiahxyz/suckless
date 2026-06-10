@@ -48,6 +48,8 @@ extern char *argv0;
 #define ISCONTROLC1(c)		(BETWEEN(c, 0x80, 0x9f))
 #define ISCONTROL(c)		(ISCONTROLC0(c) || ISCONTROLC1(c))
 #define ISDELIM(u)		(u && wcschr(worddelimiters, u))
+#define STRESCARGREST(n)	((n) == 0 ? strescseq.buf : strescseq.argp[(n)-1] + 1)
+#define STRESCARGJUST(n)	(*(strescseq.argp[n]) = '\0', STRESCARGREST(n))
 #define TLINE(y)		((y) < term.scr ? term.hist[((y) + term.histi - \
             term.scr + HISTSIZE + 1) % HISTSIZE] : \
             term.line[(y) - term.scr])
@@ -123,6 +125,7 @@ typedef struct {
 typedef struct {
 	int row;      /* nb row */
 	int col;      /* nb col */
+	int maxcol;   /* maximum number of columns ever allocated */
 	Line *line;   /* screen */
 	Line *alt;    /* alternate screen */
 	Line hist[HISTSIZE]; /* history buffer */
@@ -161,7 +164,7 @@ typedef struct {
 	char *buf;             /* allocated raw string */
 	size_t siz;            /* allocation size */
 	size_t len;            /* raw string length */
-	char *args[STR_ARG_SIZ];
+	char *argp[STR_ARG_SIZ]; /* pointers to the end of nth argument */
 	int narg;              /* nb of args */
 } STREscape;
 
@@ -1550,8 +1553,8 @@ tclearregion(int x1, int y1, int x2, int y2)
 	if (y1 > y2)
 		temp = y1, y1 = y2, y2 = temp;
 
-	LIMIT(x1, 0, term.col-1);
-	LIMIT(x2, 0, term.col-1);
+	LIMIT(x1, 0, term.maxcol-1);
+	LIMIT(x2, 0, term.maxcol-1);
 	LIMIT(y1, 0, term.row-1);
 	LIMIT(y2, 0, term.row-1);
 
@@ -2239,29 +2242,30 @@ strhandle(void)
 	};
 
 	term.esc &= ~(ESC_STR_END|ESC_STR);
-	strparse();
-	par = (narg = strescseq.narg) ? atoi(strescseq.args[0]) : 0;
+	strescseq.buf[strescseq.len] = '\0';
 
 	switch (strescseq.type) {
 	case ']': /* OSC -- Operating System Command */
+		strparse();
+		par = (narg = strescseq.narg) ? atoi(STRESCARGJUST(0)) : 0;
 		switch (par) {
 		case 0:
 			if (narg > 1) {
-				xsettitle(strescseq.args[1], 0);
-				xseticontitle(strescseq.args[1]);
+				xsettitle(STRESCARGREST(1), 0);
+				xseticontitle(STRESCARGREST(1));
 			}
 			return;
 		case 1:
 			if (narg > 1)
-				xseticontitle(strescseq.args[1]);
+				xseticontitle(STRESCARGREST(1));
 			return;
 		case 2:
 			if (narg > 1)
-				xsettitle(strescseq.args[1], 0);
+				xsettitle(STRESCARGREST(1), 0);
 			return;
 		case 52:
 			if (narg > 2 && allowwindowops) {
-				dec = base64dec(strescseq.args[2]);
+				dec = base64dec(STRESCARGJUST(2));
 				if (dec) {
 					xsetsel(dec);
 					xclipcopy();
@@ -2275,7 +2279,7 @@ strhandle(void)
 		case 12:
 			if (narg < 2)
 				break;
-			p = strescseq.args[1];
+			p = STRESCARGREST(1);
 			if ((j = par - 10) < 0 || j >= LEN(osc_table))
 				break; /* shouldn't be possible */
 
@@ -2291,10 +2295,10 @@ strhandle(void)
 		case 4: /* color set */
 			if (narg < 3)
 				break;
-			p = strescseq.args[2];
+			p = STRESCARGJUST(2);
 			/* FALLTHROUGH */
 		case 104: /* color reset */
-			j = (narg > 1) ? atoi(strescseq.args[1]) : -1;
+			j = (narg > 1) ? atoi(STRESCARGJUST(1)) : -1;
 
 			if (p && !strcmp(p, "?")) {
 				osc_color_response(j, 0, 1);
@@ -2331,7 +2335,7 @@ strhandle(void)
 		}
 		break;
 	case 'k': /* old title set compatibility */
-		xsettitle(strescseq.args[0], 0);
+		xsettitle(strescseq.buf, 0);
 		return;
 	case 'P': /* DCS -- Device Control String */
 	case '_': /* APC -- Application Program Command */
@@ -2350,18 +2354,17 @@ strparse(void)
 	char *p = strescseq.buf;
 
 	strescseq.narg = 0;
-	strescseq.buf[strescseq.len] = '\0';
 
 	if (*p == '\0')
 		return;
 
 	while (strescseq.narg < STR_ARG_SIZ) {
-		strescseq.args[strescseq.narg++] = p;
 		while ((c = *p) != ';' && c != '\0')
-			++p;
+			p++;
+		strescseq.argp[strescseq.narg++] = p;
 		if (c == '\0')
 			return;
-		*p++ = '\0';
+		p++;
 	}
 }
 
@@ -2995,12 +2998,19 @@ void
 tresize(int col, int row)
 {
 	int i, j;
-	int minrow = MIN(row, term.row);
-	int mincol = MIN(col, term.col);
+	int tmp;
+	int minrow, mincol;
 	int *bp;
 	TCursor c;
 
-	if ( row < term.row  || col < term.col )
+	tmp = col;
+	if (!term.maxcol)
+		term.maxcol = term.col;
+	col = MAX(col, term.maxcol);
+	minrow = MIN(row, term.row);
+	mincol = MIN(col, term.maxcol);
+
+	if ( row < term.row  || tmp < term.col )
 		toggle_winmode(trt_kbdselect(XK_Escape, NULL, 0));
 
 	if (col < 1 || row < 1) {
@@ -3055,17 +3065,18 @@ tresize(int col, int row)
 		term.line[i] = xmalloc(col * sizeof(Glyph));
 		term.alt[i] = xmalloc(col * sizeof(Glyph));
 	}
-	if (col > term.col) {
-		bp = term.tabs + term.col;
+	if (col > term.maxcol) {
+		bp = term.tabs + term.maxcol;
 
-		memset(bp, 0, sizeof(*term.tabs) * (col - term.col));
+		memset(bp, 0, sizeof(*term.tabs) * (col - term.maxcol));
 		while (--bp > term.tabs && !*bp)
 			/* nothing */ ;
 		for (bp += tabspaces; bp < term.tabs + col; bp += tabspaces)
 			*bp = 1;
 	}
 	/* update terminal size */
-	term.col = col;
+	term.col = tmp;
+	term.maxcol = col;
 	term.row = row;
 	/* reset scrolling region */
 	tsetscroll(0, row-1);
