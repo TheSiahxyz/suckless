@@ -182,7 +182,7 @@ drw_clr_create(Drw *drw, Clr *dest, const char *clrname, unsigned int alpha)
   dest->pixel = (dest->pixel & 0x00ffffffU) | (alpha << 24);
 }
 
-/* Wrapper to create color schemes. The caller has to call free(3) on the
+/* Create color schemes. The caller has to call drw_scm_free() on the
  * returned color scheme when done using it. */
 Clr *
 drw_scm_create(Drw *drw, char *clrnames[], const unsigned int alphas[], size_t clrcount)
@@ -197,6 +197,30 @@ drw_scm_create(Drw *drw, char *clrnames[], const unsigned int alphas[], size_t c
 	for (i = 0; i < clrcount; i++)
 		drw_clr_create(drw, &ret[i], clrnames[i], alphas[i]);
 	return ret;
+}
+
+void
+drw_clr_free(Drw *drw, Clr *c)
+{
+	if (!drw || !c)
+		return;
+
+	/* match the alpha patch's allocation: free with drw->visual / drw->cmap,
+	 * not DefaultVisual / DefaultColormap as in stock dwm */
+	XftColorFree(drw->dpy, drw->visual, drw->cmap, c);
+}
+
+void
+drw_scm_free(Drw *drw, Clr *scm, size_t clrcount)
+{
+	size_t i;
+
+	if (!drw || !scm)
+		return;
+
+	for (i = 0; i < clrcount; i++)
+		drw_clr_free(drw, &scm[i]);
+	free(scm);
 }
 
 void
