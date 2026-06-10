@@ -13,8 +13,6 @@
 /* Appearance */
 static const double activeopacity       = 1.0f;     /* Window opacity when it's focused (0 <= opacity <= 1) */
 static const double inactiveopacity     = 1.0f;     /* Window opacity when it's inactive (0 <= opacity <= 1) */
-static const int scalepreview           = 4;        /* preview scaling (display w and h / scalepreview) */
-static const int previewbar             = 1;        /* show the bar in the preview window */
 static const int allowkill              = 1;        /* allow killing clients by default? */
 static       int alt_tab_direction      = 1;        /* 1 means cycle forward */
 static const int mainmon                = 0;        /* xsetroot will only change the bar on this monitor */
@@ -641,7 +639,6 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_f}},                       togglefloating,         {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{ControlMask, XK_f}},             togglecanfocusfloating, {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_m}},                       spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle; kill -39 $(pidof dwmblocks)") }),
-  &((Keychord){2, {{WINKEY, XK_t},{0, XK_p}},                       previewtag,             {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_q}},                       toggleallowkill,        {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_s}},                       togglesticky,           {0} }),
   &((Keychord){2, {{WINKEY, XK_t},{0, XK_t}},                       togglealttag,           {0} }),
