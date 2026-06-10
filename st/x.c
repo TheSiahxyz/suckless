@@ -2619,13 +2619,15 @@ config_init(void)
 void
 usage(void)
 {
-	die("usage: %s [-aiv] [-b borderpx] [-c class] [-f font] [-g geometry]"
-	    " [-n name] [-o file]\n"
-	    "          [-T title] [-t title] [-w windowid]"
+	die("usage: %s [-aiv] [-A alpha] [-b borderpx] [-c class] [-f font]"
+	    " [-g geometry] [-G geometry]\n"
+	    "          [-n name] [-o file]"
+	    " [-T title] [-t title] [-w windowid]"
 	    " [[-e] command [args ...]]\n"
-	    "       %s [-aiv] [-b borderpx] [-c class] [-f font] [-g geometry]"
-	    " [-n name] [-o file]\n"
-	    "          [-T title] [-t title] [-w windowid] -l line"
+	    "       %s [-aiv] [-A alpha] [-b borderpx] [-c class] [-f font]"
+	    " [-g geometry] [-G geometry]\n"
+	    "          [-n name] [-o file]"
+	    " [-T title] [-t title] [-w windowid] -l line"
 	    " [stty_args ...]\n", argv0, argv0);
 }
 

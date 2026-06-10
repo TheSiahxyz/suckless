@@ -4,6 +4,8 @@ st \- simple terminal
 .SH SYNOPSIS
 .B st
 .RB [ \-aiv ]
+.RB [ \-A
+.IR alpha ]
 .RB [ \-b
 .IR borderpx ]
 .RB [ \-c
@@ -11,6 +13,8 @@ st \- simple terminal
 .RB [ \-f
 .IR font ]
 .RB [ \-g
+.IR geometry ]
+.RB [ \-G
 .IR geometry ]
 .RB [ \-n
 .IR name ]
@@ -30,6 +34,8 @@ st \- simple terminal
 .PP
 .B st
 .RB [ \-aiv ]
+.RB [ \-A
+.IR alpha ]
 .RB [ \-b
 .IR borderpx ]
 .RB [ \-c
@@ -37,6 +43,8 @@ st \- simple terminal
 .RB [ \-f
 .IR font ]
 .RB [ \-g
+.IR geometry ]
+.RB [ \-G
 .IR geometry ]
 .RB [ \-n
 .IR name ]
@@ -59,6 +67,12 @@ is a simple terminal emulator.
 .B \-a
 disable alternate screens in terminal
 .TP
+.BI \-A " alpha"
+defines the
+.I alpha
+(background opacity) to use, as a float from 0.0 (transparent) to 1.0
+(opaque), overriding the value in config.h.
+.TP
 .BI \-b " borderpx"
 set border size to
 .I borderpx
@@ -76,6 +90,11 @@ defines the X11 geometry string.
 The form is [=][<cols>{xX}<rows>][{+-}<xoffset>{+-}<yoffset>]. See
 .BR XParseGeometry (3)
 for further details.
+.TP
+.BI \-G " geometry"
+defines the X11 geometry string with the width and height given in pixels
+rather than in character cells (as with
+.BR \-g ).
 .TP
 .B \-i
 will fixate the position given with the -g option.
