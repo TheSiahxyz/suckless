@@ -2799,19 +2799,11 @@ takepreview(void)
 void
 previewtag(const Arg *arg)
 {
-	unsigned int i, tag = arg->ui & TAGMASK;
-
-	/* ClkTagBar passes the clicked tag as a bitmask (1 << i); turn it into
-	 * the tag index that showtagpreview()/tagmap expect */
-	for (i = 0; i < LENGTH(tags) && !(tag & 1 << i); i++);
-	if (i >= LENGTH(tags))
-		return;
-
-	if (selmon->previewshow != (i + 1))
-		selmon->previewshow = i + 1;
+	if (selmon->previewshow != (arg->ui + 1))
+		selmon->previewshow = arg->ui + 1;
 	else
 		selmon->previewshow = 0;
-	showtagpreview(i);
+	showtagpreview(arg->ui);
 }
 
 void
