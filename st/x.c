@@ -296,6 +296,8 @@ static int frccap = 0;
 static char *usedfont = NULL;
 static double usedfontsize = 0;
 static double defaultfontsize = 0;
+/* absolute startup pixel size (fonts[] at default screen dpi); used to resolve =0 monitor config */
+static double absdefaultfontsize = 0;
 
 /* declared in config.h */
 extern int disablebold;
@@ -1373,6 +1375,8 @@ xinit(int w, int h)
 
 	usedfont = (opt_font == NULL)? fonts[currentfont] : opt_font;
 	xloadfonts(usedfont, 0);
+	/* remember the resolved absolute pixel size so =0 monitors can restore to it */
+	absdefaultfontsize = defaultfontsize;
 
 	/* spare fonts */
 	xloadsparefonts();
@@ -2136,7 +2140,9 @@ cachemonitorinfo()
 			if (!strcmp(name, monitors_config[j].name)) {
 				m->defaultfontsize = monitors_config[j].defaultfontsize;
 				if (m->defaultfontsize < 0)
-					m->defaultfontsize *= -px_pt;
+					m->defaultfontsize *= -px_pt;       /* <0: relative points -> px at monitor dpi */
+				else if (m->defaultfontsize == 0)
+					m->defaultfontsize = absdefaultfontsize; /* =0: absolute px at default screen dpi */
 				break;
 			}
 		// fprintf(stderr, "%s: %fpx, %f\n", name, m->defaultfontsize, m->usedfontsize);
