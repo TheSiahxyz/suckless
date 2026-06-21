@@ -158,7 +158,7 @@ static const Rule rules[] = {
   { "yt-music",         "yt-music",       NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1 },
   { "DBeaver",          "DBeaver",        NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { "lazydocker",       "lazydocker",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
-  { "Virt-viewer",      "virt-viewer",    NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1 },
+  { "Virt-viewer",      "virt-viewer",    NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { "Virt-manager",     "virt-manager",   NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { TERMCLASS,          "bg",             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1 },
   { "Gimp",             NULL,             NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
