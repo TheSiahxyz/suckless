@@ -1,4 +1,5 @@
 /* See LICENSE for license details. */
+#include <ctype.h>
 #include <errno.h>
 #include <math.h>
 #include <limits.h>
@@ -136,6 +137,8 @@ typedef struct {
 	Drawable buf;
 	GlyphFontSpec *specbuf; /* font spec buffer used for rendering */
 	Atom xembed, wmdeletewin, netwmname, netwmiconname, netwmpid;
+	Atom xdndaware, xdndtypelist, xdndselection, xdndenter, xdndposition,
+	     xdndstatus, xdnddrop, xdndfinished, xdndactioncopy, xdndtexturilist;
 	Atom netwmstate, netwmfullscreen;
 	struct {
 		XIM xim;
@@ -224,6 +227,7 @@ static void bpress(XEvent *);
 static void bmotion(XEvent *);
 static void propnotify(XEvent *);
 static void selnotify(XEvent *);
+static void xdndsel(XEvent *);
 static void selclear_(XEvent *);
 static void selrequest(XEvent *);
 static void setsel(char *, Time);
@@ -604,6 +608,132 @@ propnotify(XEvent *e)
 	}
 }
 
+static Window xdndsrcwin = None;
+static int xdndsrcver = 0;
+static Atom xdndsrctype = None;
+
+static int
+xdndhexval(char c)
+{
+	if (c >= '0' && c <= '9')
+		return c - '0';
+	if (c >= 'a' && c <= 'f')
+		return c - 'a' + 10;
+	if (c >= 'A' && c <= 'F')
+		return c - 'A' + 10;
+	return 0;
+}
+
+void
+xdndsel(XEvent *e)
+{
+	Atom type;
+	int format;
+	unsigned long nitems, rem, ofs = 0;
+	unsigned char *data = NULL;
+	char *uris = NULL, *out = NULL, *line, *saveptr, *p;
+	size_t urislen = 0, outlen = 0, outcap;
+	Window src = xdndsrcwin;
+
+	if (e->xselection.property == None)
+		goto finish;
+
+	do {
+		if (XGetWindowProperty(xw.dpy, xw.win, e->xselection.property,
+				ofs, BUFSIZ / 4, False, AnyPropertyType, &type,
+				&format, &nitems, &rem, &data))
+			break;
+		if (format == 8 && nitems > 0) {
+			char *nb = realloc(uris, urislen + nitems + 1);
+			if (!nb) {
+				XFree(data);
+				break;
+			}
+			uris = nb;
+			memcpy(uris + urislen, data, nitems);
+			urislen += nitems;
+			uris[urislen] = '\0';
+		}
+		ofs += nitems * format / 32;
+		XFree(data);
+		data = NULL;
+	} while (rem > 0);
+
+	XDeleteProperty(xw.dpy, xw.win, e->xselection.property);
+
+	if (!uris)
+		goto finish;
+
+	outcap = urislen * 2 + 2;
+	if (!(out = malloc(outcap))) {
+		free(uris);
+		goto finish;
+	}
+
+	for (line = strtok_r(uris, "\r\n", &saveptr); line;
+			line = strtok_r(NULL, "\r\n", &saveptr)) {
+		p = line;
+		if (*p == '#')
+			continue;
+		if (!strncmp(p, "file://", 7)) {
+			char *slash;
+			p += 7;
+			if ((slash = strchr(p, '/')))
+				p = slash;
+		}
+		if (outlen > 0)
+			out[outlen++] = ' ';
+		while (*p) {
+			char c;
+			if (*p == '%' && isxdigit((uchar)p[1]) &&
+					isxdigit((uchar)p[2])) {
+				c = (xdndhexval(p[1]) << 4) | xdndhexval(p[2]);
+				p += 3;
+			} else {
+				c = *p++;
+			}
+			if (outlen + 2 >= outcap) {
+				char *nb = realloc(out, outcap *= 2);
+				if (!nb)
+					goto done;
+				out = nb;
+			}
+			if (!(isalnum((uchar)c) || strchr("/._-~", c)))
+				out[outlen++] = '\\';
+			out[outlen++] = c;
+		}
+	}
+
+done:
+	if (outlen > 0) {
+		if (IS_SET(MODE_BRCKTPASTE))
+			ttywrite("\033[200~", 6, 0);
+		ttywrite(out, outlen, 1);
+		if (IS_SET(MODE_BRCKTPASTE))
+			ttywrite("\033[201~", 6, 0);
+	}
+	free(out);
+	free(uris);
+
+finish:
+	{
+		XEvent ev = { 0 };
+		ev.xclient.type = ClientMessage;
+		ev.xclient.display = xw.dpy;
+		ev.xclient.window = src;
+		ev.xclient.message_type = xw.xdndfinished;
+		ev.xclient.format = 32;
+		ev.xclient.data.l[0] = xw.win;
+		ev.xclient.data.l[1] = 1;
+		ev.xclient.data.l[2] = xw.xdndactioncopy;
+		if (src != None)
+			XSendEvent(xw.dpy, src, False, NoEventMask, &ev);
+		XFlush(xw.dpy);
+	}
+	xdndsrcwin = None;
+	xdndsrctype = None;
+}
+
 void
 selnotify(XEvent *e)
 {
@@ -613,6 +743,12 @@ selnotify(XEvent *e)
 	Atom type, incratom, property = None;
 
 	incratom = XInternAtom(xw.dpy, "INCR", 0);
+
+	if (e->type == SelectionNotify &&
+	    e->xselection.selection == xw.xdndselection) {
+		xdndsel(e);
+		return;
+	}
 
 	ofs = 0;
 	if (e->type == SelectionNotify)
@@ -1467,6 +1603,22 @@ xinit(int w, int h)
 
 	xw.netwmstate = XInternAtom(xw.dpy, "_NET_WM_STATE", False);
 	xw.netwmfullscreen = XInternAtom(xw.dpy, "_NET_WM_STATE_FULLSCREEN", False);
+
+	xw.xdndaware = XInternAtom(xw.dpy, "XdndAware", False);
+	xw.xdndtypelist = XInternAtom(xw.dpy, "XdndTypeList", False);
+	xw.xdndselection = XInternAtom(xw.dpy, "XdndSelection", False);
+	xw.xdndenter = XInternAtom(xw.dpy, "XdndEnter", False);
+	xw.xdndposition = XInternAtom(xw.dpy, "XdndPosition", False);
+	xw.xdndstatus = XInternAtom(xw.dpy, "XdndStatus", False);
+	xw.xdnddrop = XInternAtom(xw.dpy, "XdndDrop", False);
+	xw.xdndfinished = XInternAtom(xw.dpy, "XdndFinished", False);
+	xw.xdndactioncopy = XInternAtom(xw.dpy, "XdndActionCopy", False);
+	xw.xdndtexturilist = XInternAtom(xw.dpy, "text/uri-list", False);
+	{
+		Atom xdndversion = 5;
+		XChangeProperty(xw.dpy, xw.win, xw.xdndaware, XA_ATOM, 32,
+				PropModeReplace, (uchar *)&xdndversion, 1);
+	}
 
 	win.mode = MODE_NUMLOCK;
 	resettitle();
@@ -2421,6 +2573,66 @@ cmessage(XEvent *e)
 			xseturgency(0);
 		} else if (e->xclient.data.l[1] == XEMBED_FOCUS_OUT) {
 			win.mode &= ~MODE_FOCUSED;
+		}
+	} else if (e->xclient.message_type == xw.xdndenter) {
+		xdndsrcwin = e->xclient.data.l[0];
+		xdndsrcver = (unsigned long)e->xclient.data.l[1] >> 24;
+		xdndsrctype = None;
+		if (e->xclient.data.l[1] & 1) {
+			Atom rtype;
+			int rformat;
+			unsigned long rnitems, rrem, i;
+			unsigned char *rdata = NULL;
+			if (XGetWindowProperty(xw.dpy, xdndsrcwin,
+					xw.xdndtypelist, 0, 1024, False, XA_ATOM,
+					&rtype, &rformat, &rnitems, &rrem, &rdata)
+					== Success && rdata) {
+				Atom *types = (Atom *)rdata;
+				for (i = 0; i < rnitems; i++)
+					if (types[i] == xw.xdndtexturilist)
+						xdndsrctype = xw.xdndtexturilist;
+				XFree(rdata);
+			}
+		} else {
+			int i;
+			for (i = 2; i <= 4; i++)
+				if ((Atom)e->xclient.data.l[i] == xw.xdndtexturilist)
+					xdndsrctype = xw.xdndtexturilist;
+		}
+	} else if (e->xclient.message_type == xw.xdndposition) {
+		XEvent ev = { 0 };
+		ev.xclient.type = ClientMessage;
+		ev.xclient.display = xw.dpy;
+		ev.xclient.window = e->xclient.data.l[0];
+		ev.xclient.message_type = xw.xdndstatus;
+		ev.xclient.format = 32;
+		ev.xclient.data.l[0] = xw.win;
+		ev.xclient.data.l[1] = (xdndsrctype != None) ? 1 : 0;
+		ev.xclient.data.l[2] = 0;
+		ev.xclient.data.l[3] = 0;
+		ev.xclient.data.l[4] = xw.xdndactioncopy;
+		XSendEvent(xw.dpy, e->xclient.data.l[0], False, NoEventMask, &ev);
+		XFlush(xw.dpy);
+	} else if (e->xclient.message_type == xw.xdnddrop) {
+		if (xdndsrctype == None) {
+			XEvent ev = { 0 };
+			ev.xclient.type = ClientMessage;
+			ev.xclient.display = xw.dpy;
+			ev.xclient.window = e->xclient.data.l[0];
+			ev.xclient.message_type = xw.xdndfinished;
+			ev.xclient.format = 32;
+			ev.xclient.data.l[0] = xw.win;
+			ev.xclient.data.l[1] = 0;
+			ev.xclient.data.l[2] = None;
+			XSendEvent(xw.dpy, e->xclient.data.l[0], False,
+					NoEventMask, &ev);
+			XFlush(xw.dpy);
+		} else {
+			Time dndtime = (xdndsrcver >= 1) ?
+					(Time)e->xclient.data.l[2] : CurrentTime;
+			XConvertSelection(xw.dpy, xw.xdndselection,
+					xw.xdndtexturilist, xw.xdndselection,
+					xw.win, dndtime);
 		}
 	} else if (e->xclient.data.l[0] == xw.wmdeletewin) {
 		ttyhangup();
