@@ -7,8 +7,8 @@
 #define GAP                             8
 #define PADDING                         0
 #define STATUSBAR                       "dwmblocks"
-#define TERM                            "st"
-#define TERM2                           "alacritty"
+#define TERMINAL                        "st"
+#define TERMINAL2                       "alacritty"
 #define TERMCLASS                       "St"
 #define TERMCLASS2                      "Alacritty"
 
@@ -107,10 +107,10 @@ typedef struct {
   const char *name;
   const void *cmd;
 } Sp;
-const char *spcmd1[] = { TERM, "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = { TERM, "-n", "splf", "-g", "144x41", "-e", "lf", NULL };
-const char *spcmd3[] = { TERM, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
-const char *spcmd4[] = { TERM, "-n", "vimwikitodo", "-f", "monospace:size=12", "-g", "35x15", "-e", "vimwikitodo", NULL };
+const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = { TERMINAL, "-n", "splf", "-g", "144x41", "-e", "lf", NULL };
+const char *spcmd3[] = { TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
+const char *spcmd4[] = { TERMINAL, "-n", "vimwikitodo", "-f", "monospace:size=12", "-g", "35x15", "-e", "vimwikitodo", NULL };
 static Sp scratchpads[] = {
   /* name          cmd  */
   {"spterm",      spcmd1},
@@ -149,7 +149,7 @@ static const Rule rules[] = {
    * WM_NAME(STRING) = title
    */
   /* class              instance          title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
-  { TERMCLASS,          TERM,             TERM,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS,          TERMINAL,         TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
   { "cursor",           "cursor",         NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { BROWSER,            "Navigator",      NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1 },
   { BROWSER2,           "Navigator",      NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1 },
@@ -253,19 +253,19 @@ static const Layout layouts[] = {
 /* Commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { TERM, NULL };
-static const char *termcmd2[]  = { TERM2, NULL };
+static const char *termcmd[]  = { TERMINAL, NULL };
+static const char *termcmd2[] = { TERMINAL2, NULL };
 static const char *layoutmenu_cmd = "layoutmenu";
 static const Arg tagexec[] = {
-  { .v = termcmd },                                               // 1
-  { .v = (const char *[]){ BROWSER, NULL } },                     // 2
-  SHCMD(TERM " -e neomutt; pkill -RTMIN+15 dwmblocks"),           // 3
-  SHCMD(TERM " -e newsboat; pkill -RTMIN+14 dwmblocks"),          // 4
-  SHCMD(TERM " -n ncmpcpp -e ncmpcpp"),                           // 5
-  { .v = (const char *[]){ "torwrap", NULL } },                   // 6
-  { .v = (const char *[]){ TERM, "-e", "sudo", "nmtui", NULL } }, // 7
-  { .v = (const char *[]){ TERM, "-e", "htop", NULL } },          // 8
-  { .v = (const char *[]){ "kakaotalk", NULL } }                  // 9
+  { .v = termcmd },                                                   // 1
+  { .v = (const char *[]){ BROWSER, NULL } },                         // 2
+  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+15 dwmblocks"),           // 3
+  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+14 dwmblocks"),          // 4
+  SHCMD(TERMINAL " -n ncmpcpp -e ncmpcpp"),                           // 5
+  { .v = (const char *[]){ "torwrap", NULL } },                       // 6
+  { .v = (const char *[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } }, // 7
+  { .v = (const char *[]){ TERMINAL, "-e", "htop", NULL } },          // 8
+  { .v = (const char *[]){ "kakaotalk", NULL } }                      // 9
 };
 
 /* Gestures
@@ -278,8 +278,8 @@ static const Arg tagexec[] = {
 static Gesture gestures[] = {
   { "u",  spawn, { .v = termcmd } },
   { "d",  spawn, { .v = (const char *[]){ BROWSER, NULL } } },
-  { "l",  spawn, SHCMD(TERM " -e neomutt; pkill -RTMIN+15 dwmblocks; rmdir ~/.abook 2>/dev/null") },
-  { "r",  spawn, SHCMD(TERM " -e newsboat; pkill -RTMIN+14 dwmblocks") },
+  { "l",  spawn, SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+15 dwmblocks; rmdir ~/.abook 2>/dev/null") },
+  { "r",  spawn, SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+14 dwmblocks") },
 };
 
 /*
@@ -442,21 +442,21 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{0, XF86XK_AudioStop}},                          spawn,                  {.v = (const char *[]){ "mpc", "stop", NULL } } }),
   &((Keychord){1, {{0, XF86XK_AudioRewind}},                        spawn,                  {.v = (const char *[]){ "mpc", "seek", "-10", NULL } } }),
   &((Keychord){1, {{0, XF86XK_AudioForward}},                       spawn,                  {.v = (const char *[]){ "mpc", "seek", "+10", NULL } } }),
-  &((Keychord){1, {{0, XF86XK_AudioMedia}},                         spawn,                  SHCMD(TERM " -n ncmpcpp -e ncmpcpp") }),
+  &((Keychord){1, {{0, XF86XK_AudioMedia}},                         spawn,                  SHCMD(TERMINAL " -n ncmpcpp -e ncmpcpp") }),
   &((Keychord){1, {{0, XF86XK_AudioMicMute}},                       spawn,                  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") }),
-  &((Keychord){1, {{0, XF86XK_Calculator}},                         spawn,                  {.v = (const char *[]){ TERM, "-e", "bc", "-l", NULL } } }),
+  &((Keychord){1, {{0, XF86XK_Calculator}},                         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "bc", "-l", NULL } } }),
   &((Keychord){1, {{0, XF86XK_Launch1}},                            spawn,                  {.v = (const char *[]){ "xset", "dpms", "force", "off", NULL } } }),
-  &((Keychord){1, {{0, XF86XK_Mail}},                               spawn,                  SHCMD(TERM " -e neomutt ; pkill -RTMIN+14 dwmblocks") }),
+  &((Keychord){1, {{0, XF86XK_Mail}},                               spawn,                  SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+14 dwmblocks") }),
   &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  SHCMD("pkexec brillo -U 5 -q; kill -41 $(pidof dwmblocks)") }),
   /* &((Keychord){1, {{0, XF86XK_MonBrightnessDown}},                  spawn,                  {.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } }), */
   &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  SHCMD("pkexec brillo -A 5 -q; kill -41 $(pidof dwmblocks)") }),
   /* &((Keychord){1, {{0, XF86XK_MonBrightnessUp}},                    spawn,                  {.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }), */
-  &((Keychord){1, {{0, XF86XK_MyComputer}},                         spawn,                  {.v = (const char *[]){ TERM, "-e", "lfub", "/", NULL } } }),
+  &((Keychord){1, {{0, XF86XK_MyComputer}},                         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", "/", NULL } } }),
   &((Keychord){1, {{0, XF86XK_PowerOff}},                           spawn,                  {.v = (const char*[]){ "sysact", NULL } } }),
   &((Keychord){1, {{0, XF86XK_RotateWindows}},                      spawn,                  {.v = (const char *[]){ "tablet", NULL } } }),
   &((Keychord){1, {{0, XF86XK_ScreenSaver}},                        spawn,                  SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") }),
   &((Keychord){1, {{0, XF86XK_Sleep}},                              spawn,                  {.v = (const char *[]){ "sudo", "-A", "zzz", NULL } } }),
-  &((Keychord){1, {{0, XF86XK_TaskPane}},                           spawn,                  {.v = (const char *[]){ TERM, "-e", "htop", NULL } } }),
+  &((Keychord){1, {{0, XF86XK_TaskPane}},                           spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } }),
   &((Keychord){1, {{0, XF86XK_TouchpadOff}},                        spawn,                  {.v = (const char *[]){ "synclient", "TouchpadOff=1", NULL } } }),
   &((Keychord){1, {{0, XF86XK_TouchpadOn}},                         spawn,                  {.v = (const char *[]){ "synclient", "TouchpadOff=0", NULL } } }),
   &((Keychord){1, {{0, XF86XK_TouchpadToggle}},                     spawn,                  SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") }),
@@ -497,32 +497,32 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ULTRAMOD, XK_o}},                               spawn,                  { .v = (const char *[]){ "xdotmouse", "m", NULL } } }),
 
   // PROGRAMS
-  &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERM " -e neomutt; pkill -RTMIN+15 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
+  &((Keychord){1, {{WINKEY, XK_e}},                                 spawn,                  SHCMD(TERMINAL " -e neomutt; pkill -RTMIN+15 dwmblocks; rmdir ~/.abook 2>/dev/null") }),
   &((Keychord){1, {{WINMOD, XK_e}},                                 spawn,                  {.v = (const char *[]){ "outlook-for-linux", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, NULL } } }),
   &((Keychord){1, {{WINMOD, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, "--target", "private-window", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_d}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "discord", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_k}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "KakaoTalk.exe", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_w}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", BROWSER, NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_a}},                   spawn,                  SHCMD(TERM " -e abook -C ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/abookrc --datafile ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/addressbook") }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_c}},                   spawn,                  {.v = (const char *[]){ TERM, "-e", "calcurse", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_a}},                   spawn,                  SHCMD(TERMINAL " -e abook -C ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/abookrc --datafile ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/addressbook") }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_c}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "calcurse", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_b}},         spawn,                  {.v = (const char *[]){ "dbeaver", NULL } } }),
-  &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_o}},         spawn,                  SHCMD(TERM " -c 'lazydocker' -n 'lazydocker' -e sudo lazydocker") }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_o}},         spawn,                  SHCMD(TERMINAL " -c 'lazydocker' -n 'lazydocker' -e sudo lazydocker") }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_d},{0, XK_s}},         spawn,                  {.v = (const char *[]){ "discord", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_g}},                   spawn,                  {.v = (const char *[]){ "gimp", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_h}},                   spawn,                  {.v = (const char *[]){ TERM, "-e", "htop", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_i}},                   spawn,                  {.v = (const char *[]){ TERM, "-e", "nmtui", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_h}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "htop", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_i}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nmtui", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_k}},                   spawn,                  {.v = (const char *[]){ "kakaotalk", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_l}},                   spawn,                  {.v = (const char *[]){ TERM, "-e", "lfub", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{ShiftMask, XK_l}},           spawn,                  {.v = (const char *[]){ TERM, "-e", "lfub", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_m}},                   spawn,                  SHCMD(TERM " -n ncmpcpp -e ncmpcpp") }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_n}},                   spawn,                  SHCMD(TERM " -e newsboat; pkill -RTMIN+14 dwmblocks") }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_p}},                   spawn,                  {.v = (const char *[]){ TERM, "-e", "profanity", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_l}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{ShiftMask, XK_l}},           spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "lfub", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_m}},                   spawn,                  SHCMD(TERMINAL " -n ncmpcpp -e ncmpcpp") }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_n}},                   spawn,                  SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+14 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_p}},                   spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "profanity", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_t},{0,XK_r}},          spawn,                  {.v = (const char *[]){ "torwrap", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_t},{0,XK_m}},          spawn,                  {.v = (const char *[]){ "teams-for-linux", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_m}},         spawn,                  {.v = (const char *[]){ "dmenuvirt", NULL } } }),
-  &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_w}},         spawn,                  {.v = (const char *[]){ TERM, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERM " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
+  &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_w}},         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_z}},                   spawn,                  {.v = (const char *[]){ "zoom", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_Return}},              spawn,                  {.v = (const char *[]){ "cursor", NULL } } }),
 
@@ -556,7 +556,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINKEY, XK_F2}},                                spawn,                  {.v = (const char *[]){ "tutorialvids", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F3}},                                spawn,                  {.v = (const char *[]){ "dmenudisplay", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_F3}},                                spawn,                  {.v = (const char *[]){ "dmenudisplay", "-r", NULL } } }),
-  &((Keychord){1, {{WINKEY, XK_F4}},                                spawn,                  SHCMD(TERM " -n pulsemixer -e pulsemixer; kill -38 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{WINKEY, XK_F4}},                                spawn,                  SHCMD(TERMINAL " -n pulsemixer -e pulsemixer; kill -38 $(pidof dwmblocks)") }),
   &((Keychord){1, {{WINMOD2, XK_F4}},                               spawn,                  {.v = (const char *[]){ "toggleoutput", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F5}},                                spawn,                  {.v = (const char *[]){ "mailsync", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_F5}},                                spawn,                  {.v = (const char *[]){ "newsup", NULL } } }),
@@ -655,12 +655,12 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD2, XK_Return}},                           togglescratch,          {.ui = 0 } }),  // terminal //
 
   // SUCKLESS CONFIGS
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_p}},             spawn,                  SHCMD(TERM " -n suckless -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") }),
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_b}},             spawn,                  SHCMD(TERM " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") }),
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_d}},             spawn,                  SHCMD(TERM " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") }),
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_m}},             spawn,                  SHCMD(TERM " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") }),
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_l}},             spawn,                  SHCMD(TERM " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") }),
-  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_s}},             spawn,                  SHCMD(TERM " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_p}},             spawn,                  SHCMD(TERMINAL " -n suckless -e sc-im ${THESIAH_WWW:-${HOME}/Private/git/THESIAH}/static/progs.csv") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_b}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_d}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_m}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_l}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") }),
+  &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_s}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") }),
 };
 
 /* Button definitions */
@@ -698,11 +698,11 @@ static const Button buttons[] = {
   { ClkStatusText,        ControlMask,    Button3,        sigstatusbar,   {.i = 13} },
   { ClkStatusText,        ControlMask,    Button4,        sigstatusbar,   {.i = 14} },
   { ClkStatusText,        ControlMask,    Button5,        sigstatusbar,   {.i = 15} },
-  { ClkStatusText,        WINKEY,         Button1,        spawn,          SHCMD(TERM " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") },
-  { ClkStatusText,        WINMOD,         Button1,        spawn,          SHCMD(TERM " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") },
-  { ClkStatusText,        WINMOD2,        Button1,        spawn,          SHCMD(TERM " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
-  { ClkStatusText,        WINKEY,         Button3,        spawn,          SHCMD(TERM " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") },
-  { ClkStatusText,        WINMOD,         Button3,        spawn,          SHCMD(TERM " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") },
+  { ClkStatusText,        WINKEY,         Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") },
+  { ClkStatusText,        WINMOD,         Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") },
+  { ClkStatusText,        WINMOD2,        Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
+  { ClkStatusText,        WINKEY,         Button3,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") },
+  { ClkStatusText,        WINMOD,         Button3,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/slock/config.def.h") },
   { ClkTagBar,            0,              Button1,        view,           {0} },
   { ClkTagBar,            WINKEY,         Button1,        tag,            {0} },
   { ClkTagBar,            ULTRAKEY,       Button1,        nview,          {0} },
