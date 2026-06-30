@@ -33,9 +33,10 @@ MonitorConfig monitors_config[] = {
 	//   >0 : auto absolute pixel size (monitor dpi)
 	//   <0 : auto relative points size (monitor dpi)
 	// {"DP-1", 0}, // = startup fonts[] pixel size; restores correctly across monitors
-	{"HDMI-A-0", 16},   // fixed absolute 16px (matches fonts[] pixelsize=16, no DPI rescale)
-	{"HDMI-0~1", -20},  // BUG:(ignored DPI=220): = 20 is eqv to 10pt (DPI=110)
-	{"HDMI-0~2", -14},
+	{"DisplayPort-0",  16},   // fixed absolute 16px (96dpi/1080p: optimal, no DPI rescale -> consistent emoji)
+	{"HDMI-A-0",       16},   // fixed absolute 16px (matches fonts[] pixelsize=16, no DPI rescale)
+	{"HDMI-0~1",      -20},   // BUG:(ignored DPI=220): = 20 is eqv to 10pt (DPI=110)
+	{"HDMI-0~2",      -14},
 };
 float winmovethreshold = 0.6;
 
