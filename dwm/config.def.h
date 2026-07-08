@@ -150,6 +150,7 @@ static const Rule rules[] = {
    */
   /* class                instance            title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width */
   { TERMCLASS,            TERMINAL,           TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1 },
+  { TERMCLASS2,           TERMINAL2,          TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1 },
   { "dev.zed.Zed",        "dev.zed.Zed",      NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1 },
   { BROWSER,              "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1 },
   { BROWSER2,             "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1 },
