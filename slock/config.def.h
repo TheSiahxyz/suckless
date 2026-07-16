@@ -20,7 +20,7 @@ static const int failonclear = 1;
 static const int controlkeyclear = 0;
 
 /* Time in seconds before the monitor shuts down */
-static const int monitortime = 300;
+static const int monitortime = 0;
 
 /* Insert grid pattern with scale 1:1, the size can be changed with logosize */
 static const int logosize = 0;
