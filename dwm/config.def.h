@@ -466,7 +466,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_a}},                       spawn,                  SHCMD("mpc single on; mpc random on; mpc repeat on; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_d}},                       spawn,                  SHCMD("mpdmenu && pkill -RTMIN+18 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_d}},               spawn,                  {.v = (const char *[]){ "dmenudelmusic", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_m},{0, XK_m}},                       spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 50 && pkill -RTMIN+18 dwmblocks") }),
+  &((Keychord){2, {{WINKEY, XK_m},{0, XK_m}},                       spawn,                  SHCMD("mpc random on; mpc load entire; mpc play && sleep 1 && mpc volume 35 && pkill -RTMIN+18 dwmblocks") }),
   &((Keychord){2, {{WINKEY, XK_m},{ControlMask, XK_m}},             spawn,                  SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; sleep 1 && kill -38 $(pidof dwmblocks)") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_m}},               spawn,                  {.v = (const char *[]){ "yt-music", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_o}},                       spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off; mpc consume off") }),
