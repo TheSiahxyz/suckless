@@ -664,6 +664,10 @@ static Keychord *keychords[] = {
   &((Keychord){3, {{WINKEY, XK_v},{0, XK_s},{0, XK_s}},             spawn,                  SHCMD(TERMINAL " -n suckless -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/st/config.def.h") }),
 };
 
+/* Horizontal wheel; Xlib only defines Button1 through Button5 */
+#define Button6                         6
+#define Button7                         7
+
 /* Button definitions */
 /* Click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
@@ -699,6 +703,8 @@ static const Button buttons[] = {
   { ClkStatusText,        ControlMask,    Button3,        sigstatusbar,   {.i = 13} },
   { ClkStatusText,        ControlMask,    Button4,        sigstatusbar,   {.i = 14} },
   { ClkStatusText,        ControlMask,    Button5,        sigstatusbar,   {.i = 15} },
+  { ClkStatusText,        0,              Button6,        sigstatusbar,   {.i = 16} },
+  { ClkStatusText,        0,              Button7,        sigstatusbar,   {.i = 17} },
   { ClkStatusText,        WINKEY,         Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") },
   { ClkStatusText,        WINMOD,         Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") },
   { ClkStatusText,        WINMOD2,        Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
