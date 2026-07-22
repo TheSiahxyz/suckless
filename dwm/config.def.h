@@ -705,6 +705,8 @@ static const Button buttons[] = {
   { ClkStatusText,        ControlMask,    Button5,        sigstatusbar,   {.i = 15} },
   { ClkStatusText,        0,              Button6,        sigstatusbar,   {.i = 16} },
   { ClkStatusText,        0,              Button7,        sigstatusbar,   {.i = 17} },
+  { ClkStatusText,        ShiftMask,      Button6,        sigstatusbar,   {.i = 18} },
+  { ClkStatusText,        ShiftMask,      Button7,        sigstatusbar,   {.i = 19} },
   { ClkStatusText,        WINKEY,         Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwm/config.def.h") },
   { ClkStatusText,        WINMOD,         Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dwmblocks/config.def.h") },
   { ClkStatusText,        WINMOD2,        Button1,        spawn,          SHCMD(TERMINAL " -e nvim ${XDG_SOURCES_HOME:-${HOME}/.local/src}/suckless/dmenu/config.def.h") },
