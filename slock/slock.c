@@ -567,8 +567,13 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 				caps = !caps;
 				break;
 			default:
-				if (controlkeyclear && iscntrl((int)buf[0]))
+				if (controlkeyclear && iscntrl((unsigned char)buf[0]))
 					continue;
+				if (buf[0] == '\025') { /* ctrl-u clears input */
+					explicit_bzero(&passwd, sizeof(passwd));
+					len = 0;
+					break;
+				}
 				if (num && (len + num < sizeof(passwd))) {
 					memcpy(passwd + len, buf, num);
 					len += num;
