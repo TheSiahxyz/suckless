@@ -1342,7 +1342,7 @@ void
 xloadsparefonts(void)
 {
 	FcPattern *pattern;
-	double sizeshift, fontval;
+	double scale, fontval;
 	int fc;
 	char **fp;
 
@@ -1370,12 +1370,17 @@ xloadsparefonts(void)
 		if (!pattern)
 			die("can't open spare font %s\n", *fp);
 
-		if (defaultfontsize > 0) {
-			sizeshift = usedfontsize - defaultfontsize;
-			if (sizeshift != 0 &&
+		/* Scale spare fonts proportionally against the startup size of
+		 * fonts[] (absdefaultfontsize), not against defaultfontsize.
+		 * defaultfontsize is rewritten per monitor by the xrandr dpi
+		 * rescale, so anchoring to it leaves font2's absolute pixelsize
+		 * stranded at its config.h value while the main font grows. */
+		if (absdefaultfontsize > 0) {
+			scale = usedfontsize / absdefaultfontsize;
+			if (scale != 1 &&
 					FcPatternGetDouble(pattern, FC_PIXEL_SIZE, 0, &fontval) ==
 					FcResultMatch) {
-				fontval += sizeshift;
+				fontval *= scale;
 				FcPatternDel(pattern, FC_PIXEL_SIZE);
 				FcPatternDel(pattern, FC_SIZE);
 				FcPatternAddDouble(pattern, FC_PIXEL_SIZE, fontval);
@@ -2376,6 +2381,9 @@ adjustmonitorfontsize(int mindex)
 		// fprintf(stderr, "Adjusted: %fpx\n", fontsize);
 		xunloadfonts();
 		xloadfonts(usedfont, fontsize);
+		/* xunloadfonts() dropped the whole frc cache, spare fonts
+		 * included -- re-embed them or font2 stays gone until a zoom */
+		xloadsparefonts();
 	}
 	prev_mindex = mindex;
 }
