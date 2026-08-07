@@ -12,8 +12,16 @@ static char *fonts[] = {
   "nerdmono:pixelsize=16:antialias=true:autohint=true",
   "ko:pixelsize=16:antialias=true:autohint=true",
 };
-/* Spare fonts */
+/* Spare fonts, searched in order for glyphs the main font lacks. A monospaced
+ * font has to come before the emoji one: Noto Color Emoji covers the diagonal
+ * arrows U+2196-U+2199 (which Noto Sans Mono does not) and draws them
+ * double-width, while wcwidth() reports 1, so the glyph spills into the next
+ * cell and shears aligned output - wttr.in's wind direction column, say. Only
+ * twelve codepoints change hands: the four arrows above plus the ones at
+ * U+21A9, U+21AA, U+2665, U+26A1, U+27A1 and U+2B05-U+2B07, all of which read
+ * better monochrome and single-width in a terminal anyway. */
 static char *font2[] = {
+  "Hack Nerd Font Mono:pixelsize=16:antialias=true:autohint=true",
   "Noto Color Emoji:pixelsize=14:antialias=true:autohint=true",
 };
 
