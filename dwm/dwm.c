@@ -118,7 +118,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-  int wasfloating, iscentered, isfixed, isfloating, isalwaysontop, isurgent, neverfocus, oldstate, isfullscreen, issticky, cantfocus, isterminal, noswallow, resizehints;
+  int wasfloating, iscentered, isfixed, isfloating, isalwaysontop, isurgent, neverfocus, oldstate, isfullscreen, issticky, cantfocus, isterminal, noswallow, resizehints, noautofocus;
 	pid_t pid;
 	unsigned char expandmask;
 	int expandx1, expandy1, expandx2, expandy2;
@@ -200,6 +200,7 @@ typedef struct {
 	int monitor;
   int resizehints;
 	int bw;
+	int noautofocus;
 } Rule;
 
 /* Xresources preferences */
@@ -542,6 +543,7 @@ applyrules(Client *c)
 	c->opacity = activeopacity;
 	c->unfocusopacity = inactiveopacity;
   c->bw = borderpx;
+	c->noautofocus = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;
 	instance = ch.res_name  ? ch.res_name  : broken;
@@ -560,6 +562,7 @@ applyrules(Client *c)
 			c->opacity = r->opacity;
 			c->unfocusopacity = r->unfocusopacity;
       c->resizehints = r->resizehints;
+			c->noautofocus = r->noautofocus;
 			if (r->bw != -1)
 				c->bw = r->bw;
 			if ((r->tags & SPTAGMASK) && r->isfloating) {
@@ -906,6 +909,13 @@ clientmessage(XEvent *e)
                 || cme->data.l[2] == netatom[NetWMSticky])
             setsticky(c, (cme->data.l[0] == 1 || (cme->data.l[0] == 2 && !c->issticky)));
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
+		/* noautofocus rule: never let the client steal the view;
+		 * just flag its tag as urgent so it can be reached manually. */
+		if (c->noautofocus) {
+			if (c != selmon->sel && !c->isurgent)
+				seturgent(c, 1);
+			return;
+		}
 		if (!ISVISIBLE(c)) {
 			c->mon->seltags ^= 1;
 			c->mon->tagset[c->mon->seltags] = c->tags;
