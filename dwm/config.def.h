@@ -474,6 +474,7 @@ static Keychord *keychords[] = {
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_o}},                       spawn,                  SHCMD("mpc repeat off; mpc random off; mpc single off; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_p}},                       spawn,                  {.v = (const char *[]){ "mpc", "toggle", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_m},{ControlMask, XK_p}},             spawn,                  SHCMD("mpc pause; sleep 1 && pauseallmpv") }),
+  &((Keychord){1, {{WINKEY, XK_Pause}},                             spawn,                  SHCMD("mpc pause; sleep 1 && pauseallmpv") }),
   &((Keychord){2, {{WINKEY, XK_m},{ShiftMask, XK_p}},               spawn,                  {.v = (const char *[]){ "playerctl", "play-pause", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_r}},                       spawn,                  SHCMD("mpc single off; mpc random on; mpc repeat on; mpc consume off") }),
   &((Keychord){2, {{WINKEY, XK_m},{0, XK_s}},                       spawn,                  SHCMD("mpc single on; mpc random off; mpc repeat on; mpc consume off") }),
