@@ -1144,6 +1144,7 @@ drawbar(Monitor *m)
 	Client *c;
 	char tagdisp[64];
 	char *masterclientontag[LENGTH(tags)];
+	char *tagclass[LENGTH(tags)]; /* X-allocated, must be XFree'd before returning */
 
 	if (!m->showbar)
 		return;
@@ -1173,17 +1174,23 @@ drawbar(Monitor *m)
 	}
 
 	for (i = 0; i < LENGTH(tags); i++)
-		masterclientontag[i] = NULL;
+		masterclientontag[i] = tagclass[i] = NULL;
 
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags == TAGMASK ? 0 : c->tags;
 		if (c->isurgent && selmon->showtags)
 			urg |= c->tags;
+		if (!taglbl) /* the class names below are only used when taglbl is set */
+			continue;
 		for (i = 0; i < LENGTH(tags); i++)
 			if (!masterclientontag[i] && c->tags & (1<<i)) {
 				XClassHint ch = { NULL, NULL };
 				XGetClassHint(dpy, c->win, &ch);
-				masterclientontag[i] = ch.res_class;
+				if (ch.res_name)
+					XFree(ch.res_name);
+				if (!ch.res_class)
+					continue;
+				masterclientontag[i] = tagclass[i] = ch.res_class;
 				if (lcaselbl)
 					masterclientontag[i][0] = tolower(masterclientontag[i][0]);
 			}
@@ -1237,6 +1244,9 @@ drawbar(Monitor *m)
 			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
 		}
 	}
+	for (i = 0; i < LENGTH(tags); i++)
+		if (tagclass[i])
+			XFree(tagclass[i]);
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
 
