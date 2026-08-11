@@ -1639,9 +1639,14 @@ keypress(XEvent *e)
     if (w == 0 || ran == 1)
       break;
     grabkeys();
-    while (running && !XNextEvent(dpy, &event) && !ran)
+    while (running && !XNextEvent(dpy, &event)) {
       if (event.type == KeyPress)
-         break;
+        break;
+      /* Keep managing windows while waiting for the rest of the chord;
+       * dropping these events loses MapRequests, Exposes and the like. */
+      if (handler[event.type])
+        handler[event.type](&event);
+    }
     r = w;
     Keychord **holder = rpointer;
     rpointer = wpointer;
