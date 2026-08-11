@@ -137,6 +137,11 @@ bgimg_resize(int w, int h)
 
 	bgimg_cover(iw, ih, w, h, &sx, &sy, &sw, &sh);
 	bg.scaled = imlib_create_cropped_scaled_image(sx, sy, sw, sh, w, h);
+	/* 실패 시 bg.w/h 를 갱신하지 않는다: bg.scaled == NULL 이면 bg.w/h 도
+	 * 이전(또는 0) 값을 유지해야 bgimg_reblend() 가 pm 을 None 으로 비우는
+	 * 불변식이 깨지지 않는다. */
+	if (!bg.scaled)
+		return;
 	bg.w = w;
 	bg.h = h;
 }
