@@ -1,0 +1,391 @@
+From 5f070227058901afd7525ffe6363c93faf163ef0 Mon Sep 17 00:00:00 2001
+From: Matthias Schoth <mschoth@gmail.com>
+Date: Fri, 31 Jul 2026 23:50:51 +0200
+Subject: [PATCH] Add background image support via root window pixmap
+
+Add a background image to st by tiling a server-side pixmap set as the
+_ST_BACKGROUND_IMAGE root window property. st watches the root window
+for property changes, so re-running the stbg setter updates all running
+st instances immediately.
+
+The pixmap is shared between all instances and no composite manager is
+required. A pseudotransparency config option fixes the tile coordinates
+to the screen origin so the terminal backgrounds line up with the
+wallpaper behind the window.
+
+stbg reads a farbfeld image from a file or stdin (using -) and sets the
+property. It is not built by default; compile separately with:
+
+    cc -o stbg stbg.c -lX11
+---
+ config.def.h |   6 +++
+ stbg.c       | 122 ++++++++++++++++++++++++++++++++++++++++++++++++
+ x.c          | 128 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 246 insertions(+), 10 deletions(-)
+ create mode 100644 stbg.c
+
+diff --git a/config.def.h b/config.def.h
+index 2cd740a..3d98c87 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -8,6 +8,12 @@
+ static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+ static int borderpx = 2;
+ 
++/*
++ * pseudo transparency fixes coordinates to the screen origin
++ * requires _ST_BACKGROUND_IMAGE root window property (set via stbg)
++ */
++static const int pseudotransparency = 0;
++
+ /*
+  * What program is execed by st depends of these precedence rules:
+  * 1: program passed with -e
+diff --git a/stbg.c b/stbg.c
+new file mode 100644
+index 0000000..80bc4cf
+--- /dev/null
++++ b/stbg.c
+@@ -0,0 +1,122 @@
++/* See LICENSE file for copyright and license details. */
++/* Build: cc -o stbg stbg.c -lX11 */
++#include <errno.h>
++#include <stdarg.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
++#include <arpa/inet.h>
++#include <X11/Xlib.h>
++#include <X11/Xutil.h>
++#include <X11/Xatom.h>
++
++static char *argv0;
++
++static void
++die(const char *errstr, ...)
++{
++	va_list ap;
++
++	fprintf(stderr, "%s: ", argv0);
++	va_start(ap, errstr);
++	vfprintf(stderr, errstr, ap);
++	va_end(ap);
++	exit(1);
++}
++
++static void
++usage(void)
++{
++	die("usage: %s file.ff\n       %s - < file.ff\n", argv0, argv0);
++}
++
++int
++main(int argc, char *argv[])
++{
++	uint32_t i, hdr[4], w, h, size;
++	uint64_t *data;
++	uint32_t *data32;
++	FILE *f;
++	int fromstdin;
++	Pixmap pmap;
++	Display *dpy;
++	Window root;
++	int scr;
++	Atom atom_stbg;
++	GC gc;
++	XGCValues gcvalues;
++	XImage *xi;
++
++	argv0 = argv[0];
++
++	if (argc != 2)
++		usage();
++
++	if (!(dpy = XOpenDisplay(NULL)))
++		die("can't open display\n");
++
++	scr = DefaultScreen(dpy);
++	root = RootWindow(dpy, scr);
++
++	fromstdin = !strcmp(argv[1], "-");
++	f = fromstdin ? stdin : fopen(argv[1], "rb");
++	if (!fromstdin && !f)
++		die("can't open %s\n", argv[1]);
++
++	if (fread(hdr, sizeof(*hdr), 4, f) != 4)
++		die("fread: unexpected end of file\n");
++
++	if (memcmp("farbfeld", hdr, sizeof("farbfeld") - 1))
++		die("invalid farbfeld magic\n");
++
++	w = ntohl(hdr[2]);
++	h = ntohl(hdr[3]);
++	if (w == 0 || h == 0)
++		die("invalid farbfeld dimensions\n");
++	size = w * h;
++
++	data = malloc(size * sizeof(uint64_t));
++	if (!data)
++		die("malloc: %s\n", strerror(errno));
++
++	if (fread(data, sizeof(uint64_t), size, f) != size)
++		die("fread: unexpected end of file\n");
++	if (!fromstdin)
++		fclose(f);
++
++	data32 = malloc(size * sizeof(uint32_t));
++	if (!data32)
++		die("malloc: %s\n", strerror(errno));
++
++	for (i = 0; i < size; i++) {
++		uint64_t p = data[i];
++		data32[i] = (p & 0x00000000000000FF) << 16 |
++		            (p & 0x0000000000FF0000) >> 8  |
++		            (p & 0x000000FF00000000) >> 32;
++	}
++	free(data);
++
++	xi = XCreateImage(dpy, DefaultVisual(dpy, scr),
++	                  DefaultDepth(dpy, scr), ZPixmap, 0,
++	                  (char *)data32, w, h, 32, w * 4);
++
++	pmap = XCreatePixmap(dpy, root, w, h, DefaultDepth(dpy, scr));
++
++	memset(&gcvalues, 0, sizeof(gcvalues));
++	gcvalues.graphics_exposures = False;
++	gc = XCreateGC(dpy, pmap, GCGraphicsExposures, &gcvalues);
++
++	XPutImage(dpy, pmap, gc, xi, 0, 0, 0, 0, w, h);
++	XDestroyImage(xi);
++	XFreeGC(dpy, gc);
++
++	atom_stbg = XInternAtom(dpy, "_ST_BACKGROUND_IMAGE", False);
++	XChangeProperty(dpy, root, atom_stbg, XA_PIXMAP, 32,
++	                PropModeReplace, (unsigned char *)&pmap, 1);
++	XSetCloseDownMode(dpy, RetainPermanent);
++
++	XSync(dpy, False);
++
++	return 0;
++}
+diff --git a/x.c b/x.c
+index d73152b..c0ec757 100644
+--- a/x.c
++++ b/x.c
+@@ -81,6 +81,7 @@ typedef XftGlyphFontSpec GlyphFontSpec;
+ typedef struct {
+ 	int tw, th; /* tty width and height */
+ 	int w, h; /* window width and height */
++	int x, y; /* window location */
+ 	int ch; /* char height */
+ 	int cw; /* char width  */
+ 	int mode; /* window state/mode flags */
+@@ -101,6 +102,9 @@ typedef struct {
+ 		XVaNestedList spotlist;
+ 	} ime;
+ 	Draw draw;
++	GC bggc;          /* Graphics Context for background */
++	Atom stbg_atom;   /* _ST_BACKGROUND_IMAGE atom */
++	Atom netwmstate_atom; /* _NET_WM_STATE atom */
+ 	Visual *vis;
+ 	XSetWindowAttributes attrs;
+ 	int scr;
+@@ -151,6 +155,9 @@ static void ximinstantiate(Display *, XPointer, XPointer);
+ static void ximdestroy(XIM, XPointer, XPointer);
+ static int xicdestroy(XIC, XPointer, XPointer);
+ static void xinit(int, int);
++static void updatexy(void);
++static void bginit(void);
++static Pixmap bginitfromroot(void);
+ static void cresize(int, int);
+ static void xresize(int, int);
+ static void xhints(void);
+@@ -515,6 +522,18 @@ propnotify(XEvent *e)
+ 			 xpev->atom == clipboard)) {
+ 		selnotify(e);
+ 	}
++
++	if (xpev->atom == xw.stbg_atom) {
++		bginit();
++		redraw();
++		return;
++	}
++
++	if (pseudotransparency &&
++	    e->xproperty.atom == xw.netwmstate_atom) {
++		updatexy();
++		redraw();
++	}
+ }
+ 
+ void
+@@ -545,7 +564,8 @@ selnotify(XEvent *e)
+ 			return;
+ 		}
+ 
+-		if (e->type == PropertyNotify && nitems == 0 && rem == 0) {
++		if (e->type == PropertyNotify && nitems == 0 && rem == 0 &&
++		    !pseudotransparency) {
+ 			/*
+ 			 * If there is some PropertyNotify with no data, then
+ 			 * this is the signal of the selection owner that all
+@@ -563,9 +583,11 @@ selnotify(XEvent *e)
+ 			 * when the selection owner does send us the next
+ 			 * chunk of data.
+ 			 */
+-			MODBIT(xw.attrs.event_mask, 1, PropertyChangeMask);
+-			XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask,
++			if (!pseudotransparency) {
++				MODBIT(xw.attrs.event_mask, 1, PropertyChangeMask);
++				XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask,
+ 					&xw.attrs);
++			}
+ 
+ 			/*
+ 			 * Deleting the property is the transfer start signal.
+@@ -851,9 +873,9 @@ xsetcolorname(int x, const char *name)
+ void
+ xclear(int x1, int y1, int x2, int y2)
+ {
+-	XftDrawRect(xw.draw,
+-			&dc.col[IS_SET(MODE_REVERSE)? defaultfg : defaultbg],
+-			x1, y1, x2-x1, y2-y1);
++	if (pseudotransparency)
++		XSetTSOrigin(xw.dpy, xw.bggc, -win.x, -win.y);
++	XFillRectangle(xw.dpy, xw.buf, xw.bggc, x1, y1, x2-x1, y2-y1);
+ }
+ 
+ void
+@@ -1242,6 +1264,78 @@ xinit(int cols, int rows)
+ 		xsel.xtarget = XA_STRING;
+ }
+ 
++void
++updatexy(void)
++{
++	Window child;
++	XTranslateCoordinates(xw.dpy, xw.win, DefaultRootWindow(xw.dpy), 0, 0,
++	                      &win.x, &win.y, &child);
++}
++
++/*
++ * initialize background image from root window _ST_BACKGROUND_IMAGE
++ */
++static Pixmap
++bginitfromroot(void)
++{
++	Atom prop, atom_type;
++	int format;
++	unsigned long nitems, after;
++	unsigned char *data;
++	Pixmap pmap;
++
++	prop = XInternAtom(xw.dpy, "_ST_BACKGROUND_IMAGE", True);
++	if (prop == None)
++		return None;
++
++	if (XGetWindowProperty(xw.dpy, DefaultRootWindow(xw.dpy), prop,
++	                       0, 1, False, AnyPropertyType, &atom_type,
++	                       &format, &nitems, &after, &data) != Success)
++		return None;
++
++	if (atom_type != XA_PIXMAP || format != 32 || nitems < 1) {
++		XFree(data);
++		return None;
++	}
++
++	pmap = *(Pixmap *)data;
++	XFree(data);
++
++	XSetTile(xw.dpy, xw.bggc, pmap);
++	XSetFillStyle(xw.dpy, xw.bggc, FillTiled);
++	return pmap;
++}
++
++void
++bginit(void)
++{
++	XGCValues gcvalues;
++	Pixmap bgpmap;
++
++	if (xw.bggc)
++		XFreeGC(xw.dpy, xw.bggc);
++
++	memset(&gcvalues, 0, sizeof(gcvalues));
++	xw.bggc = XCreateGC(xw.dpy, xw.win, 0, &gcvalues);
++
++	bgpmap = bginitfromroot();
++
++	if (bgpmap == None) {
++		XSetForeground(xw.dpy, xw.bggc, dc.col[defaultbg].pixel);
++		XSetFillStyle(xw.dpy, xw.bggc, FillSolid);
++	}
++
++	if (pseudotransparency) {
++		updatexy();
++		MODBIT(xw.attrs.event_mask, 1, PropertyChangeMask);
++		XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask, &xw.attrs);
++	}
++
++	xw.stbg_atom = XInternAtom(xw.dpy, "_ST_BACKGROUND_IMAGE", False);
++	xw.netwmstate_atom = XInternAtom(xw.dpy, "_NET_WM_STATE", False);
++	XSelectInput(xw.dpy, DefaultRootWindow(xw.dpy), PropertyChangeMask);
++}
++
+ int
+ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x, int y)
+ {
+@@ -1482,7 +1576,10 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+ 		xclear(winx, winy + win.ch, winx + width, win.h);
+ 
+ 	/* Clean up the region we want to draw to. */
+-	XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
++	if (bg == &dc.col[defaultbg])
++		xclear(winx, winy, winx + width, winy + win.ch);
++	else
++		XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
+ 
+ 	/* Set the clip region because Xft is sometimes dirty. */
+ 	r.x = 0;
+@@ -1914,9 +2011,17 @@ cmessage(XEvent *e)
+ void
+ resize(XEvent *e)
+ {
+-	if (e->xconfigure.width == win.w && e->xconfigure.height == win.h)
+-		return;
+-
++	if (pseudotransparency) {
++		if (e->xconfigure.width == win.w &&
++		    e->xconfigure.height == win.h &&
++		    e->xconfigure.x == win.x && e->xconfigure.y == win.y)
++			return;
++		updatexy();
++	} else {
++		if (e->xconfigure.width == win.w &&
++		    e->xconfigure.height == win.h)
++			return;
++	}
+ 	cresize(e->xconfigure.width, e->xconfigure.height);
+ }
+ 
+@@ -1947,6 +2052,8 @@ run(void)
+ 	} while (ev.type != MapNotify);
+ 
+ 	ttyfd = ttynew(opt_line, shell, opt_io, opt_cmd);
++	if (pseudotransparency)
++		updatexy();
+ 	cresize(w, h);
+ 
+ 	for (timeout = -1, drawing = 0, lastblink = (struct timespec){0};;) {
+@@ -2100,6 +2207,7 @@ run:
+ 	rows = MAX(rows, 1);
+ 	tnew(cols, rows);
+ 	xinit(cols, rows);
++	bginit();
+ 	xsetenv();
+ 	selinit();
+ 	run();
+-- 
+2.55.0
+
