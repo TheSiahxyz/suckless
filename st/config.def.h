@@ -155,10 +155,10 @@ float alpha = 0.8, alphaUnfocused = 0.85;
 float alpha_def;
 
 /*
- * background image
- * 빈 문자열이면 배경 이미지를 쓰지 않는다.
- * bgimgalpha 는 이미지가 배경색 위로 얼마나 진하게 나오는지를 정한다.
- * 창 전체의 투명도는 위의 alpha 가 따로 담당한다.
+ * Background image
+ * An empty string disables the background image.
+ * bgimgalpha sets how strongly the image shows over the background colour.
+ * The opacity of the window as a whole is handled separately by alpha above.
  */
 char *bgfile = "";
 float bgimgalpha = 0.3;

@@ -12,21 +12,22 @@ static struct {
 	Visual *vis;
 	Drawable parent;
 	int depth;
-	Imlib_Image src;     /* 원본, 1회 디코드 */
-	Imlib_Image scaled;  /* 창 크기로 cover 스케일 */
-	Pixmap pm;           /* 블렌드 결과, 32bit ARGB */
-	int w, h;            /* scaled/pm 의 크기 */
+	Imlib_Image src;     /* original, decoded once */
+	Imlib_Image scaled;  /* cover-scaled to the window size */
+	Pixmap pm;           /* blended result, 32bit ARGB */
+	int w, h;            /* size of scaled/pm */
 } bg;
 
 /*
- * 원본 iw*ih 에서 창 ww*wh 와 같은 비율을 갖는 최대 크기의 중앙 사각형을
- * 구한다. 이 사각형을 창 크기로 늘리면 왜곡 없이 창을 꽉 채운다 (cover).
+ * Find the largest centered rectangle in an iw*ih image whose aspect ratio
+ * matches a ww*wh window. Stretching that rectangle to the window size fills
+ * the window with no distortion and no empty space (cover).
  */
 void
 bgimg_cover(int iw, int ih, int ww, int wh, int *sx, int *sy, int *sw, int *sh)
 {
 	if (iw <= 0 || ih <= 0 || ww <= 0 || wh <= 0) {
-		/* 비율을 정의할 수 없다. 원본 전체를 쓴다. */
+		/* No ratio is defined here. Use the whole image. */
 		*sx = *sy = 0;
 		*sw = iw > 0 ? iw : 0;
 		*sh = ih > 0 ? ih : 0;
@@ -34,11 +35,11 @@ bgimg_cover(int iw, int ih, int ww, int wh, int *sx, int *sy, int *sw, int *sh)
 	}
 
 	if ((int64_t)iw * wh > (int64_t)ww * ih) {
-		/* 이미지가 창보다 가로로 넓다 -> 높이를 다 쓰고 양옆을 자른다 */
+		/* Image is wider than the window: keep the height, crop the sides */
 		*sh = ih;
 		*sw = (int)(((int64_t)ih * ww) / wh);
 	} else {
-		/* 이미지가 창보다 세로로 길다 -> 너비를 다 쓰고 위아래를 자른다 */
+		/* Image is taller than the window: keep the width, crop top/bottom */
 		*sw = iw;
 		*sh = (int)(((int64_t)iw * wh) / ww);
 	}
@@ -48,10 +49,10 @@ bgimg_cover(int iw, int ih, int ww, int wh, int *sx, int *sy, int *sw, int *sh)
 }
 
 /*
- * 이미지 픽셀 하나를 배경색과 섞고 창 투명도를 입힌다.
+ * Blend one image pixel with the background colour and apply window opacity.
  *   c = imga * src + (1 - imga) * bg
  *   A = 0xff * a,  RGB = premul ? c * a : c
- * src 의 알파 채널은 무시한다 (불투명 취급).
+ * The alpha channel of src is ignored (treated as opaque).
  */
 uint32_t
 bgimg_blendpx(uint32_t src, uint32_t bg, float imga, float a, int premul)
@@ -125,6 +126,12 @@ bgimg_resize(int w, int h)
 	if (!bg.src || w <= 0 || h <= 0)
 		return;
 
+	/* Already scaled to this size. Rescaling is the expensive step, and
+	 * callers such as chgalpha() reach us through cresize() without the
+	 * window having actually changed size. */
+	if (bg.scaled && bg.w == w && bg.h == h)
+		return;
+
 	if (bg.scaled) {
 		imlib_context_set_image(bg.scaled);
 		imlib_free_image();
@@ -137,9 +144,10 @@ bgimg_resize(int w, int h)
 
 	bgimg_cover(iw, ih, w, h, &sx, &sy, &sw, &sh);
 	bg.scaled = imlib_create_cropped_scaled_image(sx, sy, sw, sh, w, h);
-	/* 실패 시 bg.w/h 를 갱신하지 않는다: bg.scaled == NULL 이면 bg.w/h 도
-	 * 이전(또는 0) 값을 유지해야 bgimg_reblend() 가 pm 을 None 으로 비우는
-	 * 불변식이 깨지지 않는다. */
+	/* Leave bg.w/h alone on failure: while bg.scaled is NULL they must keep
+	 * their previous (or zero) value, so that the invariant holds and
+	 * bgimg_reblend() clears pm to None instead of handing out a pixmap
+	 * sized for the old window. */
 	if (!bg.scaled)
 		return;
 	bg.w = w;
@@ -172,7 +180,7 @@ bgimg_reblend(float a, float imga, unsigned long bgpixel)
 	if (!(ddata = malloc(n * sizeof(*ddata))))
 		return;
 
-	/* 깊이가 32 가 아니면 알파 채널이 없다 (-w 임베드). 프리멀티플 생략. */
+	/* Without depth 32 there is no alpha channel (-w embed). Skip premultiply. */
 	premul = (bg.depth == 32);
 	rgb = (uint32_t)(bgpixel & 0x00FFFFFF);
 
@@ -194,7 +202,7 @@ bgimg_reblend(float a, float imga, unsigned long bgpixel)
 	XPutImage(bg.dpy, bg.pm, gc, xi, 0, 0, 0, 0, bg.w, bg.h);
 	XFreeGC(bg.dpy, gc);
 
-	/* XDestroyImage 가 ddata 도 free 한다 */
+	/* XDestroyImage frees ddata as well */
 	XDestroyImage(xi);
 }
 

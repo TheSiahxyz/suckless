@@ -1113,7 +1113,7 @@ xclear(int x1, int y1, int x2, int y2)
 {
 	Pixmap bgpm = bgimg_pixmap();
 
-	/* 반전 모드에서는 이미지를 쓰지 않는다 */
+	/* Reverse video does not use the image */
 	if (bgpm != None && !IS_SET(MODE_REVERSE)) {
 		XCopyArea(xw.dpy, bgpm, xw.buf, dc.gc,
 				x1, y1, x2-x1, y2-y1, x1, y1);
@@ -1820,8 +1820,8 @@ chgalpha(const Arg *arg)
    }
 
    dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
-   bgimg_reblend(alpha, bgimgalpha, dc.col[defaultbg].pixel);
-   /* Required to remove artifacting from borderpx */
+   /* Required to remove artifacting from borderpx. This also reaches
+    * xresize(), which reblends the background image with the new alpha. */
    cresize(0, 0);
    redraw();
 }
@@ -1961,8 +1961,8 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
       xclear(winx, winy + win.ch, winx + width, win.h);
 
     /* Clean up the region we want to draw to. */
-    /* 기본 배경색 셀에서만 이미지가 보인다. 컬러스킴이 칠한 셀,
-     * 선택 영역, 커서는 그대로 불투명하게 덮는다. */
+    /* Only default-background cells show the image. Cells painted by a
+     * colorscheme, the selection and the cursor stay opaque. */
     if (bg == &dc.col[defaultbg])
       xclear(winx, winy, winx + width, winy + win.ch);
     else
