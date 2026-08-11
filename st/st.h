@@ -178,4 +178,6 @@ extern char *urlprefixes[];
 extern int nurlprefixes;
 extern char *iso14755_cmd;
 extern float alpha_def;
+extern char *bgfile;
+extern float bgimgalpha, bgimgalpha_def;
 

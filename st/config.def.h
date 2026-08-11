@@ -154,6 +154,16 @@ float alpha = 0.8, alphaUnfocused = 0.85;
 /* Background opacity */
 float alpha_def;
 
+/*
+ * background image
+ * 빈 문자열이면 배경 이미지를 쓰지 않는다.
+ * bgimgalpha 는 이미지가 배경색 위로 얼마나 진하게 나오는지를 정한다.
+ * 창 전체의 투명도는 위의 alpha 가 따로 담당한다.
+ */
+char *bgfile = "";
+float bgimgalpha = 0.3;
+float bgimgalpha_def;
+
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
   /* 8 normal colors */

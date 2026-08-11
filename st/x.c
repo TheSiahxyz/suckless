@@ -1105,6 +1105,15 @@ xsetcolorname(int x, const char *name)
 void
 xclear(int x1, int y1, int x2, int y2)
 {
+	Pixmap bgpm = bgimg_pixmap();
+
+	/* 반전 모드에서는 이미지를 쓰지 않는다 */
+	if (bgpm != None && !IS_SET(MODE_REVERSE)) {
+		XCopyArea(xw.dpy, bgpm, xw.buf, dc.gc,
+				x1, y1, x2-x1, y2-y1, x1, y1);
+		return;
+	}
+
 	XftDrawRect(xw.draw,
 			&dc.col[IS_SET(MODE_REVERSE)? defaultfg : defaultbg],
 			x1, y1, x2-x1, y2-y1);
@@ -1915,7 +1924,12 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
       xclear(winx, winy + win.ch, winx + width, win.h);
 
     /* Clean up the region we want to draw to. */
-    XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
+    /* 기본 배경색 셀에서만 이미지가 보인다. 컬러스킴이 칠한 셀,
+     * 선택 영역, 커서는 그대로 불투명하게 덮는다. */
+    if (bg == &dc.col[defaultbg])
+      xclear(winx, winy, winx + width, winy + win.ch);
+    else
+      XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
   }
 
   if (dmode & DRAW_FG) {
