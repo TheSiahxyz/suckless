@@ -147,6 +147,15 @@ void drawboxes(int, int, int, int, XftColor *, XftColor *, const XftGlyphFontSpe
 void bgimg_cover(int, int, int, int, int *, int *, int *, int *);
 uint32_t bgimg_blendpx(uint32_t, uint32_t, float, float, int);
 
+#ifdef XlibSpecificationRelease
+void bgimg_xinit(Display *, Visual *, Drawable, int);
+int bgimg_load(const char *);
+void bgimg_resize(int, int);
+void bgimg_reblend(float, float, unsigned long);
+Pixmap bgimg_pixmap(void);
+void bgimg_free(void);
+#endif
+
 /* config.h globals */
 extern char *externalpipe_sigusr1[];
 extern char *utmp;
