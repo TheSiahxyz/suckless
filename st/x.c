@@ -96,6 +96,7 @@ static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
 static void ttysend(const Arg *);
 static void chgalpha(const Arg *);
+static void chgbgimgalpha(const Arg *);
 static void cyclefonts(const Arg *);
 
 /* config.h for applying patches and the configuration. */
@@ -1821,6 +1822,27 @@ chgalpha(const Arg *arg)
    bgimg_reblend(alpha, bgimgalpha, dc.col[defaultbg].pixel);
    /* Required to remove artifacting from borderpx */
    cresize(0, 0);
+   redraw();
+}
+
+void
+chgbgimgalpha(const Arg *arg)
+{
+   if (arg->f == 0.0f) {
+     /* reset */
+     bgimgalpha = bgimgalpha_def;
+   } else {
+     /* relative change: clamp to [0,1] */
+     float newa = bgimgalpha + arg->f;
+     if (newa < 0.0f)
+       newa = 0.0f;
+     else if (newa > 1.0f)
+       newa = 1.0f;
+     bgimgalpha = newa;
+   }
+
+   bgimg_reblend(focused ? alpha : alphaUnfocused, bgimgalpha,
+       dc.col[defaultbg].pixel);
    redraw();
 }
 
