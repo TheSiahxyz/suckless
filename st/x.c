@@ -310,6 +310,7 @@ extern int disableitalic;
 extern int disableroman;
 
 static char *opt_alpha = NULL;
+static char *opt_bgfile = NULL;
 static char *opt_class = NULL;
 static char **opt_cmd  = NULL;
 static char *opt_embed = NULL;
@@ -1589,7 +1590,7 @@ xinit(int w, int h)
 	/* background image */
 	bgimgalpha_def = bgimgalpha;
 	bgimg_xinit(xw.dpy, xw.vis, xw.win, xw.depth);
-	if (bgimg_load(bgfile)) {
+	if (bgimg_load(opt_bgfile ? opt_bgfile : bgfile)) {
 		bgimg_resize(win.w, win.h);
 		bgimg_reblend(focused ? alpha : alphaUnfocused, bgimgalpha,
 				dc.col[defaultbg].pixel);
@@ -2899,12 +2900,12 @@ config_init(void)
 void
 usage(void)
 {
-	die("usage: %s [-aiv] [-A alpha] [-b borderpx] [-c class] [-f font]"
+	die("usage: %s [-aiv] [-A alpha] [-I bgimage] [-b borderpx] [-c class] [-f font]"
 	    " [-g geometry] [-G geometry]\n"
 	    "          [-n name] [-o file]"
 	    " [-T title] [-t title] [-w windowid]"
 	    " [[-e] command [args ...]]\n"
-	    "       %s [-aiv] [-A alpha] [-b borderpx] [-c class] [-f font]"
+	    "       %s [-aiv] [-A alpha] [-I bgimage] [-b borderpx] [-c class] [-f font]"
 	    " [-g geometry] [-G geometry]\n"
 	    "          [-n name] [-o file]"
 	    " [-T title] [-t title] [-w windowid] -l line"
@@ -2955,6 +2956,9 @@ main(int argc, char *argv[])
 		xw.gm = XParseGeometry(EARGF(usage()),
 				&xw.l, &xw.t, &width, &height);
 		geometry = PixelGeometry;
+		break;
+	case 'I':
+		opt_bgfile = EARGF(usage());
 		break;
 	case 'i':
 		xw.isfixed = 1;

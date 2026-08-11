@@ -6,6 +6,8 @@ st \- simple terminal
 .RB [ \-aiv ]
 .RB [ \-A
 .IR alpha ]
+.RB [ \-I
+.IR bgimage ]
 .RB [ \-b
 .IR borderpx ]
 .RB [ \-c
@@ -36,6 +38,8 @@ st \- simple terminal
 .RB [ \-aiv ]
 .RB [ \-A
 .IR alpha ]
+.RB [ \-I
+.IR bgimage ]
 .RB [ \-b
 .IR borderpx ]
 .RB [ \-c
@@ -72,6 +76,11 @@ defines the
 .I alpha
 (background opacity) to use, as a float from 0.0 (transparent) to 1.0
 (opaque), overriding the value in config.h.
+.TP
+.BI \-I " bgimage"
+background image file to draw behind the terminal contents. An empty
+argument disables the background image. Any format Imlib2 can read is
+accepted.
 .TP
 .BI \-b " borderpx"
 set border size to
