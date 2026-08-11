@@ -144,6 +144,9 @@ void boxdraw_xinit(Display *, Colormap, XftDraw *, Visual *);
 void drawboxes(int, int, int, int, XftColor *, XftColor *, const XftGlyphFontSpec *, int);
 #endif
 
+void bgimg_cover(int, int, int, int, int *, int *, int *, int *);
+uint32_t bgimg_blendpx(uint32_t, uint32_t, float, float, int);
+
 /* config.h globals */
 extern char *externalpipe_sigusr1[];
 extern char *utmp;
