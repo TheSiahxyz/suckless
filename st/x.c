@@ -981,6 +981,9 @@ xresize(int col, int row)
 	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
 			xw.depth);
 	XftDrawChange(xw.draw, xw.buf);
+	bgimg_resize(win.w, win.h);
+	bgimg_reblend(focused ? alpha : alphaUnfocused, bgimgalpha,
+			dc.col[defaultbg].pixel);
 	xclear(0, 0, win.w, win.h);
 
 	/* resize to new width */
@@ -1044,6 +1047,7 @@ xloadalpha(void)
 	dc.col[defaultbg].color.alpha = (unsigned short)(0xffff * usedAlpha);
 	dc.col[defaultbg].pixel &= 0x00FFFFFF;
 	dc.col[defaultbg].pixel |= (unsigned char)(0xff * usedAlpha) << 24;
+	bgimg_reblend(usedAlpha, bgimgalpha, dc.col[defaultbg].pixel);
 }
 
 void
@@ -1581,6 +1585,15 @@ xinit(int w, int h)
 	/* Xft rendering context */
 	xw.draw = XftDrawCreate(xw.dpy, xw.buf, xw.vis, xw.cmap);
 
+	/* background image */
+	bgimgalpha_def = bgimgalpha;
+	bgimg_xinit(xw.dpy, xw.vis, xw.win, xw.depth);
+	if (bgimg_load(bgfile)) {
+		bgimg_resize(win.w, win.h);
+		bgimg_reblend(focused ? alpha : alphaUnfocused, bgimgalpha,
+				dc.col[defaultbg].pixel);
+	}
+
 	/* input methods */
 	if (!ximopen(xw.dpy)) {
 		XRegisterIMInstantiateCallback(xw.dpy, NULL, NULL, NULL,
@@ -1805,6 +1818,7 @@ chgalpha(const Arg *arg)
    }
 
    dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
+   bgimg_reblend(alpha, bgimgalpha, dc.col[defaultbg].pixel);
    /* Required to remove artifacting from borderpx */
    cresize(0, 0);
    redraw();
