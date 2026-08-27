@@ -507,6 +507,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD, XK_w}},                                 spawn,                  {.v = (const char *[]){ BROWSER, "--target", "private-window", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_d}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "discord", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_k}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "KakaoTalk.exe", NULL } } }),
+  &((Keychord){2, {{WINKEY, XK_x},{0, XK_o}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "outlook-for-linux", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_t}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", "teams-for-linux", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_x},{0, XK_w}},                       spawn,                  {.v = (const char *[]){ "pkill", "-f", BROWSER, NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_a}},                   spawn,                  SHCMD(TERMINAL " -e abook -C ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/abookrc --datafile ${XDG_CONFIG_HOME:-${HOME}/.config}/abook/addressbook") }),
