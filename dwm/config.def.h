@@ -528,7 +528,7 @@ static Keychord *keychords[] = {
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_t},{0, XK_w}},         spawn,                  {.v = (const char *[]){ "torwrap", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_m}},         spawn,                  {.v = (const char *[]){ "dmenuvirt", NULL } } }),
   &((Keychord){3, {{WINKEY, XK_space},{0, XK_v},{0, XK_w}},         spawn,                  {.v = (const char *[]){ TERMINAL, "-e", "nvim", "-c", "VimwikiIndex", "1", NULL } } }),
-  &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERMINAL " -e less -Sf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
+  &((Keychord){2, {{WINKEY, XK_space},{0, XK_w}},                   spawn,                  SHCMD(TERMINAL " -e less -SRf ${XDG_CACHE_HOME:-${HOME}/.cache}/weatherreport") }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_z}},                   spawn,                  {.v = (const char *[]){ "zoom", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_Return}},              spawn,                  {.v = (const char *[]){ "zeditor", NULL } } }),
 
