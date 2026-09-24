@@ -562,6 +562,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINKEY, XK_F2}},                                spawn,                  {.v = (const char *[]){ "tutorialvids", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F3}},                                spawn,                  {.v = (const char *[]){ "dmenudisplay", NULL } } }),
   &((Keychord){1, {{WINMOD, XK_F3}},                                spawn,                  {.v = (const char *[]){ "dmenudisplay", "-r", NULL } } }),
+  &((Keychord){1, {{WINMOD2, XK_F3}},                               spawn,                  {.v = (const char *[]){ "arandr", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F4}},                                spawn,                  SHCMD(TERMINAL " -n pulsemixer -e pulsemixer; kill -38 $(pidof dwmblocks)") }),
   &((Keychord){1, {{WINMOD2, XK_F4}},                               spawn,                  {.v = (const char *[]){ "toggleoutput", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_F5}},                                spawn,                  {.v = (const char *[]){ "mailsync", NULL } } }),
