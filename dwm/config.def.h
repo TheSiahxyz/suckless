@@ -164,6 +164,7 @@ static const Rule rules[] = {
   { "DBeaver",            "DBeaver",          NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
   { "Virt-manager",       "virt-manager",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0 },
   { "Virt-viewer",        "virt-viewer",      NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
+  { "steam_app_default",  "steam_app_default",NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0 },
   { TERMCLASS,            "bg",               NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1,           0 },
   { "Gimp",               NULL,               NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
   { "obs",                "obs",              NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0 },
