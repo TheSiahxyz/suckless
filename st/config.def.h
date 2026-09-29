@@ -345,11 +345,11 @@ static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NUL
 static Shortcut shortcuts[] = {
   /* mask                 keysym          function        argument */
   // APPEARANCES
-  { ALTKEY,               XK_a,           chgalpha,       {.f = -0.05} },
-  { ALTKEY,               XK_s,           chgalpha,       {.f = +0.05} },
+  { ALTKEY,               XK_a,           chgalpha,       {.f = -0.025} },
+  { ALTKEY,               XK_s,           chgalpha,       {.f = +0.025} },
   { ALTKEY,               XK_equal,       chgalpha,       {.f =  0} },
-  { ALTMOD,               XK_A,           chgbgimgalpha,  {.f = -0.05} },
-  { ALTMOD,               XK_S,           chgbgimgalpha,  {.f = +0.05} },
+  { ALTMOD,               XK_A,           chgbgimgalpha,  {.f = -0.025} },
+  { ALTMOD,               XK_S,           chgbgimgalpha,  {.f = +0.025} },
   { ALTMOD,               XK_D,           chgbgimgalpha,  {.f =  0} },
   { ALTMOD,               XK_J,           zoom,           {.f = -1} },
   { ALTMOD,               XK_K,           zoom,           {.f = +1} },
