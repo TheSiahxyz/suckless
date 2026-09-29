@@ -1209,8 +1209,8 @@ insert:
 		break;
 	case XK_Return:
 	case XK_KP_Enter:
+		puts((sel && !(ev->state & ShiftMask)) ? sel->text : text);
 		if (!(ev->state & ControlMask)) {
-      puts((sel && !(ev->state & ShiftMask)) ? sel->text : text);
 			savehistory((sel && !(ev->state & ShiftMask))
 				    ? sel->text : text);
 			cleanup();
