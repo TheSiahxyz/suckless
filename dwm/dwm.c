@@ -378,7 +378,7 @@ static pid_t winpid(Window w);
 /* variables */
 static Client *prevclient = NULL;
 static const char broken[] = "broken";
-static char stext[256];
+static char stext[1024];
 static int statusw;
 static int statussig;
 static pid_t statuspid = -1;

@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
+#include <sys/prctl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -57,6 +59,7 @@ int block_execute(block *const block, const uint8_t button) {
         return 0;
     }
 
+    const pid_t parent_pid = getpid();
     block->fork_pid = fork();
     if (block->fork_pid == -1) {
         (void)fprintf(
@@ -66,6 +69,27 @@ int block_execute(block *const block, const uint8_t button) {
     }
 
     if (block->fork_pid == 0) {
+        // Rename the helper so `pkill`/`killall dwmblocks` only match the main
+        // process, and make it die together with the main process instead of
+        // lingering as an orphaned "second dwmblocks".
+        (void)prctl(PR_SET_NAME, "dwmblocks-cmd", 0, 0, 0);
+        (void)prctl(PR_SET_PDEATHSIG, SIGKILL, 0, 0, 0);
+        if (getppid() != parent_pid) {
+            _exit(EXIT_FAILURE);
+        }
+
+        // The main process blocks SIGINT/SIGTERM and all realtime signals for
+        // its signalfd. Restore a normal signal mask so block scripts (and
+        // tools like `timeout`) can be interrupted, but keep realtime signals
+        // inert here: a stray `kill -RTMIN+n` must not kill this helper, or the
+        // block would never report back.
+        for (int sig = SIGRTMIN; sig <= SIGRTMAX; ++sig) {
+            (void)signal(sig, SIG_IGN);
+        }
+        sigset_t unblocked;
+        (void)sigemptyset(&unblocked);
+        (void)sigprocmask(SIG_SETMASK, &unblocked, NULL);
+
         const int write_fd = block->pipe[WRITE_END];
         int status = close(block->pipe[READ_END]);
 
