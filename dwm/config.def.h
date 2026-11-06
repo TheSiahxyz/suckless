@@ -157,7 +157,7 @@ static const Rule rules[] = {
   { "dev.zed.Zed",        "dev.zed.Zed",      NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
   { BROWSER,              "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1,           0 },
   { BROWSER2,             "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1,           0 },
-  { "Google-chrome",      "google-chrome",    NULL,                0,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1,           1 },
+  { "Google-chrome",      NULL,               NULL,                0,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1,           1 },
   { NULL,                 "libreoffice",      NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0 },
   { "mpv",                "video",            NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0,           0 },
   { "mpv",                "music",            NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0,           0 },
