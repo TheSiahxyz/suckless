@@ -52,6 +52,7 @@ static       char font[]                = "monospace:size=12";
 static const char *fonts[]              = {
   font,
   "Hack Nerd Font:pixelsize=12:antialias=true:autohint=true",
+  "ko:pixelsize=12:antialias=true:autohint=true", /* Hangul: Noto Sans CJK KR, same alias as st */
   "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true",
 };
 static       char normbgcolor[]         = "#222222";
