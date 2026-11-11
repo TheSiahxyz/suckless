@@ -118,7 +118,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-  int wasfloating, iscentered, isfixed, isfloating, isalwaysontop, isurgent, neverfocus, oldstate, isfullscreen, issticky, cantfocus, isterminal, noswallow, resizehints, noautofocus;
+  int wasfloating, iscentered, isfixed, isfloating, isalwaysontop, isurgent, neverfocus, oldstate, isfullscreen, issticky, cantfocus, isterminal, noswallow, resizehints, noautofocus, passkeys;
 	pid_t pid;
 	unsigned char expandmask;
 	int expandx1, expandy1, expandx2, expandy2;
@@ -201,6 +201,7 @@ typedef struct {
   int resizehints;
 	int bw;
 	int noautofocus;
+	int passkeys;
 } Rule;
 
 /* Xresources preferences */
@@ -390,6 +391,7 @@ static int vp;               /* vertical padding for bar */
 static int sp;               /* side padding for bar */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
+static int keypassthrough = 0; /* 1 while a passkeys client is focused: modifier chords without Super are not grabbed */
 static void (*handler[LASTEvent]) (XEvent *) = {
 	[ButtonPress] = buttonpress,
 	[ClientMessage] = clientmessage,
@@ -544,6 +546,7 @@ applyrules(Client *c)
 	c->unfocusopacity = inactiveopacity;
   c->bw = borderpx;
 	c->noautofocus = 0;
+	c->passkeys = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;
 	instance = ch.res_name  ? ch.res_name  : broken;
@@ -563,6 +566,7 @@ applyrules(Client *c)
 			c->unfocusopacity = r->unfocusopacity;
       c->resizehints = r->resizehints;
 			c->noautofocus = r->noautofocus;
+			c->passkeys = r->passkeys;
 			if (r->bw != -1)
 				c->bw = r->bw;
 			if ((r->tags & SPTAGMASK) && r->isfloating) {
@@ -1320,6 +1324,11 @@ focus(Client *c)
 	}
 	selmon->sel = c;
 	selmon->pertag->sel[selmon->pertag->curtag] = c;
+	/* let games receive Alt/Ctrl/Shift+key while they are focused */
+	if ((c && c->passkeys) != keypassthrough) {
+		keypassthrough = c && c->passkeys;
+		grabkeys();
+	}
 	drawbars();
 }
 
@@ -1578,7 +1587,10 @@ grabkeys(void)
 		for (k = start; k <= end; k++)
 			for (i = 0; i < LENGTH(keychords); i++)
 				/* skip modifier codes, we do that ourselves */
-				if (keychords[i]->keys[currentkey].keysym == syms[(k - start) * skip])
+				if (keychords[i]->keys[currentkey].keysym == syms[(k - start) * skip]
+				&& !(keypassthrough
+				     && keychords[i]->keys[currentkey].mod
+				     && !(keychords[i]->keys[currentkey].mod & Mod4Mask)))
 					for (c = 0; c < LENGTH(modifiers); c++)
 						XGrabKey(dpy, k,
 							 keychords[i]->keys[currentkey].mod | modifiers[c],

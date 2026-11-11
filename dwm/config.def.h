@@ -149,39 +149,42 @@ static const Rule rules[] = {
    * WM_CLASS(STRING) = instance, class
    * WM_NAME(STRING) = title
    */
+  /* passkeys: 1 means that while the client is focused, dwm releases every keybinding
+   * that uses Alt/Ctrl/Shift without Super (Alt+num, Ctrl+F5, Shift+F12, ...), so games
+   * receive them. Super bindings and bare keys (media keys, Print, Alt_R) still work. */
   /* noautofocus: 1 means the client may NOT pull the current view to its tag
    * when it sends _NET_ACTIVE_WINDOW; the tag is only flagged urgent instead. */
-  /* class                instance            title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width  noautofocus */
-  { TERMCLASS,            TERMINAL,           TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1,           0 },
-  { TERMCLASS2,           TERMINAL2,          TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1,           0 },
-  { "dev.zed.Zed",        "dev.zed.Zed",      NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
-  { BROWSER,              "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1,           0 },
-  { BROWSER2,             "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1,           0 },
-  { "Google-chrome",      NULL,               NULL,                0,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1,           1 },
-  { NULL,                 "libreoffice",      NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0 },
-  { "mpv",                "video",            NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0,           0 },
-  { "mpv",                "music",            NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0,           0 },
-  { TERMCLASS,            "ncmpcpp",          NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1,           0 },
-  { "yt-music",           "yt-music",         NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1,           0 },
-  { "DBeaver",            "DBeaver",          NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
-  { "Virt-manager",       "virt-manager",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0 },
-  { "Virt-viewer",        "virt-viewer",      NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
-  { "steam_app_default",  "steam_app_default",NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0 },
-  { TERMCLASS,            "bg",               NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1,           0 },
-  { "Gimp",               NULL,               NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0 },
-  { "obs",                "obs",              NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0 },
-  { "mpv",                "webcam",           NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         1,       0,            0,           0 },
-  { "discord",            "discord",          NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0 },
-  { "kakaotalk.exe",      "kakaotalk.exe",    NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0,           1 },
-  { "outlook-for-linux",  "outlook-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0,           0 },
-  { "teams-for-linux",    "teams-for-linux",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0 },
-  { TERMCLASS,            "spterm",           NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0 },
-  { TERMCLASS,            "splf",             NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0 },
-  { TERMCLASS,            "spcalc",           NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0 },
-  { TERMCLASS,            "vimwikitodo",      NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0 },
-  { TERMCLASS,            "floatterm",        NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0,           0 },
-  { TERMCLASS,            "stig",             NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          1,        -1,       0,           -1,           0 },
-  { NULL,                 NULL,               "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1,           0 }, /* xev */
+  /* class                instance            title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width  noautofocus  passkeys */
+  { TERMCLASS,            TERMINAL,           TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1,           0,           0 },
+  { TERMCLASS2,           TERMINAL2,          TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1,           0,           0 },
+  { "dev.zed.Zed",        "dev.zed.Zed",      NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0,           0 },
+  { BROWSER,              "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1,           0,           0 },
+  { BROWSER2,             "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1,           0,           0 },
+  { "Google-chrome",      NULL,               NULL,                0,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,        -1,       1,           -1,           1,           0 },
+  { NULL,                 "libreoffice",      NULL,           1 << 2,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0,           0 },
+  { "mpv",                "video",            NULL,           1 << 3,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0,           0,           0 },
+  { "mpv",                "music",            NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         0,       0,            0,           0,           0 },
+  { TERMCLASS,            "ncmpcpp",          NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1,           0,           0 },
+  { "yt-music",           "yt-music",         NULL,           1 << 4,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1,           0,           0 },
+  { "DBeaver",            "DBeaver",          NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0,           0 },
+  { "Virt-manager",       "virt-manager",     NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0,           0 },
+  { "Virt-viewer",        "virt-viewer",      NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0,           0 },
+  { "steam_app_default",  "steam_app_default",NULL,           1 << 5,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         0,       1,           -1,           0,           1 },
+  { TERMCLASS,            "bg",               NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         0,       1,           -1,           0,           0 },
+  { "Gimp",               NULL,               NULL,           1 << 6,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0,           0 },
+  { "obs",                "obs",              NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0,           0 },
+  { "mpv",                "webcam",           NULL,           1 << 7,     1,        activeopacity,  inactiveopacity,  0,          1,         -1,         1,       0,            0,           0,           0 },
+  { "discord",            "discord",          NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0,           0 },
+  { "kakaotalk.exe",      "kakaotalk.exe",    NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0,           1,           0 },
+  { "outlook-for-linux",  "outlook-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0,           0,           0 },
+  { "teams-for-linux",    "teams-for-linux",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0,           0 },
+  { TERMCLASS,            "spterm",           NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
+  { TERMCLASS,            "splf",             NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
+  { TERMCLASS,            "spcalc",           NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
+  { TERMCLASS,            "vimwikitodo",      NULL,           SPTAG(3),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
+  { TERMCLASS,            "floatterm",        NULL,           0,          1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,            0,           0,           0 },
+  { TERMCLASS,            "stig",             NULL,           0,          1,        activeopacity,  inactiveopacity,  0,          1,          1,        -1,       0,           -1,           0,           0 },
+  { NULL,                 NULL,               "Event Tester", 0,          1,        activeopacity,  inactiveopacity,  0,          0,          1,        -1,       1,           -1,           0,           0 }, /* xev */
 };
 
 /* Layout(s) */
