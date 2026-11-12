@@ -283,7 +283,7 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 	FcPattern *fcpattern;
 	FcPattern *match;
 	XftResult result;
-	int charexists = 0, overflow = 0;
+	int charexists = 0, overflow = 0, ignorelen = 0;
 	/* keep track of a couple codepoints for which we have no match. */
 	static unsigned int nomatches[128], ellipsis_width, invalid_width;
 	static const char invalid[] = "�";
@@ -314,6 +314,15 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 		nextfont = NULL;
 		while (*text) {
 			utf8charlen = utf8decode(text, &utf8codepoint, &utf8err);
+			/* Variation selectors (U+FE00..U+FE0F, e.g. the "draw as emoji"
+			 * mark after many emoji) only modify the character before them
+			 * and have no glyph in any font. Without text shaping they would
+			 * fall through to the "must be drawn" branch below and show up
+			 * as an empty box, so end the run here and step over them. */
+			if (!utf8err && utf8codepoint >= 0xFE00 && utf8codepoint <= 0xFE0F) {
+				ignorelen = utf8charlen;
+				break;
+			}
 			for (curfont = drw->fonts; curfont; curfont = curfont->next) {
 				charexists = charexists || XftCharExists(drw->dpy, curfont->xfont, utf8codepoint);
 				if (charexists) {
@@ -368,6 +377,16 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 		}
 		if (render && overflow)
 			drw_text(drw, ellipsis_x, y, ellipsis_w, h, 0, "…", invert);
+
+		if (ignorelen) {
+			/* the run before the selector is drawn; carry on after it */
+			text += ignorelen;
+			ignorelen = 0;
+			charexists = 0;
+			if (!*text)
+				break;
+			continue;
+		}
 
 		if (!*text || overflow) {
 			break;
