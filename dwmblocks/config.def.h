@@ -18,16 +18,16 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)\
-  X("", "sb-ylog",                                      900,    21)   \
-  X("", "sb-ticker",                                    3600,   20)   \
-  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      19)   \
-  X("", "sb-music",                                     0,      18)   \
-  X("", "sb-torrent",                                   0,      17)   \
-  X("", "sb-queues",                                    10,     16)   \
-  X("", "sb-mailbox",                                   300,    15)   \
-  X("", "sb-news",                                      0,      14)   \
-  X("", "sb-repos",                                     60,     13)   \
-  X("", "sb-tasks",                                     60,     12)   \
+  X("", "cat /tmp/recordingicon 2>/dev/null",           0,      27)   \
+  X("", "sb-music",                                     0,      26)   \
+  X("", "sb-torrent",                                   0,      25)   \
+  X("", "sb-queues",                                    10,     24)   \
+  X("", "sb-mailbox",                                   300,    23)   \
+  X("", "sb-news",                                      0,      22)   \
+  X("", "sb-repos",                                     60,     21)   \
+  X("", "sb-tasks",                                     60,     20)   \
+  X("", "sb-ylog",                                      900,    19)   \
+  X("", "sb-ticker",                                    3600,   12)   \
   X("", "sb-packages",                                  0,      11)   \
   X("", "sb-forecast",                                  3600,   10)   \
   X("", "sb-system /home",                              5,      9)    \
@@ -42,13 +42,13 @@
   X("", "sb-help-icon",                                 0,      0)
 #endif  // CONFIG_H
 
-  /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 30", 900,    27)   \
-  X("", "sb-price xmr Monero 🔒 29",                    900,    26)   \
-  X("", "sb-price bnb Binance 🫧 28",                   900,    25)   \
-  X("", "sb-price xrp XRP 🪓 27",                       900,    24)   \
-  X("", "sb-price usdt Tether ⛺ 26",                   900,    23)   \
-  X("", "sb-price eth Ethereum 🍸 25",                  900,    22)   \
-  X("", "sb-price btc Bitcoin 💰 24",                   900,    21)   \ */
+  /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 28", 900,    28)   \
+  X("", "sb-price xmr Monero 🔒 18",                    900,    18)   \
+  X("", "sb-price bnb Binance 🫧 17",                   900,    17)   \
+  X("", "sb-price xrp XRP 🪓 16",                       900,    16)   \
+  X("", "sb-price usdt Tether ⛺ 15",                   900,    15)   \
+  X("", "sb-price eth Ethereum 🍸 14",                  900,    14)   \
+  X("", "sb-price btc Bitcoin 💰 13",                   900,    13)   \ */
 
 // Have dwmblocks automatically recompile and run when you edit this file in
 // vim with the following line in your vimrc/init.vim:
