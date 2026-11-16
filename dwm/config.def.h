@@ -8,9 +8,7 @@
 #define PADDING                         0
 #define STATUSBAR                       "dwmblocks"
 #define TERMINAL                        "st"
-#define TERMINAL2                       "alacritty"
 #define TERMCLASS                       "St"
-#define TERMCLASS2                      "Alacritty"
 
 /* Appearance */
 static const double activeopacity       = 1.0f;     /* Window opacity when it's focused (0 <= opacity <= 1) */
@@ -156,7 +154,6 @@ static const Rule rules[] = {
    * when it sends _NET_ACTIVE_WINDOW; the tag is only flagged urgent instead. */
   /* class                instance            title           tags mask  allowkill  focusopacity    unfocusopacity    isfloating  isterminal  noswallow  monitor  resizehints  border width  noautofocus  passkeys */
   { TERMCLASS,            TERMINAL,           TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,        -1,       1,           -1,           0,           0 },
-  { TERMCLASS2,           TERMINAL2,          TERMINAL,       1 << 0,     1,        activeopacity,  inactiveopacity,  0,          1,          0,         1,       1,           -1,           0,           0 },
   { "dev.zed.Zed",        "dev.zed.Zed",      NULL,           1 << 0,     1,        activeopacity,  inactiveopacity,  0,          0,          0,         1,       1,           -1,           0,           0 },
   { BROWSER,              "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,           -1,           0,           0 },
   { BROWSER2,             "Navigator",        NULL,           1 << 1,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,           -1,           0,           0 },
@@ -263,7 +260,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
-static const char *termcmd2[] = { TERMINAL2, NULL };
+static const char *tmuxcmd[]  = { TERMINAL, "-e", "tmux", "new-session", "-A", "-s", "code", NULL };
 static const char *layoutmenu_cmd = "layoutmenu";
 static const Arg tagexec[] = {
   { .v = termcmd },                                                   // 1
@@ -600,9 +597,9 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{WINMOD, XK_q}},                                 killclient,             {.ui = 1 } }), // kill other clients in the same tag
   &((Keychord){1, {{WINMOD2, XK_q}},                                killclient,             {.ui = 2 } }), // kill all clients in the same tag
   &((Keychord){1, {{WINKEY, XK_d}},                                 spawn,                  {.v = dmenucmd } }),
-  &((Keychord){1, {{WINKEY, XK_Return}},                            spawn,                  {.v = termcmd } }),
+  &((Keychord){1, {{WINKEY, XK_Return}},                            spawn,                  {.v = tmuxcmd } }),
   &((Keychord){1, {{WINMOD, XK_Return}},                            spawn,                  {.v = (const char *[]){ "sd", NULL } } }),
-  &((Keychord){1, {{ALTKEY, XK_Return}},                            spawn,                  {.v = termcmd2 } }),
+  &((Keychord){1, {{ALTKEY, XK_Return}},                            spawn,                  {.v = termcmd } }),
   &((Keychord){2, {{WINKEY, XK_space},{0, XK_BackSpace}},           spawn,                  {.v = (const char *[]){ "slock", NULL } } }),
   &((Keychord){2, {{WINKEY, XK_space},{ShiftMask, XK_BackSpace}},   spawn,                  {.v = (const char *[]){ "sysact", NULL } } }),
   &((Keychord){1, {{WINKEY, XK_minus}},                             spawn,                  SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; kill -38 $(pidof dwmblocks)") }),
