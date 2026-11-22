@@ -1982,9 +1982,14 @@ movemouse(const Arg *arg)
 		case MotionNotify:
 			nx = ocx + (ev.xmotion.x - x);
 			ny = ocy + (ev.xmotion.y - y);
-			if ((m = recttomon(nx, ny, c->w, c->h))) {
-				if (m != selmon)
-					sendmon(c, m);
+			{
+        if (!selmon->lt[selmon->sellt]->arrange || c->isfloating) {
+          /* floating: decide target monitor by window rect only */
+          if ((m = recttomon(nx, ny, c->w, c->h)) != selmon) {
+            sendmon(c, m);
+            selmon = m;
+          }
+        }
         if (abs(selmon->wx - nx) < snap)
           nx = selmon->wx;
         else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c))) < snap)
@@ -1996,6 +2001,7 @@ movemouse(const Arg *arg)
         if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
           resize(c, nx, ny, c->w, c->h, 1);
         else if (selmon->lt[selmon->sellt]->arrange || !c->isfloating) {
+          /* tiled: decide target monitor by pointer position only */
           if ((m = recttomon(ev.xmotion.x_root, ev.xmotion.y_root, 1, 1)) != selmon) {
             sendmon(c, m);
             selmon = m;
@@ -2019,8 +2025,6 @@ movemouse(const Arg *arg)
 
           if (cc) {
             Client *cl1, *cl2, ocl1;
-
-            if (!selmon->lt[selmon->sellt]->arrange) return;
 
             cl1 = c;
             cl2 = cc;
