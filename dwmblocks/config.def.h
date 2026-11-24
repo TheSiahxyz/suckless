@@ -27,7 +27,6 @@
   X("", "sb-repos",                                     60,     21)   \
   X("", "sb-tasks",                                     60,     20)   \
   X("", "sb-packages",                                  0,      19)   \
-  X("", "sb-ylog",                                      900,    18)   \
   X("", "sb-ticker",                                    3600,   11)   \
   X("", "sb-forecast",                                  3600,   10)   \
   X("", "sb-system /home",                              5,      9)    \
@@ -39,7 +38,7 @@
   X("", "sb-battery",                                   5,      3)    \
   X("", "sb-clock",                                     0,      2)    \
   X("", "sb-ecrypt",                                    0,      1)    \
-  X("", "sb-help-icon",                                 0,      0)
+  X("", "sb-help-icon",                                 0,      18)
 #endif  // CONFIG_H
 
   /* X("", "sb-price xmr-btc \"Monero to Bitcoin\" 🔒 18", 900,    18)   \
@@ -48,7 +47,8 @@
   X("", "sb-price xrp XRP 🪓 15",                       900,    15)   \
   X("", "sb-price usdt Tether ⛺ 14",                   900,    14)   \
   X("", "sb-price eth Ethereum 🍸 13",                  900,    13)   \
-  X("", "sb-price btc Bitcoin 💰 12",                   900,    12)   \ */
+  X("", "sb-price btc Bitcoin 💰 12",                   900,    12)   \
+  X("", "sb-ylog",                                      900,    18)   \ */
 
 // Have dwmblocks automatically recompile and run when you edit this file in
 // vim with the following line in your vimrc/init.vim:
