@@ -611,6 +611,7 @@ static Keychord *keychords[] = {
   &((Keychord){1, {{ULTRAMOD, XK_minus}},                           spawn,                  SHCMD("monitorbright -dec 5; kill -41 $(pidof dwmblocks)") }),
   &((Keychord){1, {{ULTRAMOD, XK_equal}},                           spawn,                  SHCMD("monitorbright -inc 5; kill -41 $(pidof dwmblocks)") }),
   &((Keychord){1, {{0, XK_Alt_R}},                                  spawn,                  SHCMD("fcitx5-remote -t && kill -42 $(pidof dwmblocks)") }),
+  &((Keychord){1, {{0, XK_Hangul}},                                 spawn,                  SHCMD("fcitx5-remote -t && kill -42 $(pidof dwmblocks)") }),
   &((Keychord){1, {{EXTRAMOD, XK_q}},                               quit,                   {0} }),
   &((Keychord){1, {{ControlMask, XK_F5}},                           quit,                   {1} }),
   &((Keychord){1, {{EXTRAMOD, XK_F5}},                              spawn,                  SHCMD("killall -9 dwmblocks; while pidof dwmblocks >/dev/null; do sleep 0.1; done; setsid -f dwmblocks") }),
