@@ -33,7 +33,9 @@ int disableroman = 0;
 static int borderpx = 2;
 
 /*
- * Override/adjust fontsize of choosen monitors:
+ * Override/adjust fontsize of choosen monitors.
+ * Monitors not listed here use the fonts[] pixel size as is (same as =0),
+ * so a panel reporting a small physical size does not blow the font up.
  */
 MonitorConfig monitors_config[] = {
 	// skip = fixed relative points size (monitor dpi)

@@ -2340,7 +2340,11 @@ cachemonitorinfo()
 
 		float px_mm = ((float)m->w / xm->mwidth + (float)m->h / xm->mheight) / 2;
 		float px_pt = 25.4 * px_mm / 72;
-		m->defaultfontsize = defaultrelfontsize * px_pt;
+		/* Unlisted monitors keep the startup pixel size of fonts[]. Rescaling
+		 * by the monitor's physical size (EDID mm) made 1080p panels that
+		 * report a small size (e.g. 276x155mm, ~177dpi) render ~2x too big. */
+		m->defaultfontsize = absdefaultfontsize > 0
+			? absdefaultfontsize : defaultrelfontsize * px_pt;
 
 		// Override defaultfontsize (dpi) by user config
 		char *name = XGetAtomName(xw.dpy, xm->name);
