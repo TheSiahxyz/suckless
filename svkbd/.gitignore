@@ -1,0 +1,4 @@
+svkbd-*
+!svkbd-*.diff
+*.o
+config.h

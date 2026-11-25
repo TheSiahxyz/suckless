@@ -1,0 +1,89 @@
+diff --git a/config.def.h b/config.def.h
+index 81c3fc0..fafb53e 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -26,9 +26,13 @@ static const Rule rules[] = {
+ 	 *	WM_CLASS(STRING) = instance, class
+ 	 *	WM_NAME(STRING) = title
+ 	 */
+-	/* class      instance    title       tags mask     isfloating   monitor */
+-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
++	/* passkeys: 1 means that while the client is focused, dwm releases every
++	 * keybinding that uses Alt/Ctrl/Shift without Super, so games receive them.
++	 * Super bindings and bindings without modifiers keep working. */
++	/* class      instance    title       tags mask     isfloating   passkeys   monitor */
++	{ "Gimp",     NULL,       NULL,       0,            1,           0,         -1 },
++	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,         -1 },
++	{ "steam_app_default", NULL, NULL,    0,            0,           1,         -1 },
+ };
+ 
+ /* layout(s) */
+diff --git a/dwm.c b/dwm.c
+index 53b393e..65d59dc 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -91,7 +91,7 @@ struct Client {
+ 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
+ 	int bw, oldbw;
+ 	unsigned int tags;
+-	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
++	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, passkeys;
+ 	Client *next;
+ 	Client *snext;
+ 	Monitor *mon;
+@@ -137,6 +137,7 @@ typedef struct {
+ 	const char *title;
+ 	unsigned int tags;
+ 	int isfloating;
++	int passkeys;
+ 	int monitor;
+ } Rule;
+ 
+@@ -242,6 +243,7 @@ static int bh;               /* bar height */
+ static int lrpad;            /* sum of left and right padding for text */
+ static int (*xerrorxlib)(Display *, XErrorEvent *);
+ static unsigned int numlockmask = 0;
++static int keypassthrough = 0; /* 1 while a passkeys client is focused */
+ static void (*handler[LASTEvent]) (XEvent *) = {
+ 	[ButtonPress] = buttonpress,
+ 	[ClientMessage] = clientmessage,
+@@ -285,6 +287,7 @@ applyrules(Client *c)
+ 
+ 	/* rule matching */
+ 	c->isfloating = 0;
++	c->passkeys = 0;
+ 	c->tags = 0;
+ 	XGetClassHint(dpy, c->win, &ch);
+ 	class    = ch.res_class ? ch.res_class : broken;
+@@ -297,6 +300,7 @@ applyrules(Client *c)
+ 		&& (!r->instance || strstr(instance, r->instance)))
+ 		{
+ 			c->isfloating = r->isfloating;
++			c->passkeys = r->passkeys;
+ 			c->tags |= r->tags;
+ 			for (m = mons; m && m->num != r->monitor; m = m->next);
+ 			if (m)
+@@ -807,6 +811,12 @@ focus(Client *c)
+ 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
+ 	}
+ 	selmon->sel = c;
++	/* while a passkeys client is focused, let it receive modifier
++	 * chords without Super (e.g. Alt/Ctrl/Shift+key in games) */
++	if ((c && c->passkeys) != keypassthrough) {
++		keypassthrough = c && c->passkeys;
++		grabkeys();
++	}
+ 	drawbars();
+ }
+ 
+@@ -967,7 +977,8 @@ grabkeys(void)
+ 		for (k = start; k <= end; k++)
+ 			for (i = 0; i < LENGTH(keys); i++)
+ 				/* skip modifier codes, we do that ourselves */
+-				if (keys[i].keysym == syms[(k - start) * skip])
++				if (keys[i].keysym == syms[(k - start) * skip]
++				&& !(keypassthrough && keys[i].mod && !(keys[i].mod & Mod4Mask)))
+ 					for (j = 0; j < LENGTH(modifiers); j++)
+ 						XGrabKey(dpy, k,
+ 							 keys[i].mod | modifiers[j],

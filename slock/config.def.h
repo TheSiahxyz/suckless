@@ -22,6 +22,13 @@ static const int controlkeyclear = 0;
 /* Time in seconds before the monitor shuts down */
 static const int monitortime = 21600;
 
+/* While the monitor is off, the first input (key, click or mouse motion)
+ * only wakes it and is not typed into the password */
+/* Also ignore keys for this many milliseconds after waking (0 = off) */
+static const unsigned int wakegrace = 0;
+/* How often, in milliseconds, to check whether the monitor is off */
+static const unsigned int dpmspollms = 250;
+
 /* Insert grid pattern with scale 1:1, the size can be changed with logosize */
 static const int logosize = 0;
 /* Grid width and height for right center alignment */

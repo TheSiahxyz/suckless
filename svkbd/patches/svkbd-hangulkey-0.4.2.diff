@@ -1,0 +1,20 @@
+diff --git a/layout.mobile-intl.h b/layout.mobile-intl.h
+index 9d1e5cc..0a8559e 100644
+--- a/layout.mobile-intl.h
++++ b/layout.mobile-intl.h
+@@ -1,4 +1,4 @@
+-#define KEYS 57
++#define KEYS 58
+ 
+ static Key keys_en[KEYS] = {
+ 	{ "Esc", "", XK_Escape, 1 },
+@@ -61,7 +61,8 @@ static Key keys_en[KEYS] = {
+ 	{ 0 }, /* New row */
+ 	{ "↺", 0, XK_Cancel, 1},
+ 	{ "Alt", 0, XK_Alt_L, 1 },
+-	{ "", 0, XK_space, 4 },
++	{ "", 0, XK_space, 3 },
++	{ "한/영", 0, XK_Hangul, 1 },
+ 	{ "↓", 0, XK_Down, 1 },
+ 	{ "↑", 0, XK_Up, 1 },
+ 	{ "↲ Enter", 0, XK_Return, 2 },

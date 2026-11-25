@@ -447,6 +447,67 @@ refresh(Display *dpy, Window win, int screen, struct tm time, cairo_t* cr, cairo
 	cairo_surface_flush(sfc);
 }
 
+/*
+ * X11 sends no event when DPMS turns the monitor on or off, and by the time
+ * slock reads the key that woke it the server already reports "on". So a
+ * thread polls DPMS and sets a sticky flag once it sees the monitor off; the
+ * event loop clears it and drops the input that woke the monitor.
+ */
+static int screenoff = 0;
+static pthread_mutex_t dpmsmutex = PTHREAD_MUTEX_INITIALIZER;
+
+static void*
+watchdpms(void *input)
+{
+	Display *dpy = (Display *)input;
+	CARD16 level;
+	BOOL enabled;
+	int onpolls = 0;
+
+	for (;;) {
+		if (DPMSInfo(dpy, &level, &enabled)) {
+			pthread_mutex_lock(&dpmsmutex);
+			if (enabled && level != DPMSModeOn) {
+				screenoff = 1;
+				onpolls = 0;
+			} else if (screenoff && ++onpolls >= 2) {
+				/* turned on by something other than our input
+				 * (e.g. xset dpms force on): don't drop a key */
+				screenoff = 0;
+			}
+			pthread_mutex_unlock(&dpmsmutex);
+		}
+		usleep(dpmspollms * 1000);
+	}
+	return NULL;
+}
+
+/* returns 1 if the input at time t must be ignored because it woke the
+ * monitor, or arrived within wakegrace ms of waking it */
+static int
+wakeinput(Display *dpy, Time t)
+{
+	static Time waketime;
+	static int waking = 0;
+	int wasoff;
+
+	pthread_mutex_lock(&dpmsmutex);
+	wasoff = screenoff;
+	screenoff = 0;
+	pthread_mutex_unlock(&dpmsmutex);
+
+	if (wasoff) {
+		DPMSForceLevel(dpy, DPMSModeOn);
+		waketime = t;
+		waking = 1;
+		return 1;
+	}
+	if (waking && wakegrace > 0 && t - waketime < (Time)wakegrace)
+		return 1;
+	waking = 0;
+	return 0;
+}
+
 static void*
 displayTime(void* input)
 { /*Thread that keeps track of time and refreshes it every 5 seconds */
@@ -488,6 +549,8 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 
 	while (running && !XNextEvent(dpy, &ev)) {
 		if (ev.type == KeyPress) {
+			if (wakeinput(dpy, ev.xkey.time))
+				continue;
 			explicit_bzero(&buf, sizeof(buf));
 			num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
 			if (IsKeypadKey(ksym)) {
@@ -617,6 +680,12 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 			}
 			pthread_mutex_unlock(&mutex);
 		} else {
+			/* the mouse woke the monitor: the next key is real input
+			 * (still subject to wakegrace) */
+			if (ev.type == MotionNotify)
+				(void)wakeinput(dpy, ev.xmotion.time);
+			else if (ev.type == ButtonPress || ev.type == ButtonRelease)
+				(void)wakeinput(dpy, ev.xbutton.time);
 			for (screen = 0; screen < nscreens; screen++)
 				XRaiseWindow(dpy, locks[screen]->win);
 		}
@@ -960,7 +1029,7 @@ main(int argc, char **argv) {
 	}
 
 	/* everything is now blank. Wait for the correct password */
-	pthread_t thredid;
+	pthread_t thredid, dpmsthread;
   /* Create Cairo drawables upon which the time will be shown. */
   struct displayData displayData;
 	cairo_surface_t **surfaces;
@@ -994,6 +1063,8 @@ main(int argc, char **argv) {
 
   /*Start the thread that redraws time every 5 seconds*/
 	pthread_create(&thredid, NULL, displayTime, &displayData);
+	/* Watch for the monitor being turned off by DPMS */
+	pthread_create(&dpmsthread, NULL, watchdpms, dpy);
 	/*Wait for the password*/
 	readpw(dpy, &rr, locks, nscreens, hash,crs,surfaces);
 

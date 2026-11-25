@@ -1,0 +1,13 @@
+diff --git a/svkbd.c b/svkbd.c
+index 22b4b34..4ddede1 100644
+--- a/svkbd.c
++++ b/svkbd.c
+@@ -256,7 +256,7 @@ cleanup(void)
+ 	XSync(dpy, False);
+ 	XDestroyWindow(dpy, win);
+ 	XSync(dpy, False);
+-	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
++	/* removed: resetting focus to PointerRoot breaks dwm focus (keys follow the pointer onto svkbd) */
+ }
+ 
+ void
