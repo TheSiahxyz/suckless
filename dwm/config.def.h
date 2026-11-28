@@ -175,6 +175,8 @@ static const Rule rules[] = {
   { "kakaotalk.exe",      "kakaotalk.exe",    NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0,           1,           0 },
   { "outlook-for-linux",  "outlook-for-linux",NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         0,       1,            0,           0,           0 },
   { "teams-for-linux",    "teams-for-linux",  NULL,           1 << 8,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         1,       1,            0,           0,           0 },
+  { TERMCLASS,            TERMINAL,           "neomutt",           0,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         2,       1,           -1,           1,           0 },
+  { TERMCLASS,            TERMINAL,           "newsboat",          0,     1,        activeopacity,  inactiveopacity,  0,          0,         -1,         2,       1,           -1,           1,           0 },
   { TERMCLASS,            "spterm",           NULL,           SPTAG(0),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
   { TERMCLASS,            "splf",             NULL,           SPTAG(1),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
   { TERMCLASS,            "spcalc",           NULL,           SPTAG(2),   1,        activeopacity,  inactiveopacity,  1,          1,          0,        -1,       1,           -1,           0,           0 },
